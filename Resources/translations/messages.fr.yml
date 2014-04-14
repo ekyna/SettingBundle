@@ -6,4 +6,4 @@ ekyna_setting:
         header:
             edit: Modifier les paramètres
         flash:
-            edit: Les paramètres ont été mis à jours avec succès.
+            edit: Les paramètres ont correctement été mis à jours.
