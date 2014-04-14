@@ -1,0 +1,4 @@
+SettingBundle
+=============
+
+Parameters managment.
