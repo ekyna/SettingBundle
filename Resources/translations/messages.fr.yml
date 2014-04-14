@@ -1,0 +1,9 @@
+ekyna_setting:
+    parameter:
+        label:
+            singular: Paramètre
+            plural: Paramètres
+        header:
+            edit: Modifier les paramètres
+        flash:
+            edit: Les paramètres ont été mis à jours avec succès.

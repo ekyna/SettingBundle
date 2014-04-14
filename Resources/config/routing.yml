@@ -1,0 +1,7 @@
+ekyna_setting_admin_edit:
+    path: /settings/edit
+    defaults: 
+        _controller: "ekyna_setting.controller:editAction"
+        namespace: cms
+    requirements:
+        _method: GET|POST

@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="ekyna_setting.parameter.class">Ekyna\Bundle\SettingBundle\Entity\Parameter</parameter>
+        <parameter key="ekyna_setting.parameter.repository.class">Ekyna\Bundle\SettingBundle\Entity\ParameterRepository</parameter>
+        <parameter key="ekyna_setting.controller.class">Ekyna\Bundle\SettingBundle\Controller\Admin\SettingsController</parameter>
+        <parameter key="ekyna_setting.form_factory.class">Ekyna\Bundle\SettingBundle\Form\Factory\SettingsFormFactory</parameter>
+        <parameter key="ekyna_setting.manager.class">Ekyna\Bundle\SettingBundle\Manager\SettingsManager</parameter>
+        <parameter key="ekyna_setting.schema_registry.class">Ekyna\Bundle\SettingBundle\Schema\SchemaRegistry</parameter>
+        <parameter key="ekyna_setting.twig.class">Ekyna\Bundle\SettingBundle\Twig\SettingsExtension</parameter>
+    </parameters>
+
+    <services>
+        <service id="ekyna_setting.parameter.manager" alias="doctrine.orm.entity_manager" />
+        <service id="ekyna_setting.parameter.repository"
+            class="%ekyna_setting.parameter.repository.class%"
+            factory-service="doctrine.orm.entity_manager"
+            factory-method="getRepository">
+            <argument>%ekyna_setting.parameter.class%</argument>
+        </service>
+
+        <service id="ekyna_setting.controller" class="%ekyna_setting.controller.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="ekyna_setting.form_factory" class="%ekyna_setting.form_factory.class%">
+            <argument type="service" id="ekyna_setting.schema_registry" />
+            <argument type="service" id="form.factory" />
+        </service>
+
+        <service id="ekyna_setting.cache" alias="doctrine_cache.providers.ekyna_settings" />
+
+        <service id="ekyna_setting.manager" class="%ekyna_setting.manager.class%">
+            <argument type="service" id="ekyna_setting.schema_registry" />
+            <argument type="service" id="ekyna_setting.parameter.manager" />
+            <argument type="service" id="ekyna_setting.parameter.repository" />
+            <argument type="service" id="ekyna_setting.cache" />
+            <argument type="service" id="validator" />
+        </service>
+
+        <service id="ekyna_setting.schema_registry" class="%ekyna_setting.schema_registry.class%" />
+
+        <service id="ekyna_setting.twig" class="%ekyna_setting.twig.class%">
+            <argument type="service" id="ekyna_setting.manager" />
+            <tag name="twig.extension" />
+        </service>
+    </services>
+
+</container>

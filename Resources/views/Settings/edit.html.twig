@@ -1,0 +1,21 @@
+{% extends "EkynaAdminBundle:Entity:sided.html.twig" %}
+
+{% block title %}
+<h1>{{ 'ekyna_setting.parameter.header.edit'|trans|raw }}</h1>
+{% endblock %}
+
+{% block actions %}
+{% endblock %}
+
+{% block main %}
+<form action="{{ path('ekyna_setting_admin_edit') }}" {{ form_enctype(form) }} method="post" class="form-horizontal">
+	<div class="panel-body form-body">
+	    {{ bootstrap_set_style('horizontal') }}
+	    {{ form_widget(form) }}
+	</div>
+    {{ ui_form_footer() }}
+</form>
+{% endblock %}
+
+{% block side %}
+{% endblock %}
