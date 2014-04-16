@@ -11,7 +11,7 @@ use Ekyna\Bundle\SettingBundle\Schema\SchemaRegistryInterface;
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Form/Factory/SettingsFormFactory.php
  */
-class SettingsFormfactory implements SettingsFormFactoryInterface
+class SettingsFormFactory implements SettingsFormFactoryInterface
 {
     /**
      * Schema registry
