@@ -5,10 +5,9 @@ namespace Ekyna\Bundle\SettingBundle\Schema;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * SchemaInterface
+ * SchemaInterface.
  *
- * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
- * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Schema/SchemaInterface.php
+ * @author Étienne Dauvergne <contact@ekyna.com>
  */
 interface SchemaInterface
 {
@@ -18,11 +17,32 @@ interface SchemaInterface
      * @param SettingsBuilderInterface $builder
      */
     public function buildSettings(SettingsBuilderInterface $builder);
-    
+
     /**
      * Build form.
      *
      * @param FormBuilderInterface $builder
-    */
-    public function buildForm(FormBuilderInterface $builder);
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options);
+
+    /**
+     * Returns the label.
+     * 
+     * @return string
+     */
+    public function getLabel();
+
+    /**
+     * Returns the show template.
+     * 
+     * @return string
+     */
+    public function getShowTemplate();
+
+    /**
+     * Returns the form template.
+     * 
+     * @return string
+     */
+    public function getFormTemplate();
 }

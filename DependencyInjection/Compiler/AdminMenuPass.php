@@ -19,7 +19,7 @@ class AdminMenuPass implements CompilerPassInterface
             'config', 'ekyna_core.field.config', 'cogs', null, 99
         ));
         $pool->addMethodCall('createEntryReference', array(
-            'config', 'settings', 'ekyna_setting_admin_edit', 'ekyna_setting.parameter.label.plural'
+            'config', 'settings', 'ekyna_setting_admin_show', 'ekyna_setting.parameter.label.plural'
         ));
     }
 }

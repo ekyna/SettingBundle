@@ -114,4 +114,11 @@ class Settings implements \ArrayAccess
     {
         $this->remove($offset);
     }
+
+    public function merge(Settings $settings)
+    {
+        foreach($settings as $name => $value) {
+            $this->set($name, $value);
+        }
+    }
 }

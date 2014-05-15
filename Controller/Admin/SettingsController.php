@@ -7,38 +7,75 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
- * SettingsController
+ * SettingsController.
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
- * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Controller/SettingsController.php
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class SettingsController extends Controller
 {
     /**
-     * Edit configuration with given namespace.
+     * Show the parameters.
+     * 
+     * @param Request $request
+     */
+    public function showAction(Request $request)
+    {
+        $this->container->get('ekyna_admin.menu.builder')->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
+        
+        $manager = $this->getSettingsManager();
+        $schemas = $this->getSettingsRegistry()->getSchemas();
+
+        foreach($schemas as $namespace => $schema) {
+            $settings[$namespace] = $manager->loadSettings($namespace);
+        }
+
+        return $this->render($request->attributes->get('template', 'EkynaSettingBundle:Settings:show.html.twig'), array(
+            'settings'   => $settings,
+            'labels'     => $manager->getLabels(),
+            'templates'  => $manager->getShowTemplates(),
+        ));
+    }
+
+    /**
+     * Edit the parameters.
      *
      * @param Request $request
-     * @param string  $namespace
      *
      * @return Response
      */
-    public function editAction(Request $request, $namespace = null)
+    public function editAction(Request $request)
     {
+        $this->container->get('ekyna_admin.menu.builder')->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
+
         $manager = $this->getSettingsManager();
-        $settings = $manager->loadSettings($namespace);
+        $schemas = $this->getSettingsRegistry()->getSchemas();
 
-        $form = $this
-            ->getSettingsFormFactory()
-            ->create($namespace)
+        $settings = array();
+        $builder = $this->createFormBuilder(null, array(
+            'data_class' => null,
+            'admin_mode' => true,
+            '_footer' => array(
+        	    'cancel_path' => $this->generateUrl('ekyna_setting_admin_show')
+            ),
+            'cascade_validation' => true,
+        ));
+        foreach($schemas as $namespace => $schema) {
+            $builder->add($namespace, $schema);
+            $settings[$namespace] = $manager->loadSettings($namespace);
+        }
+
+        $form = $builder
+            ->getForm()
+            ->setData($settings)
         ;
-
-        $form->setData($settings);
 
         if ($request->isMethod('POST') && $form->submit($request)->isValid()) {
             $messageType = 'success';
             try {
-                $manager->saveSettings($namespace, $form->getData());
+                foreach($schemas as $namespace => $schema) {
+                    $manager->saveSettings($namespace, $form->get($namespace)->getData());
+                }
                 $message = $this->getTranslator()->trans('ekyna_setting.parameter.flash.edit');
             } catch (ValidatorException $exception) {
                 $message = $this->getTranslator()->trans($exception->getMessage(), array(), 'validators');
@@ -46,14 +83,13 @@ class SettingsController extends Controller
             }
             $request->getSession()->getFlashBag()->add($messageType, $message);
 
-            if ($request->headers->has('referer')) {
-                return $this->redirect($request->headers->get('referer'));
-            }
+            return $this->redirect($this->generateUrl('ekyna_setting_admin_show'));
         }
 
         return $this->render($request->attributes->get('template', 'EkynaSettingBundle:Settings:edit.html.twig'), array(
-            'settings' => $settings,
-            'form'     => $form->createView()
+            'labels'     => $manager->getLabels(),
+            'templates'  => $manager->getFormTemplates(),
+            'form'       => $form->createView(),
         ));
     }
 
@@ -68,13 +104,13 @@ class SettingsController extends Controller
     }
 
     /**
-     * Get settings form factory
+     * Get settings registry
      *
-     * @return \Ekyna\Bundle\SettingBundle\Manager\SettingsFormFactoryInterface
+     * @return \Ekyna\Bundle\SettingBundle\Schema\SchemaRegistryInterface
      */
-    protected function getSettingsFormFactory()
+    protected function getSettingsRegistry()
     {
-        return $this->get('ekyna_setting.form_factory');
+        return $this->get('ekyna_setting.schema_registry');
     }
 
     /**

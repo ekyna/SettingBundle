@@ -5,5 +5,6 @@ ekyna_setting:
             plural: Paramètres
         header:
             edit: Modifier les paramètres
+            show: Afficher les paramètres
         flash:
             edit: Les paramètres ont correctement été mis à jours.

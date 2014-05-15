@@ -13,7 +13,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Ekyna\Bundle\SettingBundle\Entity\Parameter;
 
 /**
- * SettingsManager
+ * SettingsManager.
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Manager/SettingsManager.php
@@ -171,6 +171,42 @@ class SettingsManager implements SettingsManagerInterface
         $this->parameterManager->flush();
 
         $this->cache->save($namespace, $parameters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLabels()
+    {
+        $labels = array();
+        foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
+            $labels[$namespace] = $schema->getLabel();
+        }
+        return $labels;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getShowTemplates()
+    {
+        $templates = array();
+        foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
+            $templates[$namespace] = $schema->getShowTemplate();
+        }
+        return $templates;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFormTemplates()
+    {
+        $templates = array();
+        foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
+            $templates[$namespace] = $schema->getFormTemplate();
+        }
+        return $templates;
     }
 
     /**

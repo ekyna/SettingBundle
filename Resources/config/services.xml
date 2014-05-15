@@ -8,10 +8,9 @@
         <parameter key="ekyna_setting.parameter.class">Ekyna\Bundle\SettingBundle\Entity\Parameter</parameter>
         <parameter key="ekyna_setting.parameter.repository.class">Ekyna\Bundle\SettingBundle\Entity\ParameterRepository</parameter>
         <parameter key="ekyna_setting.controller.class">Ekyna\Bundle\SettingBundle\Controller\Admin\SettingsController</parameter>
-        <parameter key="ekyna_setting.form_factory.class">Ekyna\Bundle\SettingBundle\Form\Factory\SettingsFormFactory</parameter>
         <parameter key="ekyna_setting.manager.class">Ekyna\Bundle\SettingBundle\Manager\SettingsManager</parameter>
         <parameter key="ekyna_setting.schema_registry.class">Ekyna\Bundle\SettingBundle\Schema\SchemaRegistry</parameter>
-        <parameter key="ekyna_setting.twig.class">Ekyna\Bundle\SettingBundle\Twig\SettingsExtension</parameter>
+        <parameter key="ekyna_setting.twig_extension.class">Ekyna\Bundle\SettingBundle\Twig\SettingsExtension</parameter>
     </parameters>
 
     <services>
@@ -28,12 +27,7 @@
                 <argument type="service" id="service_container" />
             </call>
         </service>
-
-        <service id="ekyna_setting.form_factory" class="%ekyna_setting.form_factory.class%">
-            <argument type="service" id="ekyna_setting.schema_registry" />
-            <argument type="service" id="form.factory" />
-        </service>
-
+ 
         <service id="ekyna_setting.cache" alias="doctrine_cache.providers.ekyna_settings" />
 
         <service id="ekyna_setting.manager" class="%ekyna_setting.manager.class%">
@@ -46,7 +40,7 @@
 
         <service id="ekyna_setting.schema_registry" class="%ekyna_setting.schema_registry.class%" />
 
-        <service id="ekyna_setting.twig" class="%ekyna_setting.twig.class%">
+        <service id="ekyna_setting.twig_extension" class="%ekyna_setting.twig_extension.class%">
             <argument type="service" id="ekyna_setting.manager" />
             <tag name="twig.extension" />
         </service>

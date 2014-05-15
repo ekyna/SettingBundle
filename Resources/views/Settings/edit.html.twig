@@ -8,12 +8,24 @@
 {% endblock %}
 
 {% block main %}
-<form action="{{ path('ekyna_setting_admin_edit') }}" {{ form_enctype(form) }} method="post" class="form-horizontal">
+<ul class="nav nav-tabs">
+    {% for namespace, label in labels %}
+    <li{% if loop.index0 == 0 %} class="active"{% endif %}><a href="#{{ namespace }}" data-toggle="tab">{{ label|trans }}</a></li>
+    {% endfor %}
+</ul>
+<form action="{{ path('ekyna_setting_admin_edit') }}" {{ form_enctype(form) }} method="post" class="form-horizontal form-with-tabs">
 	<div class="panel-body form-body">
 	    {{ bootstrap_set_style('horizontal') }}
-	    {{ form_widget(form) }}
+	    <div class="tab-content">
+	        {% for namespace, template in templates %}
+		    <div class="tab-pane{% if loop.index0 == 0 %} active{% endif %}" id="{{ namespace }}">
+		        {% include template %}
+		    </div>
+		    {% endfor %}
+	    </div>
+	    {{ form_rest(form) }}
 	</div>
-    {{ ui_form_footer() }}
+    {{ ui_form_footer(form) }}
 </form>
 {% endblock %}
 

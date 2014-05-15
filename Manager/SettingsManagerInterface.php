@@ -28,4 +28,25 @@ interface SettingsManagerInterface
      * @param Settings $settings
      */
     public function saveSettings($namespace, Settings $settings);
+
+    /**
+     * Returns namespaces labels.
+     * 
+     * @return array
+     */
+    public function getLabels();
+
+    /**
+     * Returns namespaces show templates.
+     * 
+     * @return array
+     */
+    public function getShowTemplates();
+
+    /**
+     * Returns namespaces form templates.
+     * 
+     * @return array
+     */
+    public function getFormTemplates();
 }
