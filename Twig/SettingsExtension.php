@@ -41,7 +41,7 @@ class SettingsExtension extends \Twig_Extension
     }
 
     /**
-     * Load settings from given namespace
+     * Returns settings from given namespace
      *
      * @param string $namespace
      *
@@ -53,7 +53,7 @@ class SettingsExtension extends \Twig_Extension
     }
 
     /**
-     * Load settings parameter for given namespace and name.
+     * Returns settings parameter for given namespace and name.
      *
      * @param string $name
      *
@@ -63,15 +63,7 @@ class SettingsExtension extends \Twig_Extension
      */
     public function getSettingsParameter($name)
     {
-        if (false === strpos($name, '.')) {
-            throw new \InvalidArgumentException(sprintf('Parameter must be in format "namespace.name", "%s" given', $name));
-        }
-
-        list($namespace, $name) = explode('.', $name);
-
-        $settings = $this->settingsManager->loadSettings($namespace);
-
-        return $settings->get($name);
+        return $this->settingsManager->getParameter($name);
     }
 
     /**

@@ -30,6 +30,17 @@ interface SettingsManagerInterface
     public function saveSettings($namespace, Settings $settings);
 
     /**
+     * Returns settings parameter for given namespace and name.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getParameter($name);
+    
+    /**
      * Returns namespaces labels.
      * 
      * @return array

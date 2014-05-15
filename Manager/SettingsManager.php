@@ -86,7 +86,7 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function loadSettings($namespace)
     {
@@ -117,7 +117,7 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      * @throws ValidatorException
      */
     public function saveSettings($namespace, Settings $settings)
@@ -171,6 +171,22 @@ class SettingsManager implements SettingsManagerInterface
         $this->parameterManager->flush();
 
         $this->cache->save($namespace, $parameters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParameter($name)
+    {
+        if (false === strpos($name, '.')) {
+            throw new \InvalidArgumentException(sprintf('Parameter must be in format "namespace.name", "%s" given', $name));
+        }
+    
+        list($namespace, $name) = explode('.', $name);
+    
+        $settings = $this->loadSettings($namespace);
+    
+        return $settings->get($name);
     }
 
     /**
