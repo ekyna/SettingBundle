@@ -15,11 +15,12 @@ class AdminMenuPass implements CompilerPassInterface
 
         $pool = $container->getDefinition('ekyna_admin.menu.pool');
 
-        $pool->addMethodCall('createGroupReference', array(
-            'config', 'ekyna_core.field.config', 'cogs', null, 99
-        ));
-        $pool->addMethodCall('createEntryReference', array(
-            'config', 'settings', 'ekyna_setting_admin_show', 'ekyna_setting.parameter.label.plural'
-        ));
+        $pool->addMethodCall('createGroup', array(array(
+            'name'     => 'settings',
+            'label'    => 'ekyna_setting.parameter.label.plural',
+            'route'    => 'ekyna_setting_admin_show',
+            'icon'     => 'cogs',
+            'position' => 99,
+        )));
     }
 }
