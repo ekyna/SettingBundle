@@ -1,12 +1,12 @@
 ekyna_setting_admin_show:
-    path: /settings/show
+    path: /admin/settings/show
     defaults: 
         _controller: "ekyna_setting.controller:showAction"
     requirements:
         _method: GET
 
 ekyna_setting_admin_edit:
-    path: /settings/edit
+    path: /admin/settings/edit
     defaults: 
         _controller: "ekyna_setting.controller:editAction"
     requirements:
