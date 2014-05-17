@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * RegisterSchemasPass
+ * RegisterSchemasPass.
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@sylius.pl>
  * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/DependencyInjection/Compiler/RegisterSchemasPass.php
