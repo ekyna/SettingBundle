@@ -118,7 +118,6 @@ class SettingsManager implements SettingsManagerInterface
 
     /**
      * {@inheritDoc}
-     * @throws ValidatorException
      */
     public function saveSettings($namespace, Settings $settings)
     {
@@ -139,6 +138,7 @@ class SettingsManager implements SettingsManagerInterface
             $this->resolvedSettings[$namespace]->setParameters($parameters);
         }
 
+        /** @var $persistedParameters */
         $persistedParameters = $this->parameterRepository->findBy(array('namespace' => $namespace));
         $persistedParametersMap = array();
 
@@ -158,8 +158,8 @@ class SettingsManager implements SettingsManagerInterface
                     ->setValue($value)
                 ;
 
+                /* @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
                 $errors = $this->validator->validate($parameter);
-                /* @var $errors ConstraintViolationListInterface*/
                 if (0 < $errors->count()) {
                     throw new ValidatorException($errors->get(0)->getMessage());
                 }
