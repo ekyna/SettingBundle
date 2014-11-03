@@ -1,0 +1,7 @@
+ekyna_setting_parameter_admin:
+    resource: "admin/parameter.yml"
+    prefix:   /parameter
+
+ekyna_setting_helper_admin:
+    resource: "admin/helper.yml"
+    prefix:   /helper

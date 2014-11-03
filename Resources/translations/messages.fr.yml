@@ -1,4 +1,5 @@
 ekyna_setting:
+    label: Configuration
     parameter:
         label:
             singular: Paramètre
@@ -8,3 +9,21 @@ ekyna_setting:
             show: Afficher les paramètres
         flash:
             edit: Les paramètres ont correctement été mis à jours.
+    helper:
+        label:
+            singular: Assistant
+            plural: Assistants
+        header:
+            list: Assistants <small>Liste des assistants</small>
+            show: Détail de l'assistant <small>%name%</small>
+            new: Créer un nouvel assistant
+            edit: Modifier l'assistant <small>%name%</small>
+            remove: Supprimer l'assistant <small>%name%</small>
+        button:
+            list: Liste des assistants
+            show: Détail de l'assistant
+            new: Nouvel assistant
+            edit: Modifier l'assistant
+            remove: Supprimer l'assistant
+        alert:
+            empty_list: Aucun assistant configuré

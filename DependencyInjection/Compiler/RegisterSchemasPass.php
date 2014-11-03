@@ -7,10 +7,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * RegisterSchemasPass.
- *
- * @author Paweł Jędrzejewski <pjedrzejewski@sylius.pl>
- * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/DependencyInjection/Compiler/RegisterSchemasPass.php
+ * Class RegisterSchemasPass
+ * @package Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class RegisterSchemasPass implements CompilerPassInterface

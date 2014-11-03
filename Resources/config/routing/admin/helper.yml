@@ -1,0 +1,54 @@
+ekyna_setting_helper_admin_home:
+    path: /
+    defaults: { _controller: "ekyna_setting.helper.controller:homeAction" }
+    requirements:
+        _method: GET
+
+ekyna_setting_helper_admin_list:
+    path: /list
+    defaults: { _controller: "ekyna_setting.helper.controller:listAction" }
+    requirements:
+        _method: GET|POST
+
+ekyna_setting_helper_admin_new:
+    path: /new
+    defaults: { _controller: "ekyna_setting.helper.controller:newAction" }
+    requirements:
+        _method: GET|POST
+
+ekyna_setting_helper_admin_show:
+    path: /{helperId}/show
+    defaults: { _controller: "ekyna_setting.helper.controller:showAction" }
+    requirements:
+        _method: GET
+        helperId: \d+
+
+ekyna_setting_helper_admin_edit:
+    path: /{helperId}/edit
+    defaults: { _controller: "ekyna_setting.helper.controller:editAction" }
+    requirements:
+        _method: GET|POST
+        helperId: \d+
+
+ekyna_setting_helper_admin_tinymce:
+    path: /{helperId}/tinymce
+    defaults: { _controller: "ekyna_setting.helper.controller:tinymceAction", field: content }
+    requirements:
+        _method: GET
+        helperId:  \d+
+        field: \w+
+
+ekyna_setting_helper_admin_toggle:
+    path: /{helperId}/toggle/{field}
+    defaults: { _controller: "ekyna_setting.helper.controller:toggleAction", field: "enabled" }
+    requirements:
+        _method: GET
+        helperId: \d+
+        field: \w+
+
+ekyna_setting_helper_admin_remove:
+    path: /{helperId}/remove
+    defaults: { _controller: "ekyna_setting.helper.controller:removeAction" }
+    requirements:
+        _method: GET|POST
+        helperId: \d+

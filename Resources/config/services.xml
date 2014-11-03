@@ -7,7 +7,7 @@
     <parameters>
         <parameter key="ekyna_setting.parameter.class">Ekyna\Bundle\SettingBundle\Entity\Parameter</parameter>
         <parameter key="ekyna_setting.parameter.repository.class">Ekyna\Bundle\SettingBundle\Entity\ParameterRepository</parameter>
-        <parameter key="ekyna_setting.controller.class">Ekyna\Bundle\SettingBundle\Controller\Admin\SettingsController</parameter>
+        <parameter key="ekyna_setting.parameter.controller.class">Ekyna\Bundle\SettingBundle\Controller\Admin\ParameterController</parameter>
         <parameter key="ekyna_setting.manager.class">Ekyna\Bundle\SettingBundle\Manager\SettingsManager</parameter>
         <parameter key="ekyna_setting.schema_registry.class">Ekyna\Bundle\SettingBundle\Schema\SchemaRegistry</parameter>
         <parameter key="ekyna_setting.twig_extension.class">Ekyna\Bundle\SettingBundle\Twig\SettingsExtension</parameter>
@@ -22,7 +22,7 @@
             <argument>%ekyna_setting.parameter.class%</argument>
         </service>
 
-        <service id="ekyna_setting.controller" class="%ekyna_setting.controller.class%">
+        <service id="ekyna_setting.parameter.controller" class="%ekyna_setting.parameter.controller.class%">
             <call method="setContainer">
                 <argument type="service" id="service_container" />
             </call>

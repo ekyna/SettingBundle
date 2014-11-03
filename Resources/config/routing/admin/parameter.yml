@@ -1,0 +1,13 @@
+ekyna_setting_parameter_admin_show:
+    path: /show
+    defaults:
+        _controller: "ekyna_setting.parameter.controller:showAction"
+    requirements:
+        _method: GET
+
+ekyna_setting_parameter_admin_edit:
+    path: /edit
+    defaults:
+        _controller: "ekyna_setting.parameter.controller:editAction"
+    requirements:
+        _method: GET|POST

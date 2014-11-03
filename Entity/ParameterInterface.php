@@ -3,10 +3,9 @@
 namespace Ekyna\Bundle\SettingBundle\Entity;
 
 /**
- * ParameterInterface
- *
- * @author Paweł Jędrzejewski <pjedrzejewski@sylius.pl>
- * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Model/ParameterInterface.php
+ * Interface ParameterInterface
+ * @package Ekyna\Bundle\SettingBundle\Entity
+ * @author Étienne Dauvergne <contact@ekyna.com>
  */
 interface ParameterInterface
 {

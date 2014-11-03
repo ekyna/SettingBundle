@@ -5,9 +5,9 @@
     xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                         http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity
-        name="Ekyna\Bundle\SettingBundle\Entity\Parameter"
-        table="sett_parameter">
+    <entity name="Ekyna\Bundle\SettingBundle\Entity\Parameter"
+            repository-class="Ekyna\Bundle\SettingBundle\Entity\ParameterRepository"
+            table="sett_parameter">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO" />

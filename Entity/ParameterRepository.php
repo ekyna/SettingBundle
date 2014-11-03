@@ -5,8 +5,8 @@ namespace Ekyna\Bundle\SettingBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * ParameterRepository
- *
+ * Class ParameterRepository
+ * @package Ekyna\Bundle\SettingBundle\Entity
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class ParameterRepository extends EntityRepository implements ParameterRepositoryInterface
@@ -14,7 +14,6 @@ class ParameterRepository extends EntityRepository implements ParameterRepositor
     public function createNew()
     {
         $class = $this->getClassName();
-
         return new $class;
     }
 }

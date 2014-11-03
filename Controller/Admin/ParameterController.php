@@ -2,29 +2,31 @@
 
 namespace Ekyna\Bundle\SettingBundle\Controller\Admin;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Ekyna\Bundle\CoreBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
- * SettingsController.
- *
- * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
+ * Class ParameterController
+ * @package Ekyna\Bundle\SettingBundle\Controller\Admin
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class SettingsController extends Controller
+class ParameterController extends Controller
 {
     /**
      * Show the parameters.
-     * 
+     *
      * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request)
     {
-        $this->container->get('ekyna_admin.menu.builder')->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
+        $this->container->get('ekyna_admin.menu.builder')
+            ->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
         
         $manager = $this->getSettingsManager();
         $schemas = $this->getSettingsRegistry()->getSchemas();
+        $settings = [];
 
         foreach($schemas as $namespace => $schema) {
             $settings[$namespace] = $manager->loadSettings($namespace);
@@ -41,12 +43,12 @@ class SettingsController extends Controller
      * Edit the parameters.
      *
      * @param Request $request
-     *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request)
     {
-        $this->container->get('ekyna_admin.menu.builder')->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
+        $this->container->get('ekyna_admin.menu.builder')
+            ->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
 
         $manager = $this->getSettingsManager();
         $schemas = $this->getSettingsRegistry()->getSchemas();
@@ -79,9 +81,9 @@ class SettingsController extends Controller
                 $message = $this->getTranslator()->trans('ekyna_setting.parameter.flash.edit');
             } catch (ValidatorException $exception) {
                 $message = $this->getTranslator()->trans($exception->getMessage(), array(), 'validators');
-                $messageType = 'error';
+                $messageType = 'danger';
             }
-            $request->getSession()->getFlashBag()->add($messageType, $message);
+            $this->addFlash($message, $messageType);
 
             return $this->redirect($this->generateUrl('ekyna_setting_admin_show'));
         }
@@ -111,15 +113,5 @@ class SettingsController extends Controller
     protected function getSettingsRegistry()
     {
         return $this->get('ekyna_setting.schema_registry');
-    }
-
-    /**
-     * Get translator
-     *
-     * @return TranslatorInterface
-     */
-    protected function getTranslator()
-    {
-        return $this->get('translator');
     }
 }

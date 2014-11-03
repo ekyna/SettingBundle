@@ -6,8 +6,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 /**
- * AdminMenuPass.
- *
+ * Class AdminMenuPass
+ * @package Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class AdminMenuPass implements CompilerPassInterface
@@ -21,15 +21,21 @@ class AdminMenuPass implements CompilerPassInterface
         $pool = $container->getDefinition('ekyna_admin.menu.pool');
 
         $pool->addMethodCall('createGroup', array(array(
-            'name'     => 'configuration',
-            'label'    => 'ekyna_admin.configuration',
+            'name'     => 'setting',
+            'label'    => 'ekyna_setting.label',
             'icon'     => 'cogs',
             'position' => 99,
         )));
-        $pool->addMethodCall('createEntry', array('configuration', array(
-            'name'     => 'settings',
-            'route'    => 'ekyna_setting_admin_show',
+        $pool->addMethodCall('createEntry', array('setting', array(
+            'name'     => 'parameter',
+            'route'    => 'ekyna_setting_parameter_admin_show',
             'label'    => 'ekyna_setting.parameter.label.plural',
+            'position' => 98,
+        )));
+        $pool->addMethodCall('createEntry', array('setting', array(
+            'name'     => 'helper',
+            'route'    => 'ekyna_setting_helper_admin_home',
+            'label'    => 'ekyna_setting.helper.label.plural',
             'position' => 99,
         )));
     }

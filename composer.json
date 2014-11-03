@@ -18,7 +18,8 @@
     ],
     "require" : {
         "php" : ">=5.4.0",
-        "ekyna/admin-bundle" : "0.1.*@dev"
+        "ekyna/admin-bundle" : "0.1.*@dev",
+        "kriswallsmith/buzz": "*"
     },
     "autoload" : {
         "psr-0" : {

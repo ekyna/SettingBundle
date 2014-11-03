@@ -6,10 +6,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Ekyna\Bundle\CoreBundle\Form\DataTransformer\ObjectToIdentifierTransformer as BaseTransformer;
 
 /**
- * ObjectToIdentifierTransformer
- * 
- * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
- * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Transformer/ObjectToIdentifierTransformer.php
+ * Class ObjectToIdentifierTransformer
+ * @package Ekyna\Bundle\SettingBundle\Transformer
+ * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class ObjectToIdentifierTransformer extends BaseTransformer implements ParameterTransformerInterface
 {

@@ -1,13 +1,7 @@
-ekyna_setting_admin_show:
-    path: /admin/settings/show
-    defaults: 
-        _controller: "ekyna_setting.controller:showAction"
-    requirements:
-        _method: GET
+ekyna_setting_admin:
+    resource: "routing/admin.yml"
+    prefix:   /admin/setting
 
-ekyna_setting_admin_edit:
-    path: /admin/settings/edit
-    defaults: 
-        _controller: "ekyna_setting.controller:editAction"
-    requirements:
-        _method: GET|POST
+ekyna_setting_helper:
+    resource: "routing/helper.yml"
+    prefix:   /api/setting/helper
