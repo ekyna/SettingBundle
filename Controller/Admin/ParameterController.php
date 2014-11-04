@@ -4,6 +4,7 @@ namespace Ekyna\Bundle\SettingBundle\Controller\Admin;
 
 use Ekyna\Bundle\CoreBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
@@ -21,6 +22,8 @@ class ParameterController extends Controller
      */
     public function showAction(Request $request)
     {
+        $this->isGranted('VIEW');
+
         $this->container->get('ekyna_admin.menu.builder')
             ->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
         
@@ -47,6 +50,8 @@ class ParameterController extends Controller
      */
     public function editAction(Request $request)
     {
+        $this->isGranted('EDIT');
+
         $this->container->get('ekyna_admin.menu.builder')
             ->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
 
@@ -58,7 +63,7 @@ class ParameterController extends Controller
             'data_class' => null,
             'admin_mode' => true,
             '_footer' => array(
-        	    'cancel_path' => $this->generateUrl('ekyna_setting_admin_show')
+        	    'cancel_path' => $this->generateUrl('ekyna_setting_parameter_admin_show')
             ),
             'cascade_validation' => true,
         ));
@@ -85,7 +90,7 @@ class ParameterController extends Controller
             }
             $this->addFlash($message, $messageType);
 
-            return $this->redirect($this->generateUrl('ekyna_setting_admin_show'));
+            return $this->redirect($this->generateUrl('ekyna_setting_parameter_admin_show'));
         }
 
         return $this->render($request->attributes->get('template', 'EkynaSettingBundle:Settings:edit.html.twig'), array(
@@ -113,5 +118,41 @@ class ParameterController extends Controller
     protected function getSettingsRegistry()
     {
         return $this->get('ekyna_setting.schema_registry');
+    }
+    /**
+     * Checks if the attributes are granted against the current token.
+     *
+     * @param mixed $attributes
+     * @param mixed|null $object
+     * @param bool $throwException
+     *
+     * @throws AccessDeniedHttpException when the security context has no authentication token.
+     *
+     * @return bool
+     */
+    private function isGranted($attributes, $object = null, $throwException = true)
+    {
+        if (is_null($object)) {
+            $object = $this->getConfiguration()->getObjectIdentity();
+        } else {
+            $object = $this->get('ekyna_admin.pool_registry')->getObjectIdentity($object);
+        }
+        if (!$this->get('security.context')->isGranted($attributes, $object)) {
+            if ($throwException) {
+                throw new AccessDeniedHttpException('You are not allowed to view this resource.');
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns the configuration.
+     *
+     * @return \Ekyna\Bundle\AdminBundle\Pool\ConfigurationInterface
+     */
+    private function getConfiguration()
+    {
+        return $this->get('ekyna_setting.parameter.configuration');
     }
 }

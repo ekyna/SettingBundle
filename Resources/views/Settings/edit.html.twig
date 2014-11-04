@@ -13,7 +13,7 @@
     <li{% if loop.index0 == 0 %} class="active"{% endif %}><a href="#{{ namespace }}" data-toggle="tab">{{ label|trans }}</a></li>
     {% endfor %}
 </ul>
-<form action="{{ path('ekyna_setting_admin_edit') }}" {{ form_enctype(form) }} method="post" class="form-horizontal form-with-tabs">
+<form action="{{ path('ekyna_setting_parameter_admin_edit') }}" {{ form_enctype(form) }} method="post" class="form-horizontal form-with-tabs">
 	<div class="panel-body form-body">
 	    {{ bootstrap_set_style('horizontal') }}
 	    <div class="tab-content">
