@@ -18,8 +18,13 @@ class HelperType extends ResourceTableType
     public function buildTable(TableBuilderInterface $builder, array $options = array())
     {
         $builder
-            ->addColumn('name', 'text', array(
+            ->addColumn('name', 'anchor', array(
                 'label' => 'ekyna_core.field.name',
+                'sortable' => true,
+                'route_name' => 'ekyna_setting_helper_admin_show',
+                'route_parameters_map' => array(
+                    'helperId' => 'id'
+                ),
             ))
             ->addColumn('reference', 'text', array(
                 'label' => 'ekyna_core.field.reference',

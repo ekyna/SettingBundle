@@ -2,6 +2,7 @@
 
 namespace Ekyna\Bundle\SettingBundle\Controller\Admin;
 
+use Ekyna\Bundle\AdminBundle\Controller\Context;
 use Ekyna\Bundle\AdminBundle\Controller\Resource\ToggleableTrait;
 use Ekyna\Bundle\AdminBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,15 +25,15 @@ class HelperController extends ResourceController
         }
 
         $context = $this->loadContext($request);
-        $resourceName = $this->config->getResourceName();
-        if(null === $resource = $context->getResource($resourceName)) {
+
+        if(null === $resource = $context->getResource()) {
             throw new \RuntimeException('Resource not found.');
         }
 
         $this->isGranted('VIEW', $resource);
 
-        $propertyAcessor = PropertyAccess::createPropertyAccessor();
-        $content = $propertyAcessor->getValue($resource, $field);
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $content = $propertyAccessor->getValue($resource, $field);
 
         return $this->render('EkynaSettingBundle:Helper/Admin:tinymce.html.twig', array(
             'content' => $content
