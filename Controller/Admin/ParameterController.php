@@ -63,6 +63,7 @@ class ParameterController extends Controller
             'data_class' => null,
             'admin_mode' => true,
             '_footer' => array(
+                'offset' => 3,
         	    'cancel_path' => $this->generateUrl('ekyna_setting_parameter_admin_show')
             ),
             'cascade_validation' => true,
