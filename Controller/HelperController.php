@@ -6,7 +6,6 @@ use Buzz\Browser;
 use Ekyna\Bundle\CoreBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class HelperController
@@ -26,41 +25,46 @@ class HelperController extends Controller
         $reference = strtoupper($request->query->get('reference', null));
         $remote = (bool) $request->query->get('remote', 1);
 
-        if (0 === strlen($reference)) {
-            throw new NotFoundHttpException('Helper not found.');
-        }
+        $ttl = 24*3600;
+        $response = new Response();
+        $response
+            ->setPublic()
+            ->setMaxAge($ttl)
+            ->headers->add(array('Content-Type' => 'application/xml; charset=utf-8'))
+        ;
+        $remoteResponse = null;
 
-        if ($remote) {
+        if (0 === strlen($reference)) {
+            $response->setStatusCode(404, 'Helper not found.');
+        } elseif ($remote) {
             $remotes = $this->container->getParameter('ekyna_setting.helper_remotes');
             foreach ($remotes as $remote) {
+                // remote=0 prevent infinite loop/recursion
                 $url = $remote . '?reference=' . $reference . '&remote=0';
                 $headers = $request->headers->all();
-                if (null !== $response = $this->getRemoteResponse($url, $headers)) {
-                    return $response;
+                if (null !== $remoteResponse = $this->getRemoteResponse($url, $headers)) {
+                    break;
                 }
             }
         }
 
-        $repository = $this->getDoctrine()->getRepository('EkynaSettingBundle:Helper');
-        if (null === $helper = $repository->findOneBy(array('reference' => $reference))) {
-            throw new NotFoundHttpException('Helper not found.');
+        if (null !== $remoteResponse) {
+            $response = $remoteResponse;
+        } else {
+            $repository = $this->getDoctrine()->getRepository('EkynaSettingBundle:Helper');
+            if (null !== $helper = $repository->findOneBy(array('reference' => $reference))) {
+                $response->setLastModified($helper->getUpdatedAt());
+                if ($response->isNotModified($request)) {
+                    return $response;
+                }
+                $response->setContent($this->renderView('EkynaSettingBundle:Helper:show.xml.twig', array(
+                    'helper' => $helper,
+                )));
+                return $this->configureSharedCache($response, array($helper->getEntityTag()), $ttl);
+            } else {
+                $response->setStatusCode(404, 'Helper not found.');
+            }
         }
-
-        $response = new Response();
-        $response
-            ->setPublic()
-            ->setLastModified($helper->getUpdatedAt())
-            ->setMaxAge(24*3600)
-            ->headers->add(array('Content-Type' => 'application/xml; charset=utf-8'))
-        ;
-
-        if ($response->isNotModified($request)) {
-            return $response;
-        }
-
-        $response->setContent($this->renderView('EkynaSettingBundle:Helper:show.xml.twig', array(
-            'helper' => $helper,
-        )));
 
         return $response;
     }

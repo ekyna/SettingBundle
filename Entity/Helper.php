@@ -2,12 +2,14 @@
 
 namespace Ekyna\Bundle\SettingBundle\Entity;
 
+use Ekyna\Bundle\CoreBundle\Model\TaggedEntityInterface;
+
 /**
  * Class Helper
  * @package Ekyna\Bundle\SettingBundle\Entity
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class Helper
+class Helper implements TaggedEntityInterface
 {
     /**
      * @var integer
@@ -173,5 +175,16 @@ class Helper
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntityTag()
+    {
+        if (null === $this->getId()) {
+            throw new \RuntimeException('Unable to generate http cache tag, as the id property is undefined.');
+        }
+        return sprintf('ekyna_setting.helper[id:%s]', $this->getId());
     }
 }
