@@ -1,5 +1,7 @@
 {% extends 'EkynaAdminBundle::base.xml.twig' %}
 
 {% block response %}
+{% if helper is defined %}
 <content><![CDATA[<h3>{{ helper.name|raw }}</h3>{{ helper.content|raw }}]]></content>
+{% endif %}
 {% endblock response %}
