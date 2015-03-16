@@ -29,6 +29,8 @@ class EkynaSettingExtension extends AbstractExtension implements PrependExtensio
      */
     public function prepend(ContainerBuilder $container)
     {
+        parent::prepend($container);
+
         $bundles = $container->getParameter('kernel.bundles');
         $configs = $container->getExtensionConfig($this->getAlias());
         $config = $this->processConfiguration(new Configuration(), $configs);
