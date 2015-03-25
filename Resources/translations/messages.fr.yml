@@ -1,14 +1,26 @@
 ekyna_setting:
     label: Configuration
-    parameter:
+    redirection:
         label:
-            singular: Paramètre
-            plural: Paramètres
+            singular: Redirection
+            plural: Redirections
         header:
-            edit: Modifier les paramètres
-            show: Afficher les paramètres
-        flash:
-            edit: Les paramètres ont correctement été mis à jours.
+            list: Redirections <small>Liste des redirections</small>
+            show: Détail de la redirection <small>%name%</small>
+            new: Créer une nouvelle redirection
+            edit: Modifier la redirection <small>%name%</small>
+            remove: Supprimer la redirection <small>%name%</small>
+        button:
+            list: Liste des redirections
+            show: Détail de la redirection
+            new: Nouvelle redirection
+            edit: Modifier la redirection
+            remove: Supprimer la redirection
+        field:
+            from_path: Depuis
+            to_path: Vers
+        alert:
+            empty_list: Aucune redirection configuré
     helper:
         label:
             singular: Assistant
@@ -27,3 +39,12 @@ ekyna_setting:
             remove: Supprimer l'assistant
         alert:
             empty_list: Aucun assistant configuré
+    parameter:
+        label:
+            singular: Paramètre
+            plural: Paramètres
+        header:
+            edit: Modifier les paramètres
+            show: Afficher les paramètres
+        flash:
+            edit: Les paramètres ont correctement été mis à jours.

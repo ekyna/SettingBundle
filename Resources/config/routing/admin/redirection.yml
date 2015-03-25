@@ -1,0 +1,46 @@
+ekyna_setting_redirection_admin_home:
+    path: ""
+    defaults: { _controller: "ekyna_setting.redirection.controller:homeAction" }
+    requirements:
+        _method: GET
+
+ekyna_setting_redirection_admin_list:
+    path: /list
+    defaults: { _controller: "ekyna_setting.redirection.controller:listAction" }
+    requirements:
+        _method: GET|POST
+
+ekyna_setting_redirection_admin_new:
+    path: /new
+    defaults: { _controller: "ekyna_setting.redirection.controller:newAction" }
+    requirements:
+        _method: GET|POST
+
+ekyna_setting_redirection_admin_show:
+    path: /{redirectionId}/show
+    defaults: { _controller: "ekyna_setting.redirection.controller:showAction" }
+    requirements:
+        _method: GET
+        redirectionId: \d+
+
+ekyna_setting_redirection_admin_edit:
+    path: /{redirectionId}/edit
+    defaults: { _controller: "ekyna_setting.redirection.controller:editAction" }
+    requirements:
+        _method: GET|POST
+        redirectionId: \d+
+
+ekyna_setting_redirection_admin_toggle:
+    path: /{redirectionId}/toggle/{field}
+    defaults: { _controller: "ekyna_setting.redirection.controller:toggleAction", field: "enabled" }
+    requirements:
+        _method: GET
+        redirectionId: \d+
+        field: \w+
+
+ekyna_setting_redirection_admin_remove:
+    path: /{redirectionId}/remove
+    defaults: { _controller: "ekyna_setting.redirection.controller:removeAction" }
+    requirements:
+        _method: GET|POST
+        redirectionId: \d+

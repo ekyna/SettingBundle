@@ -53,8 +53,8 @@ class Configuration implements ConfigurationInterface
 					->addDefaultsIfNotSet()
 					->children()
 						->variableNode('templates')->defaultValue(array(
-							'_form.html' => 'EkynaSettingBundle:Helper/Admin:_form.html',
-							'show.html'  => 'EkynaSettingBundle:Helper/Admin:show.html',
+							'_form.html' => 'EkynaSettingBundle:Admin/Helper:_form.html',
+							'show.html'  => 'EkynaSettingBundle:Admin/Helper:show.html',
 						))->end()
 						->scalarNode('parent')->end()
 						->scalarNode('entity')->defaultValue('Ekyna\Bundle\SettingBundle\Entity\Helper')->end()
@@ -63,6 +63,23 @@ class Configuration implements ConfigurationInterface
 						->scalarNode('repository')->defaultValue('Ekyna\Bundle\SettingBundle\Entity\HelperRepository')->end()
 						->scalarNode('form')->defaultValue('Ekyna\Bundle\SettingBundle\Form\Type\HelperType')->end()
 						->scalarNode('table')->defaultValue('Ekyna\Bundle\SettingBundle\Table\Type\HelperType')->end()
+					->end()
+				->end()
+				->arrayNode('redirection')
+					->isRequired()
+					->addDefaultsIfNotSet()
+					->children()
+						->variableNode('templates')->defaultValue(array(
+							'_form.html' => 'EkynaSettingBundle:Admin/Redirection:_form.html',
+							'show.html'  => 'EkynaSettingBundle:Admin/Redirection:show.html',
+						))->end()
+						->scalarNode('parent')->end()
+						->scalarNode('entity')->defaultValue('Ekyna\Bundle\SettingBundle\Entity\Redirection')->end()
+						->scalarNode('controller')->defaultValue('Ekyna\Bundle\SettingBundle\Controller\Admin\RedirectionController')->end()
+						->scalarNode('operator')->end()
+						->scalarNode('repository')->defaultValue('Ekyna\Bundle\SettingBundle\Entity\RedirectionRepository')->end()
+						->scalarNode('form')->defaultValue('Ekyna\Bundle\SettingBundle\Form\Type\RedirectionType')->end()
+						->scalarNode('table')->defaultValue('Ekyna\Bundle\SettingBundle\Table\Type\RedirectionType')->end()
 					->end()
 				->end()
 			->end()

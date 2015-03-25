@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping
+        xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                            http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Ekyna\Bundle\SettingBundle\Entity\Redirection"
+            repository-class="Ekyna\Bundle\SettingBundle\Entity\RedirectionRepository"
+            table="sett_redirection">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="fromPath" type="string" column="from_path" length="255" />
+        <field name="toPath" type="string" column="to_path" length="255" />
+        <field name="enabled" type="boolean" column="enabled" />
+
+    </entity>
+
+</doctrine-mapping>

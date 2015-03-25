@@ -9,12 +9,11 @@
         <parameter key="ekyna_setting.parameter.class">Ekyna\Bundle\SettingBundle\Entity\Parameter</parameter>
         <parameter key="ekyna_setting.parameter.repository.class">Ekyna\Bundle\SettingBundle\Entity\ParameterRepository</parameter>
         <parameter key="ekyna_setting.parameter.controller.class">Ekyna\Bundle\SettingBundle\Controller\Admin\ParameterController</parameter>
-        <parameter key="ekyna_setting.manager.class">Ekyna\Bundle\SettingBundle\Manager\SettingsManager</parameter>
-        <parameter key="ekyna_setting.schema_registry.class">Ekyna\Bundle\SettingBundle\Schema\SchemaRegistry</parameter>
-        <parameter key="ekyna_setting.twig_extension.class">Ekyna\Bundle\SettingBundle\Twig\SettingsExtension</parameter>
     </parameters>
 
     <services>
+
+        <!-- Parameter resource services -->
         <service id="ekyna_setting.parameter.manager" alias="doctrine.orm.entity_manager" />
         <service id="ekyna_setting.parameter.repository"
             class="%ekyna_setting.parameter.repository.class%"
@@ -22,13 +21,11 @@
             factory-method="getRepository">
             <argument>%ekyna_setting.parameter.class%</argument>
         </service>
-
         <service id="ekyna_setting.parameter.controller" class="%ekyna_setting.parameter.controller.class%">
             <call method="setContainer">
                 <argument type="service" id="service_container" />
             </call>
         </service>
-
         <service id="ekyna_setting.parameter.configuration"
                  class="Ekyna\Bundle\AdminBundle\Pool\Configuration"
                  factory-service="ekyna_admin.pool_factory"
@@ -39,10 +36,10 @@
             <argument type="collection" />
             <tag name="ekyna_admin.configuration" alias="ekyna_setting_parameter" />
         </service>
- 
-        <service id="ekyna_setting.cache" alias="doctrine_cache.providers.ekyna_settings" />
 
-        <service id="ekyna_setting.manager" class="%ekyna_setting.manager.class%">
+        <!-- Settings -->
+        <service id="ekyna_setting.cache" alias="doctrine_cache.providers.ekyna_settings" />
+        <service id="ekyna_setting.manager" class="Ekyna\Bundle\SettingBundle\Manager\SettingsManager">
             <argument type="service" id="ekyna_setting.schema_registry" />
             <argument type="service" id="ekyna_setting.parameter.manager" />
             <argument type="service" id="ekyna_setting.parameter.repository" />
@@ -50,12 +47,29 @@
             <argument type="service" id="validator" />
         </service>
 
-        <service id="ekyna_setting.schema_registry" class="%ekyna_setting.schema_registry.class%" />
+        <!-- Settings schema registry -->
+        <service id="ekyna_setting.schema_registry" class="Ekyna\Bundle\SettingBundle\Schema\SchemaRegistry" />
 
-        <service id="ekyna_setting.twig_extension" class="%ekyna_setting.twig_extension.class%">
+        <!-- Redirection provider -->
+        <service id="ekyna_setting.redirection_provider" class="Ekyna\Bundle\SettingBundle\Redirection\RedirectionProvider">
+            <argument type="service" id="ekyna_setting.redirection.repository" />
+            <tag name="ekyna_core.redirection_provider" />
+        </service>
+
+        <!-- Constraints validators -->
+        <service id="ekyna_setting.validator.redirection_validator"
+                 class="Ekyna\Bundle\SettingBundle\Validator\Constraints\RedirectionValidator">
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="security.http_utils" />
+            <tag name="validator.constraint_validator" alias="ekyna_setting_redirection" />
+        </service>
+
+        <!-- Twig extensions -->
+        <service id="ekyna_setting.twig_extension" class="Ekyna\Bundle\SettingBundle\Twig\SettingsExtension">
             <argument type="service" id="ekyna_setting.manager" />
             <tag name="twig.extension" />
         </service>
+
     </services>
 
 </container>

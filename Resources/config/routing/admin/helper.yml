@@ -1,5 +1,5 @@
 ekyna_setting_helper_admin_home:
-    path: /
+    path: ""
     defaults: { _controller: "ekyna_setting.helper.controller:homeAction" }
     requirements:
         _method: GET

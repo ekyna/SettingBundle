@@ -27,17 +27,24 @@ class AdminMenuPass implements CompilerPassInterface
             'position' => 100,
         )));
         $pool->addMethodCall('createEntry', array('setting', array(
-            'name'     => 'parameter',
-            'route'    => 'ekyna_setting_parameter_admin_show',
-            'label'    => 'ekyna_setting.parameter.label.plural',
-            'resource' => 'ekyna_setting_parameter',
-            'position' => 98,
+            'name'     => 'redirection',
+            'route'    => 'ekyna_setting_redirection_admin_home',
+            'label'    => 'ekyna_setting.redirection.label.plural',
+            'resource' => 'ekyna_setting_redirection',
+            'position' => 97,
         )));
         $pool->addMethodCall('createEntry', array('setting', array(
             'name'     => 'helper',
             'route'    => 'ekyna_setting_helper_admin_home',
             'label'    => 'ekyna_setting.helper.label.plural',
             'resource' => 'ekyna_setting_helper',
+            'position' => 98,
+        )));
+        $pool->addMethodCall('createEntry', array('setting', array(
+            'name'     => 'parameter',
+            'route'    => 'ekyna_setting_parameter_admin_show',
+            'label'    => 'ekyna_setting.parameter.label.plural',
+            'resource' => 'ekyna_setting_parameter',
             'position' => 99,
         )));
     }

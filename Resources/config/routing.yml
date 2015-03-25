@@ -2,6 +2,6 @@ ekyna_setting_admin:
     resource: "routing/admin.yml"
     prefix:   /admin/setting
 
-ekyna_setting_helper:
-    resource: "routing/helper.yml"
-    prefix:   /api/setting/helper
+ekyna_setting_api:
+    resource: "routing/api.yml"
+    prefix:   /api/setting

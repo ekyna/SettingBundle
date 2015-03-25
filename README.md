@@ -1,4 +1,4 @@
 SettingBundle
 =============
 
-Parameters managment.
+Parameters, helpers and redirections managment.
