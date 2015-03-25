@@ -15,7 +15,7 @@
         <property name="toPath">
             <constraint name="NotBlank" />
             <constraint name="Length">
-                <option name="min">2</option>
+                <option name="min">1</option>
             </constraint>
         </property>
         <constraint name="Ekyna\Bundle\SettingBundle\Validator\Constraints\Redirection" />
