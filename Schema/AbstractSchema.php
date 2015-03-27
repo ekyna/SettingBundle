@@ -13,6 +13,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 abstract class AbstractSchema extends AbstractType implements SchemaInterface
 {
     /**
+     * @var array
+     */
+    protected $defaults;
+
+    /**
+     * @param array $defaults
+     */
+    public function __construct(array $defaults = array())
+    {
+        $this->defaults = $defaults;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
