@@ -1,6 +1,7 @@
 <?php
 
 namespace Ekyna\Bundle\SettingBundle\Entity;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Class Redirection
@@ -23,6 +24,11 @@ class Redirection
      * @var string
      */
     private $toPath;
+
+    /**
+     * @var bool
+     */
+    private $permanent = false;
 
     /**
      * @var boolean
@@ -119,5 +125,37 @@ class Redirection
     public function getEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Sets the permanent.
+     *
+     * @param boolean $permanent
+     * @return Redirection
+     */
+    public function setPermanent($permanent)
+    {
+        $this->permanent = (bool) $permanent;
+        return $this;
+    }
+
+    /**
+     * Returns the permanent.
+     *
+     * @return boolean
+     */
+    public function getPermanent()
+    {
+        return $this->permanent;
+    }
+
+    /**
+     * Returns the redirect response.
+     *
+     * @return RedirectResponse
+     */
+    public function getResponse()
+    {
+        return new RedirectResponse($this->toPath, $this->permanent ? 301 : 302);
     }
 }

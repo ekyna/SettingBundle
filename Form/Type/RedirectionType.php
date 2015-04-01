@@ -33,6 +33,13 @@ class RedirectionType extends ResourceFormType
                     'align_with_widget' => true,
                 )
             ))
+            ->add('permanent', 'checkbox', array(
+                'label' => 'ekyna_setting.redirection.field.permanent',
+                'required' => false,
+                'attr' => array(
+                    'align_with_widget' => true,
+                )
+            ))
         ;
     }
 

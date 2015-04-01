@@ -8,7 +8,14 @@
 	    <div class="tab-pane active" id="setting-redirection-general">
 	        {{ form_row(form.fromPath) }}
 	        {{ form_row(form.toPath) }}
-	        {{ form_row(form.enabled) }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.permanent, {'label_col': 4, 'widget_col': 8}) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(form.enabled, {'label_col': 4, 'widget_col': 8}) }}
+                </div>
+            </div>
 	    </div>
         {{ form_rest(form) }}
     </div>

@@ -15,6 +15,7 @@
 
         <field name="fromPath" type="string" column="from_path" length="255" />
         <field name="toPath" type="string" column="to_path" length="255" />
+        <field name="permanent" type="boolean" column="permanent" />
         <field name="enabled" type="boolean" column="enabled" />
 
     </entity>

@@ -19,6 +19,7 @@ ekyna_setting:
         field:
             from_path: Depuis
             to_path: Vers
+            permanent: Permanente
         alert:
             empty_list: Aucune redirection configuré
     helper:

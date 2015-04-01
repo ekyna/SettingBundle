@@ -29,9 +29,16 @@ class RedirectionType extends ResourceTableType
             ->addColumn('toPath', 'text', array(
                 'label' => 'ekyna_setting.redirection.field.to_path',
             ))
+            ->addColumn('permanent', 'boolean', array(
+                'label' => 'ekyna_setting.redirection.field.permanent',
+                'route_name' => 'ekyna_setting_redirection_admin_toggle',
+                'route_parameters' => array('field' => 'permanent'),
+                'route_parameters_map' => array('redirectionId' => 'id'),
+            ))
             ->addColumn('enabled', 'boolean', array(
                 'label' => 'ekyna_core.field.enabled',
                 'route_name' => 'ekyna_setting_redirection_admin_toggle',
+                'route_parameters' => array('field' => 'enabled'),
                 'route_parameters_map' => array(
                     'redirectionId' => 'id',
                 ),
@@ -66,6 +73,9 @@ class RedirectionType extends ResourceTableType
             ))
             ->addFilter('enabled', 'boolean', array(
                 'label' => 'ekyna_core.field.enabled',
+            ))
+            ->addFilter('permanent', 'boolean', array(
+                'label' => 'ekyna_settings.redirection.field.permanent',
             ))
         ;
     }

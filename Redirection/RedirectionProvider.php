@@ -36,7 +36,7 @@ class RedirectionProvider extends AbstractProvider
     {
         /** @var \Ekyna\Bundle\SettingBundle\Entity\Redirection $redirection */
         if (null !== $redirection = $this->repository->findByPath($request->getPathInfo())) {
-            return $redirection->getToPath();
+            return $redirection->getResponse();
         }
 
         return false;
