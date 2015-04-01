@@ -75,7 +75,7 @@ class RedirectionType extends ResourceTableType
                 'label' => 'ekyna_core.field.enabled',
             ))
             ->addFilter('permanent', 'boolean', array(
-                'label' => 'ekyna_settings.redirection.field.permanent',
+                'label' => 'ekyna_setting.redirection.field.permanent',
             ))
         ;
     }
