@@ -78,7 +78,7 @@ class ParameterController extends Controller
             ->setData($settings)
         ;
 
-        if ($request->isMethod('POST') && $form->submit($request)->isValid()) {
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $messageType = 'success';
             try {
                 foreach($schemas as $namespace => $schema) {
