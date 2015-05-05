@@ -9,7 +9,6 @@ use Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler\RegisterSchemasPass;
 
 /**
  * EkynaSettingBundle
- *
  * @author Étienne Dauvergne <contact@ekyna.com>
  * @see https://github.com/Sylius/SyliusSettingsBundle
  */

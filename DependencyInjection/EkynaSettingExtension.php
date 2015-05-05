@@ -4,7 +4,6 @@ namespace Ekyna\Bundle\SettingBundle\DependencyInjection;
 
 use Ekyna\Bundle\AdminBundle\DependencyInjection\AbstractExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
@@ -12,7 +11,7 @@ use Symfony\Component\DependencyInjection\Loader;
  * @package Ekyna\Bundle\SettingBundle\DependencyInjection
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class EkynaSettingExtension extends AbstractExtension implements PrependExtensionInterface
+class EkynaSettingExtension extends AbstractExtension
 {
     /**
      * {@inheritDoc}
