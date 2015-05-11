@@ -131,7 +131,7 @@ class ParameterController extends Controller
      *
      * @return bool
      */
-    private function isGranted($attributes, $object = null, $throwException = true)
+    protected function isGranted($attributes, $object = null, $throwException = true)
     {
         if (is_null($object)) {
             $object = $this->getConfiguration()->getObjectIdentity();
@@ -152,7 +152,7 @@ class ParameterController extends Controller
      *
      * @return \Ekyna\Bundle\AdminBundle\Pool\ConfigurationInterface
      */
-    private function getConfiguration()
+    protected function getConfiguration()
     {
         return $this->get('ekyna_setting.parameter.configuration');
     }
