@@ -38,7 +38,7 @@ class AsseticConfiguration
     protected function buildCss(array $config)
     {
         $inputs = array(
-            '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.min.css',
+            '%kernel.root_dir%/../web/assets/bootstrap/css/bootstrap.min.css',
             '@EkynaSettingBundle/Resources/asset/helper.css',
         );
 
