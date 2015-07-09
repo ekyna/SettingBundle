@@ -13,7 +13,7 @@ interface SchemaRegistryInterface
     /**
      * Get an array of all registered schemas.
      *
-     * @return array
+     * @return SchemaInterface[]
      */
     public function getSchemas();
 

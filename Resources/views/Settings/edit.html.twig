@@ -16,6 +16,7 @@
 <form action="{{ path('ekyna_setting_parameter_admin_edit') }}" {{ form_enctype(form) }} method="post" class="form-horizontal form-with-tabs">
 	<div class="panel-body form-body">
 	    {{ bootstrap_set_style('horizontal') }}
+        {{ bootstrap_set_col_size('md') }}
         {{ form_errors(form, {'global_errors': true}) }}
 	    <div class="tab-content">
 	        {% for namespace, template in templates %}
