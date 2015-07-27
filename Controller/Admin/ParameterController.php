@@ -17,10 +17,9 @@ class ParameterController extends Controller
     /**
      * Show the parameters.
      *
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Request $request)
+    public function showAction()
     {
         $this->isGranted('VIEW');
 
@@ -35,7 +34,7 @@ class ParameterController extends Controller
             $settings[$namespace] = $manager->loadSettings($namespace);
         }
 
-        return $this->render($request->attributes->get('template', 'EkynaSettingBundle:Settings:show.html.twig'), array(
+        return $this->render('EkynaSettingBundle:Settings:show.html.twig', array(
             'settings'   => $settings,
             'labels'     => $manager->getLabels(),
             'templates'  => $manager->getShowTemplates(),
@@ -59,15 +58,38 @@ class ParameterController extends Controller
         $schemas = $this->getSettingsRegistry()->getSchemas();
 
         $settings = array();
-        $builder = $this->createFormBuilder(null, array(
-            'data_class' => null,
-            'admin_mode' => true,
-            '_footer' => array(
-                'offset' => 3,
-        	    'cancel_path' => $this->generateUrl('ekyna_setting_parameter_admin_show')
-            ),
-            'cascade_validation' => true,
-        ));
+        $builder = $this
+            ->createFormBuilder(null, array(
+                'data_class' => null,
+                'admin_mode' => true,
+                'cascade_validation' => true,
+            ))
+            ->add('actions', 'form_actions', [
+                'buttons' => [
+                    'save' => [
+                        'type' => 'submit', 'options' => [
+                            'button_class' => 'primary',
+                            'label' => 'ekyna_core.button.save',
+                            'attr' => [
+                                'icon' => 'ok',
+                            ],
+                        ],
+                    ],
+                    'cancel' => [
+                        'type' => 'button', 'options' => [
+                            'label' => 'ekyna_core.button.cancel',
+                            'button_class' => 'default',
+                            'as_link' => true,
+                            'attr' => [
+                                'class' => 'form-cancel-btn',
+                                'icon' => 'remove',
+                                'href' => $this->generateUrl('ekyna_setting_parameter_admin_show'),
+                            ],
+                        ],
+                    ],
+                ],
+            ])
+        ;
         foreach($schemas as $namespace => $schema) {
             $builder->add($namespace, $schema);
             $settings[$namespace] = $manager->loadSettings($namespace);
@@ -94,7 +116,7 @@ class ParameterController extends Controller
             return $this->redirect($this->generateUrl('ekyna_setting_parameter_admin_show'));
         }
 
-        return $this->render($request->attributes->get('template', 'EkynaSettingBundle:Settings:edit.html.twig'), array(
+        return $this->render('EkynaSettingBundle:Settings:edit.html.twig', array(
             'labels'     => $manager->getLabels(),
             'templates'  => $manager->getFormTemplates(),
             'form'       => $form->createView(),
