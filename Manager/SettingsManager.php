@@ -5,21 +5,27 @@ namespace Ekyna\Bundle\SettingBundle\Manager;
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Ekyna\Bundle\CoreBundle\Event\HttpCacheEvent;
+use Ekyna\Bundle\CoreBundle\Event\HttpCacheEvents;
+use Ekyna\Bundle\SettingBundle\Entity\Parameter;
 use Ekyna\Bundle\SettingBundle\Model\Settings;
 use Ekyna\Bundle\SettingBundle\Schema\SchemaRegistryInterface;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\ValidatorInterface;
-use Ekyna\Bundle\SettingBundle\Entity\Parameter;
 
 /**
  * SettingsManager.
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
+ * @author Étienne Dauvergne <contact@ekyna.com>
  * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Manager/SettingsManager.php
  */
 class SettingsManager implements SettingsManagerInterface
 {
+    const HTTP_CACHE_TAG = 'ekyna_settings';
+
     /**
      * Schema registry
      *
@@ -49,9 +55,23 @@ class SettingsManager implements SettingsManagerInterface
     protected $cache;
 
     /**
+     * Event dispatcher
+     *
+     * @var EventDispatcherInterface
+     */
+    protected $dispatcher;
+
+    /**
+     * Event dispatcher
+     *
+     * @var EventDispatcherInterface
+     */
+    protected $tagDispatched;
+
+    /**
      * Runtime cache for resolved parameters
      *
-     * @var array
+     * @var array|Settings[]
      */
     protected $resolvedSettings = array();
 
@@ -62,26 +82,30 @@ class SettingsManager implements SettingsManagerInterface
      */
     protected $validator;
 
+
     /**
      * Constructor
      *
-     * @param SchemaRegistryInterface $schemaRegistry
-     * @param ObjectManager           $parameterManager
-     * @param ObjectRepository        $parameterRepository
-     * @param Cache                   $cache
-     * @param ValidatorInterface      $validator
+     * @param SchemaRegistryInterface  $schemaRegistry
+     * @param ObjectManager            $parameterManager
+     * @param ObjectRepository         $parameterRepository
+     * @param Cache                    $cache
+     * @param EventDispatcherInterface $dispatcher
+     * @param ValidatorInterface       $validator
      */
     public function __construct(
         SchemaRegistryInterface $schemaRegistry, 
         ObjectManager $parameterManager, 
         ObjectRepository $parameterRepository, 
         Cache $cache, 
+        EventDispatcherInterface $dispatcher,
         ValidatorInterface $validator
     ) {
         $this->schemaRegistry = $schemaRegistry;
         $this->parameterManager = $parameterManager;
         $this->parameterRepository = $parameterRepository;
         $this->cache = $cache;
+        $this->dispatcher = $dispatcher;
         $this->validator = $validator;
     }
 
@@ -90,6 +114,11 @@ class SettingsManager implements SettingsManagerInterface
      */
     public function loadSettings($namespace)
     {
+        $this->dispatcher->dispatch(
+            HttpCacheEvents::TAG_RESPONSE,
+            new HttpCacheEvent(array(self::HTTP_CACHE_TAG.'.'.$namespace))
+        );
+
         if (isset($this->resolvedSettings[$namespace])) {
             return $this->resolvedSettings[$namespace];
         }
@@ -138,8 +167,9 @@ class SettingsManager implements SettingsManagerInterface
             $this->resolvedSettings[$namespace]->setParameters($parameters);
         }
 
-        /** @var $persistedParameters */
+        /** @var Parameter[] $persistedParameters */
         $persistedParameters = $this->parameterRepository->findBy(array('namespace' => $namespace));
+        /** @var Parameter[] $persistedParametersMap */
         $persistedParametersMap = array();
 
         foreach ($persistedParameters as $parameter) {
@@ -171,6 +201,11 @@ class SettingsManager implements SettingsManagerInterface
         $this->parameterManager->flush();
 
         $this->cache->save($namespace, $parameters);
+
+        $this->dispatcher->dispatch(
+            HttpCacheEvents::INVALIDATE_TAG,
+            new HttpCacheEvent(array(self::HTTP_CACHE_TAG.'.'.$namespace))
+        );
     }
 
     /**
@@ -185,7 +220,7 @@ class SettingsManager implements SettingsManagerInterface
         list($namespace, $name) = explode('.', $name);
     
         $settings = $this->loadSettings($namespace);
-    
+
         return $settings->get($name);
     }
 
@@ -236,6 +271,7 @@ class SettingsManager implements SettingsManagerInterface
     {
         $parameters = array();
 
+        /** @var Parameter $parameter */
         foreach ($this->parameterRepository->findBy(array('namespace' => $namespace)) as $parameter) {
             $parameters[$parameter->getName()] = $parameter->getValue();
         }
