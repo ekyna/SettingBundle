@@ -22,11 +22,10 @@
         "kriswallsmith/buzz": "*"
     },
     "autoload" : {
-        "psr-0" : {
-            "Ekyna\\Bundle\\SettingBundle" : ""
+        "psr-4" : {
+            "Ekyna\\Bundle\\SettingBundle\\" : ""
         }
     },
-    "target-dir" : "Ekyna/Bundle/SettingBundle",
     "extra" : {
         "branch-alias" : {
             "dev-master" : "0.3.x-dev"
