@@ -22,7 +22,7 @@ class SchemaRegistry implements SchemaRegistryInterface
      */
     public function __construct()
     {
-        $this->schemas = array();
+        $this->schemas = [];
     }
 
     /**

@@ -48,10 +48,10 @@ class EkynaSettingExtension extends AbstractExtension
     protected function configureAsseticBundle(ContainerBuilder $container, array $config)
     {
         $asseticConfig = new AsseticConfiguration();
-        $container->prependExtensionConfig('assetic', array(
+        $container->prependExtensionConfig('assetic', [
             'assets' => $asseticConfig->build($config),
-            'bundles' => array('EkynaSettingBundle'),
-        ));
+            'bundles' => ['EkynaSettingBundle'],
+        ]);
     }
 
     /**

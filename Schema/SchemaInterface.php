@@ -14,14 +14,15 @@ interface SchemaInterface
     /**
      * Build settings.
      *
-     * @param SettingsBuilderInterface $builder
+     * @param SettingsBuilder $builder
      */
-    public function buildSettings(SettingsBuilderInterface $builder);
+    public function buildSettings(SettingsBuilder $builder);
 
     /**
      * Build form.
      *
      * @param FormBuilderInterface $builder
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options);
 

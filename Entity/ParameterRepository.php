@@ -11,6 +11,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class ParameterRepository extends EntityRepository implements ParameterRepositoryInterface
 {
+    /**
+     * Creates a new parameter.
+     *
+     * @return Parameter
+     */
     public function createNew()
     {
         $class = $this->getClassName();

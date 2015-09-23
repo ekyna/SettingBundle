@@ -22,7 +22,7 @@ class RegisterSchemasPass implements CompilerPassInterface
             return;
         }
 
-        $schemas = array();
+        $schemas = [];
 
         foreach ($container->findTaggedServiceIds('ekyna_setting.schema') as $id => $attributes) {
             if (!array_key_exists('namespace', $attributes[0])) {
@@ -31,7 +31,7 @@ class RegisterSchemasPass implements CompilerPassInterface
 
             $namespace = $attributes[0]['namespace'];
             $position  = array_key_exists('position', $attributes[0]) ? $attributes[0]['position'] : 1;
-            $schemas[] = array($position, $namespace, $id);
+            $schemas[] = [$position, $namespace, $id];
         }
 
         usort($schemas, function($a, $b) {
@@ -43,7 +43,7 @@ class RegisterSchemasPass implements CompilerPassInterface
 
         $schemaRegistry = $container->getDefinition('ekyna_setting.schema_registry');
         foreach($schemas as $schema) {
-            $schemaRegistry->addMethodCall('registerSchema', array($schema[1], new Reference($schema[2])));
+            $schemaRegistry->addMethodCall('registerSchema', [$schema[1], new Reference($schema[2])]);
         }
     }
 }

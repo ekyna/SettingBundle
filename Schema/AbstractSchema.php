@@ -3,7 +3,7 @@
 namespace Ekyna\Bundle\SettingBundle\Schema;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * AbstractSchema.
@@ -20,7 +20,7 @@ abstract class AbstractSchema extends AbstractType implements SchemaInterface
     /**
      * @param array $defaults
      */
-    public function __construct(array $defaults = array())
+    public function __construct(array $defaults = [])
     {
         $this->defaults = $defaults;
     }
@@ -28,10 +28,10 @@ abstract class AbstractSchema extends AbstractType implements SchemaInterface
     /**
      * {@inheritDoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'cascade_validation' => true,
-        ));
+        ]);
     }
 }

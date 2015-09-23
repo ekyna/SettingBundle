@@ -73,7 +73,7 @@ class SettingsManager implements SettingsManagerInterface
      *
      * @var array|Settings[]
      */
-    protected $resolvedSettings = array();
+    protected $resolvedSettings = [];
 
     /**
      * Validator instance
@@ -116,7 +116,7 @@ class SettingsManager implements SettingsManagerInterface
     {
         $this->dispatcher->dispatch(
             HttpCacheEvents::TAG_RESPONSE,
-            new HttpCacheEvent(array(self::HTTP_CACHE_TAG.'.'.$namespace))
+            new HttpCacheEvent([self::HTTP_CACHE_TAG.'.'.$namespace])
         );
 
         if (isset($this->resolvedSettings[$namespace])) {
@@ -168,9 +168,9 @@ class SettingsManager implements SettingsManagerInterface
         }
 
         /** @var Parameter[] $persistedParameters */
-        $persistedParameters = $this->parameterRepository->findBy(array('namespace' => $namespace));
+        $persistedParameters = $this->parameterRepository->findBy(['namespace' => $namespace]);
         /** @var Parameter[] $persistedParametersMap */
-        $persistedParametersMap = array();
+        $persistedParametersMap = [];
 
         foreach ($persistedParameters as $parameter) {
             $persistedParametersMap[$parameter->getName()] = $parameter;
@@ -204,7 +204,7 @@ class SettingsManager implements SettingsManagerInterface
 
         $this->dispatcher->dispatch(
             HttpCacheEvents::INVALIDATE_TAG,
-            new HttpCacheEvent(array(self::HTTP_CACHE_TAG.'.'.$namespace))
+            new HttpCacheEvent([self::HTTP_CACHE_TAG.'.'.$namespace])
         );
     }
 
@@ -229,7 +229,7 @@ class SettingsManager implements SettingsManagerInterface
      */
     public function getLabels()
     {
-        $labels = array();
+        $labels = [];
         foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
             $labels[$namespace] = $schema->getLabel();
         }
@@ -241,7 +241,7 @@ class SettingsManager implements SettingsManagerInterface
      */
     public function getShowTemplates()
     {
-        $templates = array();
+        $templates = [];
         foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
             $templates[$namespace] = $schema->getShowTemplate();
         }
@@ -253,7 +253,7 @@ class SettingsManager implements SettingsManagerInterface
      */
     public function getFormTemplates()
     {
-        $templates = array();
+        $templates = [];
         foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
             $templates[$namespace] = $schema->getFormTemplate();
         }
@@ -269,10 +269,10 @@ class SettingsManager implements SettingsManagerInterface
      */
     private function getParameters($namespace)
     {
-        $parameters = array();
+        $parameters = [];
 
         /** @var Parameter $parameter */
-        foreach ($this->parameterRepository->findBy(array('namespace' => $namespace)) as $parameter) {
+        foreach ($this->parameterRepository->findBy(['namespace' => $namespace]) as $parameter) {
             $parameters[$parameter->getName()] = $parameter->getValue();
         }
 

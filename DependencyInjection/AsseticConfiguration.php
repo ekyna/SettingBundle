@@ -17,7 +17,7 @@ class AsseticConfiguration
      */
     public function build(array $config)
     {
-        $output = array();
+        $output = [];
 
         // Fix path in output dir
         if ('/' !== substr($config['output_dir'], -1) && strlen($config['output_dir']) > 0) {
@@ -37,16 +37,16 @@ class AsseticConfiguration
      */
     protected function buildCss(array $config)
     {
-        $inputs = array(
+        $inputs = [
             '%kernel.root_dir%/../web/assets/bootstrap/css/bootstrap.min.css',
             '@EkynaSettingBundle/Resources/asset/helper.css',
-        );
+        ];
 
-        return array(
+        return [
             'inputs'  => $inputs,
-            'filters' => array('yui_css'), // 'cssrewrite'
+            'filters' => ['yui_css'], // 'cssrewrite'
             'output'  => $config['output_dir'].'css/admin-helper.css',
             'debug'   => false,
-        );
+        ];
     }
 }

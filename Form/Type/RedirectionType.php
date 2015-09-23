@@ -18,28 +18,28 @@ class RedirectionType extends ResourceFormType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fromPath', 'text', array(
+            ->add('fromPath', 'text', [
                 'label' => 'ekyna_setting.redirection.field.from_path',
                 'required' => true,
-            ))
-            ->add('toPath', 'text', array(
+            ])
+            ->add('toPath', 'text', [
                 'label' => 'ekyna_setting.redirection.field.to_path',
                 'required' => true,
-            ))
-            ->add('enabled', 'checkbox', array(
+            ])
+            ->add('enabled', 'checkbox', [
                 'label' => 'ekyna_core.field.enabled',
                 'required' => false,
-                'attr' => array(
+                'attr' => [
                     'align_with_widget' => true,
-                )
-            ))
-            ->add('permanent', 'checkbox', array(
+                ]
+            ])
+            ->add('permanent', 'checkbox', [
                 'label' => 'ekyna_setting.redirection.field.permanent',
                 'required' => false,
-                'attr' => array(
+                'attr' => [
                     'align_with_widget' => true,
-                )
-            ))
+                ]
+            ])
         ;
     }
 

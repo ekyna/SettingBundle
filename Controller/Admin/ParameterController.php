@@ -34,11 +34,11 @@ class ParameterController extends Controller
             $settings[$namespace] = $manager->loadSettings($namespace);
         }
 
-        return $this->render('EkynaSettingBundle:Settings:show.html.twig', array(
+        return $this->render('EkynaSettingBundle:Settings:show.html.twig', [
             'settings'   => $settings,
             'labels'     => $manager->getLabels(),
             'templates'  => $manager->getShowTemplates(),
-        ));
+        ]);
     }
 
     /**
@@ -57,13 +57,13 @@ class ParameterController extends Controller
         $manager = $this->getSettingsManager();
         $schemas = $this->getSettingsRegistry()->getSchemas();
 
-        $settings = array();
+        $settings = [];
         $builder = $this
-            ->createFormBuilder(null, array(
+            ->createFormBuilder(null, [
                 'data_class' => null,
                 'admin_mode' => true,
                 'cascade_validation' => true,
-            ))
+            ])
             ->add('actions', 'form_actions', [
                 'buttons' => [
                     'save' => [
@@ -108,7 +108,7 @@ class ParameterController extends Controller
                 }
                 $message = $this->getTranslator()->trans('ekyna_setting.parameter.flash.edit');
             } catch (ValidatorException $exception) {
-                $message = $this->getTranslator()->trans($exception->getMessage(), array(), 'validators');
+                $message = $this->getTranslator()->trans($exception->getMessage(), [], 'validators');
                 $messageType = 'danger';
             }
             $this->addFlash($message, $messageType);
@@ -116,11 +116,11 @@ class ParameterController extends Controller
             return $this->redirect($this->generateUrl('ekyna_setting_parameter_admin_show'));
         }
 
-        return $this->render('EkynaSettingBundle:Settings:edit.html.twig', array(
+        return $this->render('EkynaSettingBundle:Settings:edit.html.twig', [
             'labels'     => $manager->getLabels(),
             'templates'  => $manager->getFormTemplates(),
             'form'       => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -160,7 +160,7 @@ class ParameterController extends Controller
         } else {
             $object = $this->get('ekyna_admin.pool_registry')->getObjectIdentity($object);
         }
-        if (!$this->get('security.context')->isGranted($attributes, $object)) {
+        if (!$this->get('security.authorization_checker')->isGranted($attributes, $object)) {
             if ($throwException) {
                 throw new AccessDeniedHttpException('You are not allowed to view this resource.');
             }

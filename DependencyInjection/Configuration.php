@@ -24,9 +24,9 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('output_dir')->defaultValue('')->end()
                 ->arrayNode('helper_remotes')
-                    ->treatNullLike(array())
+                    ->treatNullLike([])
                     ->prototype('scalar')->end()
-                    ->defaultValue(array())
+                    ->defaultValue([])
                 ->end()
                 ->append($this->getPoolsSection())
             ->end()
@@ -52,10 +52,10 @@ class Configuration implements ConfigurationInterface
 					->isRequired()
 					->addDefaultsIfNotSet()
 					->children()
-						->variableNode('templates')->defaultValue(array(
+						->variableNode('templates')->defaultValue([
 							'_form.html' => 'EkynaSettingBundle:Admin/Helper:_form.html',
 							'show.html'  => 'EkynaSettingBundle:Admin/Helper:show.html',
-						))->end()
+						])->end()
 						->scalarNode('parent')->end()
 						->scalarNode('entity')->defaultValue('Ekyna\Bundle\SettingBundle\Entity\Helper')->end()
 						->scalarNode('controller')->defaultValue('Ekyna\Bundle\SettingBundle\Controller\Admin\HelperController')->end()
@@ -69,10 +69,10 @@ class Configuration implements ConfigurationInterface
 					->isRequired()
 					->addDefaultsIfNotSet()
 					->children()
-						->variableNode('templates')->defaultValue(array(
+						->variableNode('templates')->defaultValue([
 							'_form.html' => 'EkynaSettingBundle:Admin/Redirection:_form.html',
 							'show.html'  => 'EkynaSettingBundle:Admin/Redirection:show.html',
-						))->end()
+						])->end()
 						->scalarNode('parent')->end()
 						->scalarNode('entity')->defaultValue('Ekyna\Bundle\SettingBundle\Entity\Redirection')->end()
 						->scalarNode('controller')->defaultValue('Ekyna\Bundle\SettingBundle\Controller\Admin\RedirectionController')->end()

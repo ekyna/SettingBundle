@@ -34,10 +34,10 @@ class SettingsExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('get_settings', array($this, 'getSettings')),
-            new \Twig_SimpleFunction('get_setting', array($this, 'getSettingsParameter')),
-        );
+        return [
+            new \Twig_SimpleFunction('get_settings', [$this, 'getSettings']),
+            new \Twig_SimpleFunction('get_setting', [$this, 'getSettingsParameter']),
+        ];
     }
 
     /**

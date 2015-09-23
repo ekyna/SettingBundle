@@ -18,26 +18,26 @@ class HelperType extends ResourceFormType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
+            ->add('name', 'text', [
                 'label' => 'ekyna_core.field.name',
                 'required' => true,
-            ))
-            ->add('reference', 'text', array(
+            ])
+            ->add('reference', 'text', [
                 'label' => 'ekyna_core.field.reference',
                 'required' => true,
-            ))
-            ->add('content', 'textarea', array(
+            ])
+            ->add('content', 'textarea', [
                 'label' => 'ekyna_core.field.content',
                 'required' => false,
-                'attr' => array(
+                'attr' => [
                     'class' => 'tinymce',
                     'data-theme' => 'helper',
-                )
-            ))
-            ->add('enabled', 'checkbox', array(
+                ]
+            ])
+            ->add('enabled', 'checkbox', [
                 'label' => 'ekyna_core.field.enabled',
                 'required' => false,
-            ))
+            ])
         ;
     }
 

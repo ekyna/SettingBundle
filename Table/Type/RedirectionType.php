@@ -18,65 +18,65 @@ class RedirectionType extends ResourceTableType
     public function buildTable(TableBuilderInterface $builder, array $options)
     {
         $builder
-            ->addColumn('fromPath', 'anchor', array(
+            ->addColumn('fromPath', 'anchor', [
                 'label' => 'ekyna_setting.redirection.field.from_path',
                 'sortable' => true,
                 'route_name' => 'ekyna_setting_redirection_admin_show',
-                'route_parameters_map' => array(
+                'route_parameters_map' => [
                     'redirectionId' => 'id'
-                ),
-            ))
-            ->addColumn('toPath', 'text', array(
+                ],
+            ])
+            ->addColumn('toPath', 'text', [
                 'label' => 'ekyna_setting.redirection.field.to_path',
-            ))
-            ->addColumn('permanent', 'boolean', array(
+            ])
+            ->addColumn('permanent', 'boolean', [
                 'label' => 'ekyna_setting.redirection.field.permanent',
                 'route_name' => 'ekyna_setting_redirection_admin_toggle',
-                'route_parameters' => array('field' => 'permanent'),
-                'route_parameters_map' => array('redirectionId' => 'id'),
-            ))
-            ->addColumn('enabled', 'boolean', array(
+                'route_parameters' => ['field' => 'permanent'],
+                'route_parameters_map' => ['redirectionId' => 'id'],
+            ])
+            ->addColumn('enabled', 'boolean', [
                 'label' => 'ekyna_core.field.enabled',
                 'route_name' => 'ekyna_setting_redirection_admin_toggle',
-                'route_parameters' => array('field' => 'enabled'),
-                'route_parameters_map' => array(
+                'route_parameters' => ['field' => 'enabled'],
+                'route_parameters_map' => [
                     'redirectionId' => 'id',
-                ),
-            ))
-            ->addColumn('actions', 'admin_actions', array(
-                'buttons' => array(
-                    array(
+                ],
+            ])
+            ->addColumn('actions', 'admin_actions', [
+                'buttons' => [
+                    [
                         'label' => 'ekyna_core.button.edit',
                         'class' => 'warning',
                         'route_name' => 'ekyna_setting_redirection_admin_edit',
-                        'route_parameters_map' => array(
+                        'route_parameters_map' => [
                             'redirectionId' => 'id'
-                        ),
+                        ],
                         'permission' => 'edit',
-                    ),
-                    array(
+                    ],
+                    [
                         'label' => 'ekyna_core.button.remove',
                         'class' => 'danger',
                         'route_name' => 'ekyna_setting_redirection_admin_remove',
-                        'route_parameters_map' => array(
+                        'route_parameters_map' => [
                             'redirectionId' => 'id'
-                        ),
+                        ],
                         'permission' => 'delete',
-                    ),
-                ),
-            ))
-            ->addFilter('fromPath', 'text', array(
+                    ],
+                ],
+            ])
+            ->addFilter('fromPath', 'text', [
                 'label' => 'ekyna_setting.redirection.field.from_path',
-            ))
-            ->addFilter('toPath', 'text', array(
+            ])
+            ->addFilter('toPath', 'text', [
                 'label' => 'ekyna_setting.redirection.field.to_path',
-            ))
-            ->addFilter('enabled', 'boolean', array(
+            ])
+            ->addFilter('enabled', 'boolean', [
                 'label' => 'ekyna_core.field.enabled',
-            ))
-            ->addFilter('permanent', 'boolean', array(
+            ])
+            ->addFilter('permanent', 'boolean', [
                 'label' => 'ekyna_setting.redirection.field.permanent',
-            ))
+            ])
         ;
     }
 

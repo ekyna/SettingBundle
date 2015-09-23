@@ -2,7 +2,6 @@
 
 namespace Ekyna\Bundle\SettingBundle\Controller\Admin;
 
-use Ekyna\Bundle\AdminBundle\Controller\Context;
 use Ekyna\Bundle\AdminBundle\Controller\Resource\ToggleableTrait;
 use Ekyna\Bundle\AdminBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,8 +34,8 @@ class HelperController extends ResourceController
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $content = $propertyAccessor->getValue($resource, $field);
 
-        return $this->render('EkynaSettingBundle:Admin/Helper:tinymce.html.twig', array(
+        return $this->render('EkynaSettingBundle:Admin/Helper:tinymce.html.twig', [
             'content' => $content
-        ));
+        ]);
     }
 }

@@ -11,17 +11,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Schema/SettingsBuilder.php
  */
-class SettingsBuilder extends OptionsResolver implements SettingsBuilderInterface
+class SettingsBuilder extends OptionsResolver
 {
     /**
      * Transformers array.
      *
      * @var ParameterTransformerInterface[]
      */
-    protected $transformers = array();
+    protected $transformers = [];
+
 
     /**
-     * {@inheritdoc}
+     * Set transformer for given parameter.
+     *
+     * @param string                        $parameterName
+     * @param ParameterTransformerInterface $transformer
+     * @return SettingsBuilder
      */
     public function setTransformer($parameterName, ParameterTransformerInterface $transformer)
     {
@@ -31,7 +36,9 @@ class SettingsBuilder extends OptionsResolver implements SettingsBuilderInterfac
     }
 
     /**
-     * {@inheritdoc}
+     * Return all transformers.
+     *
+     * @return ParameterTransformerInterface[]
      */
     public function getTransformers()
     {

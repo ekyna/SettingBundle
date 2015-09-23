@@ -31,10 +31,10 @@ class RedirectionRepository extends ResourceRepository
         ;
 
         return $query
-            ->setParameters(array(
+            ->setParameters([
                 'path' => $path,
                 'enabled' => true,
-            ))
+            ])
             ->getOneOrNullResult()
         ;
     }
