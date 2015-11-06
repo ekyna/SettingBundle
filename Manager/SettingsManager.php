@@ -5,22 +5,18 @@ namespace Ekyna\Bundle\SettingBundle\Manager;
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Ekyna\Bundle\CoreBundle\Event\HttpCacheEvent;
-use Ekyna\Bundle\CoreBundle\Event\HttpCacheEvents;
+use Ekyna\Bundle\CoreBundle\Cache\TagManager;
 use Ekyna\Bundle\SettingBundle\Entity\Parameter;
 use Ekyna\Bundle\SettingBundle\Model\Settings;
 use Ekyna\Bundle\SettingBundle\Schema\SchemaRegistryInterface;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * SettingsManager.
  *
- * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  * @author Étienne Dauvergne <contact@ekyna.com>
- * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Manager/SettingsManager.php
  */
 class SettingsManager implements SettingsManagerInterface
 {
@@ -55,18 +51,11 @@ class SettingsManager implements SettingsManagerInterface
     protected $cache;
 
     /**
-     * Event dispatcher
+     * Http cache tag manager
      *
-     * @var EventDispatcherInterface
+     * @var TagManager
      */
-    protected $dispatcher;
-
-    /**
-     * Event dispatcher
-     *
-     * @var EventDispatcherInterface
-     */
-    protected $tagDispatched;
+    protected $tagManager;
 
     /**
      * Runtime cache for resolved parameters
@@ -90,7 +79,7 @@ class SettingsManager implements SettingsManagerInterface
      * @param ObjectManager            $parameterManager
      * @param ObjectRepository         $parameterRepository
      * @param Cache                    $cache
-     * @param EventDispatcherInterface $dispatcher
+     * @param TagManager               $tagManager
      * @param ValidatorInterface       $validator
      */
     public function __construct(
@@ -98,14 +87,14 @@ class SettingsManager implements SettingsManagerInterface
         ObjectManager $parameterManager, 
         ObjectRepository $parameterRepository, 
         Cache $cache, 
-        EventDispatcherInterface $dispatcher,
+        TagManager $tagManager,
         ValidatorInterface $validator
     ) {
         $this->schemaRegistry = $schemaRegistry;
         $this->parameterManager = $parameterManager;
         $this->parameterRepository = $parameterRepository;
         $this->cache = $cache;
-        $this->dispatcher = $dispatcher;
+        $this->tagManager = $tagManager;
         $this->validator = $validator;
     }
 
@@ -114,10 +103,7 @@ class SettingsManager implements SettingsManagerInterface
      */
     public function loadSettings($namespace)
     {
-        $this->dispatcher->dispatch(
-            HttpCacheEvents::TAG_RESPONSE,
-            new HttpCacheEvent([self::HTTP_CACHE_TAG.'.'.$namespace])
-        );
+        $this->tagManager->addTags(self::HTTP_CACHE_TAG.'.'.$namespace);
 
         if (isset($this->resolvedSettings[$namespace])) {
             return $this->resolvedSettings[$namespace];
@@ -202,10 +188,7 @@ class SettingsManager implements SettingsManagerInterface
 
         $this->cache->save($namespace, $parameters);
 
-        $this->dispatcher->dispatch(
-            HttpCacheEvents::INVALIDATE_TAG,
-            new HttpCacheEvent([self::HTTP_CACHE_TAG.'.'.$namespace])
-        );
+        $this->tagManager->invalidateTags(self::HTTP_CACHE_TAG.'.'.$namespace);
     }
 
     /**

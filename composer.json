@@ -18,17 +18,12 @@
     ],
     "require" : {
         "php" : ">=5.4.0",
-        "ekyna/admin-bundle" : "1.0.x-dev",
+        "ekyna/admin-bundle" : "dev-master",
         "kriswallsmith/buzz": "*"
     },
     "autoload" : {
         "psr-4" : {
             "Ekyna\\Bundle\\SettingBundle\\" : ""
-        }
-    },
-    "extra" : {
-        "branch-alias" : {
-            "dev-master" : "1.0.x-dev"
         }
     }
 }

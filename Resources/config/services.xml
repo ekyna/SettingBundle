@@ -44,7 +44,7 @@
             <argument type="service" id="ekyna_setting.parameter.manager" />
             <argument type="service" id="ekyna_setting.parameter.repository" />
             <argument type="service" id="ekyna_setting.cache" />
-            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="ekyna_core.cache.tag_manager" />
             <argument type="service" id="validator" />
         </service>
 
