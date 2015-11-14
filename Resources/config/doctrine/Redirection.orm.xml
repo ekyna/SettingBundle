@@ -5,9 +5,14 @@
         xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                             http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Ekyna\Bundle\SettingBundle\Entity\Redirection"
+    <mapped-superclass
+            name="Ekyna\Bundle\SettingBundle\Entity\Redirection"
             repository-class="Ekyna\Bundle\SettingBundle\Entity\RedirectionRepository"
             table="sett_redirection">
+
+        <unique-constraints>
+            <unique-constraint columns="from_path" />
+        </unique-constraints>
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
@@ -17,7 +22,9 @@
         <field name="toPath" type="string" column="to_path" length="255" />
         <field name="permanent" type="boolean" column="permanent" />
         <field name="enabled" type="boolean" column="enabled" />
+        <field name="count" type="integer" column="count" />
+        <field name="usedAt" type="datetime" column="used_at" nullable="true" />
 
-    </entity>
+    </mapped-superclass>
 
 </doctrine-mapping>

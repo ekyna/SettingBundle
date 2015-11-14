@@ -2,22 +2,35 @@
 
 namespace Ekyna\Bundle\SettingBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Ekyna\Bundle\CoreBundle\AbstractBundle;
+use Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler as Pass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler\AdminMenuPass;
-use Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler\RegisterSchemasPass;
 
 /**
  * EkynaSettingBundle
- * @author Étienne Dauvergne <contact@ekyna.com>
- * @see https://github.com/Sylius/SyliusSettingsBundle
+ * @package Ekyna\Bundle\SettingBundle
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class EkynaSettingBundle extends Bundle
+class EkynaSettingBundle extends AbstractBundle
 {
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
-        $container->addCompilerPass(new AdminMenuPass());
-        $container->addCompilerPass(new RegisterSchemasPass());
+
+        $container->addCompilerPass(new Pass\AdminMenuPass());
+        $container->addCompilerPass(new Pass\RegisterSchemasPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getModelInterfaces()
+    {
+        return array(
+            'Ekyna\Bundle\SettingBundle\Model\RedirectionInterface' => 'ekyna_setting.redirection.class',
+        );
     }
 }

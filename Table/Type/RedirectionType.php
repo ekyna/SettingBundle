@@ -8,7 +8,7 @@ use Ekyna\Component\Table\TableBuilderInterface;
 /**
  * Class RedirectionType
  * @package Ekyna\Bundle\SettingBundle\Table\Type
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class RedirectionType extends ResourceTableType
 {
@@ -28,6 +28,13 @@ class RedirectionType extends ResourceTableType
             ])
             ->addColumn('toPath', 'text', [
                 'label' => 'ekyna_setting.redirection.field.to_path',
+            ])
+            ->addColumn('count', 'number', [
+                'label' => 'ekyna_setting.redirection.field.count',
+            ])
+            ->addColumn('usedAt', 'datetime', [
+                'label' => 'ekyna_setting.redirection.field.used_at',
+                'time_format' => 'none',
             ])
             ->addColumn('permanent', 'boolean', [
                 'label' => 'ekyna_setting.redirection.field.permanent',
