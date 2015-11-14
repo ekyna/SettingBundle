@@ -20,6 +20,8 @@ ekyna_setting:
             from_path: Depuis
             to_path: Vers
             permanent: Permanente
+            count: Compteur
+            used_at: Dernière utilisation
         alert:
             empty_list: Aucune redirection configuré
     helper:

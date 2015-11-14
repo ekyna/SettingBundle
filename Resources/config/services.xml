@@ -54,7 +54,20 @@
         <!-- Redirection provider -->
         <service id="ekyna_setting.redirection_provider" class="Ekyna\Bundle\SettingBundle\Redirection\RedirectionProvider">
             <argument type="service" id="ekyna_setting.redirection.repository" />
+            <argument type="service" id="ekyna_setting.redirection.manager" />
             <tag name="ekyna_core.redirection_provider" />
+        </service>
+
+        <!-- Redirection builder -->
+        <service id="ekyna_setting.redirection_builder" class="Ekyna\Bundle\SettingBundle\Redirection\RedirectionBuilder">
+            <argument id="ekyna_setting.redirection.manager" type="service"/>
+            <argument>%ekyna_setting.redirection.class%</argument>
+        </service>
+
+        <!-- Event listeners -->
+        <service id="ekyna_setting.redirection.event_subscriber" class="Ekyna\Bundle\SettingBundle\EventListener\RedirectionEventSubscriber">
+            <argument id="ekyna_setting.redirection_builder" type="service"/>
+            <tag name="kernel.event_subscriber"/>
         </service>
 
         <!-- Constraints validators -->

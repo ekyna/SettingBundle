@@ -29,6 +29,13 @@ class RedirectionType extends ResourceTableType
             ->addColumn('toPath', 'text', array(
                 'label' => 'ekyna_setting.redirection.field.to_path',
             ))
+            ->addColumn('count', 'number', array(
+                'label' => 'ekyna_setting.redirection.field.count',
+            ))
+            ->addColumn('usedAt', 'datetime', array(
+                'label' => 'ekyna_setting.redirection.field.used_at',
+                'time_format' => 'none',
+            ))
             ->addColumn('permanent', 'boolean', array(
                 'label' => 'ekyna_setting.redirection.field.permanent',
                 'route_name' => 'ekyna_setting_redirection_admin_toggle',

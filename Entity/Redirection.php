@@ -1,14 +1,16 @@
 <?php
 
 namespace Ekyna\Bundle\SettingBundle\Entity;
+
+use Ekyna\Bundle\SettingBundle\Model\RedirectionInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Class Redirection
  * @package Ekyna\Bundle\SettingBundle\Entity
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class Redirection
+class Redirection implements RedirectionInterface
 {
     /**
      * @var integer
@@ -33,7 +35,17 @@ class Redirection
     /**
      * @var boolean
      */
-    private $enabled;
+    private $enabled = true;
+
+    /**
+     * @var int
+     */
+    private $count = 0;
+
+    /**
+     * @var \DateTime
+     */
+    private $usedAt;
 
 
     /**
@@ -43,15 +55,15 @@ class Redirection
      */
     public function __toString()
     {
-        $from = strlen($this->fromPath) > 16 ? '&hellip;'.substr($this->fromPath, -16) : $this->fromPath;
-        $to = strlen($this->toPath) > 16 ? '&hellip;'.substr($this->toPath, -16) : $this->toPath;
+        $from = strlen($this->fromPath) > 16 ? '&hellip;' . substr($this->fromPath, -16) : $this->fromPath;
+        $to = strlen($this->toPath) > 16 ? '&hellip;' . substr($this->toPath, -16) : $this->toPath;
         return sprintf('%s &gt; %s', $from, $to);
     }
 
     /**
-     * Get id
+     * Returns the id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -59,10 +71,7 @@ class Redirection
     }
 
     /**
-     * Set fromPath
-     *
-     * @param string $fromPath
-     * @return Redirection
+     * {@inheritdoc}
      */
     public function setFromPath($fromPath)
     {
@@ -72,9 +81,7 @@ class Redirection
     }
 
     /**
-     * Get fromPath
-     *
-     * @return string 
+     * {@inheritdoc}
      */
     public function getFromPath()
     {
@@ -82,10 +89,7 @@ class Redirection
     }
 
     /**
-     * Set toPath
-     *
-     * @param string $toPath
-     * @return Redirection
+     * {@inheritdoc}
      */
     public function setToPath($toPath)
     {
@@ -95,9 +99,7 @@ class Redirection
     }
 
     /**
-     * Get toPath
-     *
-     * @return string 
+     * {@inheritdoc}
      */
     public function getToPath()
     {
@@ -105,44 +107,16 @@ class Redirection
     }
 
     /**
-     * Set enabled
-     *
-     * @param boolean $enabled
-     * @return Redirection
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = (bool) $enabled;
-
-        return $this;
-    }
-
-    /**
-     * Get enabled
-     *
-     * @return boolean 
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * Sets the permanent.
-     *
-     * @param boolean $permanent
-     * @return Redirection
+     * {@inheritdoc}
      */
     public function setPermanent($permanent)
     {
-        $this->permanent = (bool) $permanent;
+        $this->permanent = (bool)$permanent;
         return $this;
     }
 
     /**
-     * Returns the permanent.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function getPermanent()
     {
@@ -150,9 +124,61 @@ class Redirection
     }
 
     /**
-     * Returns the redirect response.
-     *
-     * @return RedirectResponse
+     * {@inheritdoc}
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = (bool)$enabled;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCount($count)
+    {
+        $this->count = intval($count);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUsedAt(\DateTime $usedAt = null)
+    {
+        $this->usedAt = $usedAt;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUsedAt()
+    {
+        return $this->usedAt;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getResponse()
     {

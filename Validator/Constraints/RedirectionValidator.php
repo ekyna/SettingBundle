@@ -3,7 +3,7 @@
 namespace Ekyna\Bundle\SettingBundle\Validator\Constraints;
 
 use Buzz\Browser;
-use Ekyna\Bundle\SettingBundle\Entity\Redirection as Entity;
+use Ekyna\Bundle\SettingBundle\Model\RedirectionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Validator\Constraint;
@@ -52,25 +52,30 @@ class RedirectionValidator extends ConstraintValidator
     public function validate($redirection, Constraint $constraint)
     {
         if (! $constraint instanceof Redirection) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\RedirectionToPath');
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Redirection');
         }
-        if (! $redirection instanceof Entity) {
-            throw new UnexpectedTypeException($redirection, 'Ekyna\Bundle\SettingBundle\Entity\Redirection');
+        if (! $redirection instanceof RedirectionInterface) {
+            throw new UnexpectedTypeException($redirection, 'Ekyna\Bundle\SettingBundle\Model\RedirectionInterface');
         }
 
         if (0 < strlen($fromPath = $redirection->getFromPath())) {
+            if ($redirection->getFromPath() == $redirection->getToPath()) {
+                $this->context->addViolationAt('toPath', $constraint->infiniteLoop);
+                return;
+            }
+
             if ('/' !== $fromPath[0]) {
-                $this->context->addViolationAt('fromPath', $constraint->bad_format);
+                $this->context->addViolationAt('fromPath', $constraint->badFormat);
             } elseif ($this->isPathAccessible($fromPath)) {
-                $this->context->addViolationAt('fromPath', $constraint->from_path_exists);
+                $this->context->addViolationAt('fromPath', $constraint->fromPathExists);
             }
         }
 
         if (0 < strlen($toPath = $redirection->getToPath())) {
             if ('/' !== $toPath[0]) {
-                $this->context->addViolationAt('toPath', $constraint->bad_format);
+                $this->context->addViolationAt('toPath', $constraint->badFormat);
             } elseif (!$this->isPathAccessible($toPath)) {
-                $this->context->addViolationAt('toPath', $constraint->to_path_not_found);
+                $this->context->addViolationAt('toPath', $constraint->toPathNotFound);
             }
         }
     }

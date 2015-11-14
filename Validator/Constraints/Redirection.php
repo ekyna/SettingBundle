@@ -11,9 +11,10 @@ use Symfony\Component\Validator\Constraint;
  */
 class Redirection extends Constraint
 {
-    public $bad_format        = 'ekyna_setting.redirection.bad_format';
-    public $from_path_exists  = 'ekyna_setting.redirection.from_path_exists';
-    public $to_path_not_found = 'ekyna_setting.redirection.to_path_not_found';
+    public $infiniteLoop        = 'ekyna_setting.redirection.infinite_loop';
+    public $badFormat        = 'ekyna_setting.redirection.bad_format';
+    public $fromPathExists  = 'ekyna_setting.redirection.from_path_exists';
+    public $toPathNotFound = 'ekyna_setting.redirection.to_path_not_found';
 
     /**
      * {@inheritdoc}

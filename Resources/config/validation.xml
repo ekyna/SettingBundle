@@ -6,6 +6,9 @@
                         http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
 
     <class name="Ekyna\Bundle\SettingBundle\Entity\Redirection">
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">fromPath</option>
+        </constraint>
         <property name="fromPath">
             <constraint name="NotBlank" />
             <constraint name="Length">

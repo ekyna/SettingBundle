@@ -2,6 +2,7 @@
 
 namespace Ekyna\Bundle\SettingBundle\Redirection;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Ekyna\Bundle\CoreBundle\Redirection\AbstractProvider;
 use Ekyna\Bundle\SettingBundle\Entity\RedirectionRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class RedirectionProvider
  * @package Ekyna\Bundle\SettingBundle\Redirection
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class RedirectionProvider extends AbstractProvider
 {
@@ -18,15 +19,22 @@ class RedirectionProvider extends AbstractProvider
      */
     private $repository;
 
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+
 
     /**
      * Constructor.
      *
-     * @param RedirectionRepository $repository
+     * @param RedirectionRepository  $repository
+     * @param EntityManagerInterface $manager
      */
-    public function __construct(RedirectionRepository $repository)
+    public function __construct(RedirectionRepository $repository, EntityManagerInterface $manager)
     {
         $this->repository = $repository;
+        $this->manager = $manager;
     }
 
     /**
@@ -36,6 +44,13 @@ class RedirectionProvider extends AbstractProvider
     {
         /** @var \Ekyna\Bundle\SettingBundle\Entity\Redirection $redirection */
         if (null !== $redirection = $this->repository->findByPath($request->getPathInfo())) {
+            $redirection
+                ->setCount($redirection->getCount() + 1)
+                ->setUsedAt(new \DateTime())
+            ;
+            $this->manager->persist($redirection);
+            $this->manager->flush($redirection);
+
             return $redirection->getResponse();
         }
 
