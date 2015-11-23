@@ -51,6 +51,10 @@ class RedirectionEventSubscriber implements EventSubscriberInterface
      */
     public function onBuildRedirection(BuildRedirectionEvent $event)
     {
+        if (0 !== strpos($event->getFrom(), '/') || 0 !== strpos($event->getTo(), '/')) {
+            return;
+            //throw new \InvalidArgumentException('Bad format.');
+        }
         if ($event->getFrom() === $event->getTo()) {
             return;
             //throw new \InvalidArgumentException('Infinite redirection loop detected.');
@@ -127,7 +131,7 @@ class RedirectionEventSubscriber implements EventSubscriberInterface
         return array(
             RedirectionEvents::BUILD   => array('onBuildRedirection', 0),
             RedirectionEvents::DISCARD => array('onDiscardRedirection', 0),
-            KernelEvents::RESPONSE     => array('onKernelTerminate', 0), // TODO on KernelEvents::TERMINATE
+            KernelEvents::TERMINATE    => array('onKernelTerminate', 0),
         );
     }
 }
