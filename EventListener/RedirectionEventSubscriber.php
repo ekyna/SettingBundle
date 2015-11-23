@@ -127,7 +127,7 @@ class RedirectionEventSubscriber implements EventSubscriberInterface
         return array(
             RedirectionEvents::BUILD   => array('onBuildRedirection', 0),
             RedirectionEvents::DISCARD => array('onDiscardRedirection', 0),
-            KernelEvents::RESPONSE     => array('onKernelTerminate', 0), // TODO on KernelEvents::TERMINATE
+            KernelEvents::TERMINATE    => array('onKernelTerminate', 0),
         );
     }
 }
