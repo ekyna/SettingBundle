@@ -51,6 +51,10 @@ class RedirectionEventSubscriber implements EventSubscriberInterface
      */
     public function onBuildRedirection(BuildRedirectionEvent $event)
     {
+        if (0 !== strpos($event->getFrom(), '/') || 0 !== strpos($event->getTo(), '/')) {
+            return;
+            //throw new \InvalidArgumentException('Bad format.');
+        }
         if ($event->getFrom() === $event->getTo()) {
             return;
             //throw new \InvalidArgumentException('Infinite redirection loop detected.');
