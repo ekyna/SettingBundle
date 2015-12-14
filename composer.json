@@ -18,7 +18,7 @@
     ],
     "require" : {
         "php" : ">=5.4.0",
-        "ekyna/admin-bundle" : "0.1.*@dev",
+        "ekyna/admin-bundle" : "0.2.x-dev",
         "kriswallsmith/buzz": "*"
     },
     "autoload" : {
@@ -26,10 +26,5 @@
             "Ekyna\\Bundle\\SettingBundle" : ""
         }
     },
-    "target-dir" : "Ekyna/Bundle/SettingBundle",
-    "extra" : {
-        "branch-alias" : {
-            "dev-master" : "0.1.x-dev"
-        }
-    }
+    "target-dir" : "Ekyna/Bundle/SettingBundle"
 }
