@@ -6,6 +6,7 @@ use Ekyna\Bundle\SettingBundle\Event\BuildRedirectionEvent;
 use Ekyna\Bundle\SettingBundle\Event\DiscardRedirectionEvent;
 use Ekyna\Bundle\SettingBundle\Event\RedirectionEvents;
 use Ekyna\Bundle\SettingBundle\Redirection\RedirectionBuilder;
+use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -132,6 +133,7 @@ class RedirectionEventSubscriber implements EventSubscriberInterface
             RedirectionEvents::BUILD   => array('onBuildRedirection', 0),
             RedirectionEvents::DISCARD => array('onDiscardRedirection', 0),
             KernelEvents::TERMINATE    => array('onKernelTerminate', 0),
+            ConsoleEvents::TERMINATE   => array('onKernelTerminate', 0),
         );
     }
 }
