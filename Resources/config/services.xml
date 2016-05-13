@@ -16,9 +16,8 @@
         <!-- Parameter resource services -->
         <service id="ekyna_setting.parameter.manager" alias="doctrine.orm.entity_manager" />
         <service id="ekyna_setting.parameter.repository"
-            class="%ekyna_setting.parameter.repository.class%"
-            factory-service="doctrine.orm.entity_manager"
-            factory-method="getRepository">
+            class="%ekyna_setting.parameter.repository.class%">
+            <factory service="doctrine.orm.entity_manager" method="getRepository" />
             <argument>%ekyna_setting.parameter.class%</argument>
         </service>
         <service id="ekyna_setting.parameter.controller" class="%ekyna_setting.parameter.controller.class%">
@@ -27,9 +26,8 @@
             </call>
         </service>
         <service id="ekyna_setting.parameter.configuration"
-                 class="Ekyna\Bundle\AdminBundle\Pool\Configuration"
-                 factory-service="ekyna_admin.pool_factory"
-                 factory-method="createConfiguration">
+                 class="Ekyna\Bundle\AdminBundle\Pool\Configuration">
+            <factory service="ekyna_admin.pool_factory" method="createConfiguration" />
             <argument>ekyna_setting</argument>
             <argument>parameter</argument>
             <argument>%ekyna_setting.parameter.class%</argument>
