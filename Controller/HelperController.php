@@ -2,8 +2,8 @@
 
 namespace Ekyna\Bundle\SettingBundle\Controller;
 
-use Buzz\Browser;
 use Ekyna\Bundle\CoreBundle\Controller\Controller;
+use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -89,11 +89,11 @@ class HelperController extends Controller
             }
         }
 
-        $browser = new Browser();
-        /** @var \Buzz\Message\Response $res */
-        $res = $browser->get($url, $fixedHeaders);
-        if ($res->isSuccessful()) {
-            $response = new Response($res->getContent(), $res->getStatusCode());
+        $client = new Client();
+        /** @var \GuzzleHttp\Psr7\Response $res */
+        $res = $client->request('GET', $url, $fixedHeaders);
+        if (200 <= $res->getStatusCode() && $res->getStatusCode() < 300) {
+            $response = new Response($res->getBody(), $res->getStatusCode());
             $headers = [];
             foreach($res->getHeaders() as $header) {
                 if (0 < strpos($header, ':')) {

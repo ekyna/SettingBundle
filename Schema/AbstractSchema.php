@@ -4,6 +4,7 @@ namespace Ekyna\Bundle\SettingBundle\Schema;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 /**
  * AbstractSchema.
@@ -31,7 +32,7 @@ abstract class AbstractSchema extends AbstractType implements SchemaInterface
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'cascade_validation' => true,
+            'constraints' => [new Valid()],
         ]);
     }
 }

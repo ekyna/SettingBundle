@@ -1,0 +1,32 @@
+{% extends "EkynaAdminBundle:Entity:sided.html.twig" %}
+
+{% block title %}
+    <h1>{{ 'ekyna_setting.parameter.header.edit'|trans|raw }}</h1>
+{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block main %}
+    <ul class="nav nav-tabs">
+        {% for namespace, label in labels %}
+            <li{% if loop.index0 == 0 %} class="active"{% endif %}>
+                <a href="#{{ namespace }}" data-toggle="tab">{{ label|trans }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {{ form_start(form) }}
+    <div class="panel-body form-body">
+        {{ bootstrap_set_style('horizontal') }}
+        {{ bootstrap_set_col_size('md') }}
+        {{ form_errors(form, {'global_errors': true}) }}
+        <div class="tab-content">
+            {% for namespace, template in templates %}
+                <div class="tab-pane{% if loop.index0 == 0 %} active{% endif %}" id="{{ namespace }}">
+                    {% include template %}
+                </div>
+            {% endfor %}
+        </div>
+        {{ form_rest(form) }}
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

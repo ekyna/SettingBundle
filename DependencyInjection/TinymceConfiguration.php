@@ -12,19 +12,20 @@ class TinymceConfiguration
     /**
      * Builds the tinymce configuration.
      *
-     * @param array $config
+     * @param array $bundles
      * @return array
      */
-    public function build(array $config)
+    public function build(array $bundles)
     {
         $contentCss = [
-            '/css/admin-helper.css',
-            '/bundles/ekynacore/css/tinymce-content.css',
+            'asset[bundles/ekynasetting/css/helper.css]',
+            'asset[bundles/ekynacore/css/tinymce-content.css]',
             'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800',
         ];
 
-        if (0 < strlen($config['ui']['google_font_url'])) {
-            $contentCss[] = $config['ui']['google_font_url'];
+        $externalPlugins = [];
+        if (!in_array('EkynaMediaBundle', $bundles)) {
+            $externalPlugins['filemanager'] = '/bundles/ekynamedia/js/tinymce.plugin.js';
         }
 
         return [
@@ -45,9 +46,7 @@ class TinymceConfiguration
                     'toolbar1' =>   "undo redo | styleselect  | link image media",
                     'toolbar2' =>   "bold italic forecolor backcolor | alignleft aligncenter " .
                         "alignright alignjustify | bullist numlist outdent indent",
-                    'external_plugins' => [
-                        'filemanager' => "/bundles/ekynafilemanager/js/tinymce.plugin.js",
-                    ],
+                    'external_plugins' => $externalPlugins,
                     'content_css' => $contentCss,
                 ],
             ],

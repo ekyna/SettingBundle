@@ -31,38 +31,21 @@ class EkynaSettingExtension extends AbstractExtension
         parent::prepend($container);
 
         $bundles = $container->getParameter('kernel.bundles');
-        $configs = $container->getExtensionConfig($this->getAlias());
-        $config = $this->processConfiguration(new Configuration(), $configs);
 
-        if (array_key_exists('AsseticBundle', $bundles)) {
-            $this->configureAsseticBundle($container, $config);
+        if (array_key_exists('StfalconTinymceBundle', $bundles)) {
+            $this->configureStfalconTinymceBundle($container, $bundles);
         }
-    }
-
-    /**
-     * Configures the assetic bundle.
-     *
-     * @param ContainerBuilder $container
-     * @param array            $config
-     */
-    protected function configureAsseticBundle(ContainerBuilder $container, array $config)
-    {
-        $asseticConfig = new AsseticConfiguration();
-        $container->prependExtensionConfig('assetic', [
-            'assets' => $asseticConfig->build($config),
-            'bundles' => ['EkynaSettingBundle'],
-        ]);
     }
 
     /**
      * Configures the StfalconTinymceBundle.
      *
      * @param ContainerBuilder $container
-     * @param array            $config
+     * @param array            $bundles
      */
-    protected function configureStfalconTinymceBundle(ContainerBuilder $container, array $config)
+    protected function configureStfalconTinymceBundle(ContainerBuilder $container, array $bundles)
     {
         $tinymceConfig = new TinymceConfiguration();
-        $container->prependExtensionConfig('stfalcon_tinymce', $tinymceConfig->build($config));
+        $container->prependExtensionConfig('stfalcon_tinymce', $tinymceConfig->build($bundles));
     }
 }

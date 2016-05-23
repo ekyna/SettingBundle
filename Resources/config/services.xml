@@ -28,10 +28,15 @@
         <service id="ekyna_setting.parameter.configuration"
                  class="Ekyna\Bundle\AdminBundle\Pool\Configuration">
             <factory service="ekyna_admin.pool_factory" method="createConfiguration" />
-            <argument>ekyna_setting</argument>
-            <argument>parameter</argument>
-            <argument>%ekyna_setting.parameter.class%</argument>
-            <argument type="collection" />
+            <argument type="collection">
+                <argument key="namespace">ekyna_setting</argument>
+                <argument key="id">parameter</argument>
+                <argument key="classes" type="collection">
+                    <argument key="resource">%ekyna_setting.parameter.class%</argument>
+                    <argument key="form_type"><!-- TODO --></argument>
+                </argument>
+                <argument key="templates" type="collection" />
+            </argument>
             <tag name="ekyna_admin.configuration" alias="ekyna_setting_parameter" />
         </service>
 

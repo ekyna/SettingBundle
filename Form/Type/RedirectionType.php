@@ -3,6 +3,7 @@
 namespace Ekyna\Bundle\SettingBundle\Form\Type;
 
 use Ekyna\Bundle\AdminBundle\Form\Type\ResourceFormType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -18,22 +19,22 @@ class RedirectionType extends ResourceFormType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fromPath', 'text', [
+            ->add('fromPath', Type\TextType::class, [
                 'label' => 'ekyna_setting.redirection.field.from_path',
                 'required' => true,
             ])
-            ->add('toPath', 'text', [
+            ->add('toPath', Type\TextType::class, [
                 'label' => 'ekyna_setting.redirection.field.to_path',
                 'required' => true,
             ])
-            ->add('enabled', 'checkbox', [
+            ->add('enabled', Type\CheckboxType::class, [
                 'label' => 'ekyna_core.field.enabled',
                 'required' => false,
                 'attr' => [
                     'align_with_widget' => true,
                 ]
             ])
-            ->add('permanent', 'checkbox', [
+            ->add('permanent', Type\CheckboxType::class, [
                 'label' => 'ekyna_setting.redirection.field.permanent',
                 'required' => false,
                 'attr' => [
@@ -41,13 +42,5 @@ class RedirectionType extends ResourceFormType
                 ]
             ])
         ;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'ekyna_setting_redirection';
     }
 }

@@ -2,15 +2,18 @@
 
 namespace Ekyna\Bundle\SettingBundle\Controller\Admin;
 
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Ekyna\Bundle\CoreBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * Class ParameterController
  * @package Ekyna\Bundle\SettingBundle\Controller\Admin
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class ParameterController extends Controller
 {
@@ -25,19 +28,19 @@ class ParameterController extends Controller
 
         $this->container->get('ekyna_admin.menu.builder')
             ->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
-        
+
         $manager = $this->getSettingsManager();
         $schemas = $this->getSettingsRegistry()->getSchemas();
         $settings = [];
 
-        foreach($schemas as $namespace => $schema) {
+        foreach ($schemas as $namespace => $schema) {
             $settings[$namespace] = $manager->loadSettings($namespace);
         }
 
-        return $this->render('EkynaSettingBundle:Settings:show.html.twig', [
-            'settings'   => $settings,
-            'labels'     => $manager->getLabels(),
-            'templates'  => $manager->getShowTemplates(),
+        return $this->render('EkynaSettingBundle:Admin/Settings:show.html.twig', [
+            'settings'  => $settings,
+            'labels'    => $manager->getLabels(),
+            'templates' => $manager->getShowTemplates(),
         ]);
     }
 
@@ -45,6 +48,7 @@ class ParameterController extends Controller
      * Edit the parameters.
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request)
@@ -60,50 +64,55 @@ class ParameterController extends Controller
         $settings = [];
         $builder = $this
             ->createFormBuilder(null, [
-                'data_class' => null,
-                'admin_mode' => true,
-                'cascade_validation' => true,
+                'action' => $this->generateUrl('ekyna_setting_parameter_admin_edit'),
+                'method' => 'post',
+                'attr' => [
+                    'class' => 'form-horizontal form-with-tabs',
+                ],
+                'data_class'  => null,
+                'admin_mode'  => true,
+                'constraints' => [new Valid()],
             ])
-            ->add('actions', 'form_actions', [
+            ->add('actions', FormActionsType::class, [
                 'buttons' => [
-                    'save' => [
-                        'type' => 'submit', 'options' => [
+                    'save'   => [
+                        'type'    => Type\SubmitType::class,
+                        'options' => [
                             'button_class' => 'primary',
-                            'label' => 'ekyna_core.button.save',
-                            'attr' => [
+                            'label'        => 'ekyna_core.button.save',
+                            'attr'         => [
                                 'icon' => 'ok',
                             ],
                         ],
                     ],
                     'cancel' => [
-                        'type' => 'button', 'options' => [
-                            'label' => 'ekyna_core.button.cancel',
+                        'type'    => Type\ButtonType::class,
+                        'options' => [
+                            'label'        => 'ekyna_core.button.cancel',
                             'button_class' => 'default',
-                            'as_link' => true,
-                            'attr' => [
+                            'as_link'      => true,
+                            'attr'         => [
                                 'class' => 'form-cancel-btn',
-                                'icon' => 'remove',
-                                'href' => $this->generateUrl('ekyna_setting_parameter_admin_show'),
+                                'icon'  => 'remove',
+                                'href'  => $this->generateUrl('ekyna_setting_parameter_admin_show'),
                             ],
                         ],
                     ],
                 ],
-            ])
-        ;
-        foreach($schemas as $namespace => $schema) {
-            $builder->add($namespace, $schema);
+            ]);
+        foreach ($schemas as $namespace => $schema) {
+            $builder->add($namespace, get_class($schema));
             $settings[$namespace] = $manager->loadSettings($namespace);
         }
 
         $form = $builder
             ->getForm()
-            ->setData($settings)
-        ;
+            ->setData($settings);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $messageType = 'success';
             try {
-                foreach($schemas as $namespace => $schema) {
+                foreach ($schemas as $namespace => $schema) {
                     $manager->saveSettings($namespace, $form->get($namespace)->getData());
                 }
                 $message = $this->getTranslator()->trans('ekyna_setting.parameter.flash.edit');
@@ -116,10 +125,10 @@ class ParameterController extends Controller
             return $this->redirect($this->generateUrl('ekyna_setting_parameter_admin_show'));
         }
 
-        return $this->render('EkynaSettingBundle:Settings:edit.html.twig', [
-            'labels'     => $manager->getLabels(),
-            'templates'  => $manager->getFormTemplates(),
-            'form'       => $form->createView(),
+        return $this->render('EkynaSettingBundle:Admin/Settings:edit.html.twig', [
+            'labels'    => $manager->getLabels(),
+            'templates' => $manager->getFormTemplates(),
+            'form'      => $form->createView(),
         ]);
     }
 
@@ -142,12 +151,13 @@ class ParameterController extends Controller
     {
         return $this->get('ekyna_setting.schema_registry');
     }
+
     /**
      * Checks if the attributes are granted against the current token.
      *
-     * @param mixed $attributes
+     * @param mixed      $attributes
      * @param mixed|null $object
-     * @param bool $throwException
+     * @param bool       $throwException
      *
      * @throws AccessDeniedHttpException when the security context has no authentication token.
      *
@@ -164,8 +174,10 @@ class ParameterController extends Controller
             if ($throwException) {
                 throw new AccessDeniedHttpException('You are not allowed to view this resource.');
             }
+
             return false;
         }
+
         return true;
     }
 
