@@ -168,7 +168,7 @@ class ParameterController extends Controller
         if (is_null($object)) {
             $object = $this->getConfiguration()->getObjectIdentity();
         } else {
-            $object = $this->get('ekyna_admin.pool_registry')->getObjectIdentity($object);
+            $object = $this->get('ekyna_resource.configuration_registry')->getObjectIdentity($object);
         }
         if (!$this->get('security.authorization_checker')->isGranted($attributes, $object)) {
             if ($throwException) {
@@ -184,7 +184,7 @@ class ParameterController extends Controller
     /**
      * Returns the configuration.
      *
-     * @return \Ekyna\Bundle\AdminBundle\Pool\ConfigurationInterface
+     * @return \Ekyna\Component\Resource\Configuration\ConfigurationInterface
      */
     protected function getConfiguration()
     {

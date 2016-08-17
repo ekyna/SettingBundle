@@ -2,8 +2,7 @@
 
 namespace Ekyna\Bundle\SettingBundle\Entity;
 
-use Ekyna\Bundle\AdminBundle\Doctrine\ORM\ResourceRepository;
-
+use Ekyna\Component\Resource\Doctrine\ORM\ResourceRepository;
 
 /**
  * Class RedirectionRepository

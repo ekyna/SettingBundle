@@ -2,7 +2,7 @@
 
 namespace Ekyna\Bundle\SettingBundle\DependencyInjection;
 
-use Ekyna\Bundle\AdminBundle\DependencyInjection\AbstractExtension;
+use Ekyna\Bundle\ResourceBundle\DependencyInjection\AbstractExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Loader;
  * @package Ekyna\Bundle\SettingBundle\DependencyInjection
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class EkynaSettingExtension extends AbstractExtension
+class EkynaSettingExtension extends \Ekyna\Bundle\ResourceBundle\DependencyInjection\AbstractExtension
 {
     /**
      * {@inheritDoc}

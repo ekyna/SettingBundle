@@ -26,8 +26,8 @@
             </call>
         </service>
         <service id="ekyna_setting.parameter.configuration"
-                 class="Ekyna\Bundle\AdminBundle\Pool\Configuration">
-            <factory service="ekyna_admin.pool_factory" method="createConfiguration" />
+                 class="%ekyna_resource.configuration.class%">
+            <factory service="ekyna_resource.configuration_factory" method="createConfiguration" />
             <argument type="collection">
                 <argument key="namespace">ekyna_setting</argument>
                 <argument key="id">parameter</argument>
@@ -37,7 +37,7 @@
                 </argument>
                 <argument key="templates" type="collection" />
             </argument>
-            <tag name="ekyna_admin.configuration" alias="ekyna_setting_parameter" />
+            <tag name="ekyna_resource.configuration" alias="ekyna_setting_parameter" />
         </service>
 
         <!-- Settings -->
