@@ -11,7 +11,7 @@
             table="sett_redirection">
 
         <unique-constraints>
-            <unique-constraint columns="from_path" />
+            <unique-constraint name="unique_setting_redirection_from_path" columns="from_path" />
         </unique-constraints>
 
         <id name="id" type="integer" column="id">
