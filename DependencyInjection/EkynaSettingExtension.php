@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\Loader;
 class EkynaSettingExtension extends \Ekyna\Bundle\ResourceBundle\DependencyInjection\AbstractExtension
 {
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -24,7 +24,7 @@ class EkynaSettingExtension extends \Ekyna\Bundle\ResourceBundle\DependencyInjec
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function prepend(ContainerBuilder $container)
     {
@@ -32,20 +32,23 @@ class EkynaSettingExtension extends \Ekyna\Bundle\ResourceBundle\DependencyInjec
 
         $bundles = $container->getParameter('kernel.bundles');
 
-        if (array_key_exists('StfalconTinymceBundle', $bundles)) {
-            $this->configureStfalconTinymceBundle($container, $bundles);
-        }
+        // TODO
+        /*if (array_key_exists('EkynaCoreBundle', $bundles)) {
+            $this->configureTinymceTheme($container, $bundles);
+        }*/
     }
 
     /**
-     * Configures the StfalconTinymceBundle.
+     * Configures the tinymce theme.
      *
      * @param ContainerBuilder $container
      * @param array            $bundles
      */
-    protected function configureStfalconTinymceBundle(ContainerBuilder $container, array $bundles)
+    private function configureTinymceTheme(ContainerBuilder $container, array $bundles)
     {
         $tinymceConfig = new TinymceConfiguration();
-        $container->prependExtensionConfig('stfalcon_tinymce', $tinymceConfig->build($bundles));
+        $container->prependExtensionConfig('ekyna_core', [
+            'tinymce' => $tinymceConfig->build($bundles),
+        ]);
     }
 }

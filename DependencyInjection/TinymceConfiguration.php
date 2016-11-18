@@ -24,7 +24,7 @@ class TinymceConfiguration
         ];
 
         $externalPlugins = [];
-        if (!in_array('EkynaMediaBundle', $bundles)) {
+        if (isset($bundles['EkynaMediaBundle'])) {
             $externalPlugins['filemanager'] = '/bundles/ekynamedia/js/tinymce.plugin.js';
         }
 
