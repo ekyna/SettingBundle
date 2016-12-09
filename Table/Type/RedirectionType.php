@@ -13,82 +13,82 @@ use Ekyna\Component\Table\TableBuilderInterface;
 class RedirectionType extends ResourceTableType
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function buildTable(TableBuilderInterface $builder, array $options)
     {
         $builder
             ->addColumn('fromPath', 'anchor', [
-                'label' => 'ekyna_setting.redirection.field.from_path',
-                'sortable' => true,
-                'route_name' => 'ekyna_setting_redirection_admin_show',
-                'route_parameters_map' => [
-                    'redirectionId' => 'id'
-                ],
+                'label'                => 'ekyna_setting.redirection.field.from_path',
+                'route_name'           => 'ekyna_setting_redirection_admin_show',
+                'route_parameters_map' => ['redirectionId' => 'id'],
+                'position'             => 10,
             ])
             ->addColumn('toPath', 'text', [
-                'label' => 'ekyna_setting.redirection.field.to_path',
+                'label'    => 'ekyna_setting.redirection.field.to_path',
+                'position' => 20,
             ])
             ->addColumn('count', 'number', [
-                'label' => 'ekyna_setting.redirection.field.count',
+                'label'    => 'ekyna_setting.redirection.field.count',
+                'position' => 30,
             ])
             ->addColumn('usedAt', 'datetime', [
-                'label' => 'ekyna_setting.redirection.field.used_at',
+                'label'       => 'ekyna_setting.redirection.field.used_at',
                 'time_format' => 'none',
+                'position'    => 40,
             ])
             ->addColumn('permanent', 'boolean', [
-                'label' => 'ekyna_setting.redirection.field.permanent',
-                'route_name' => 'ekyna_setting_redirection_admin_toggle',
-                'route_parameters' => ['field' => 'permanent'],
+                'label'                => 'ekyna_setting.redirection.field.permanent',
+                'route_name'           => 'ekyna_setting_redirection_admin_toggle',
+                'route_parameters'     => ['field' => 'permanent'],
                 'route_parameters_map' => ['redirectionId' => 'id'],
+                'position'             => 50,
             ])
             ->addColumn('enabled', 'boolean', [
-                'label' => 'ekyna_core.field.enabled',
-                'route_name' => 'ekyna_setting_redirection_admin_toggle',
-                'route_parameters' => ['field' => 'enabled'],
-                'route_parameters_map' => [
-                    'redirectionId' => 'id',
-                ],
+                'label'                => 'ekyna_core.field.enabled',
+                'route_name'           => 'ekyna_setting_redirection_admin_toggle',
+                'route_parameters'     => ['field' => 'enabled'],
+                'route_parameters_map' => ['redirectionId' => 'id'],
+                'position'             => 60,
             ])
             ->addColumn('actions', 'admin_actions', [
                 'buttons' => [
                     [
-                        'label' => 'ekyna_core.button.edit',
-                        'class' => 'warning',
-                        'route_name' => 'ekyna_setting_redirection_admin_edit',
-                        'route_parameters_map' => [
-                            'redirectionId' => 'id'
-                        ],
-                        'permission' => 'edit',
+                        'label'                => 'ekyna_core.button.edit',
+                        'class'                => 'warning',
+                        'route_name'           => 'ekyna_setting_redirection_admin_edit',
+                        'route_parameters_map' => ['redirectionId' => 'id'],
+                        'permission'           => 'edit',
                     ],
                     [
-                        'label' => 'ekyna_core.button.remove',
-                        'class' => 'danger',
-                        'route_name' => 'ekyna_setting_redirection_admin_remove',
-                        'route_parameters_map' => [
-                            'redirectionId' => 'id'
-                        ],
-                        'permission' => 'delete',
+                        'label'                => 'ekyna_core.button.remove',
+                        'class'                => 'danger',
+                        'route_name'           => 'ekyna_setting_redirection_admin_remove',
+                        'route_parameters_map' => ['redirectionId' => 'id'],
+                        'permission'           => 'delete',
                     ],
                 ],
             ])
             ->addFilter('fromPath', 'text', [
-                'label' => 'ekyna_setting.redirection.field.from_path',
+                'label'    => 'ekyna_setting.redirection.field.from_path',
+                'position' => 10,
             ])
             ->addFilter('toPath', 'text', [
-                'label' => 'ekyna_setting.redirection.field.to_path',
+                'label'    => 'ekyna_setting.redirection.field.to_path',
+                'position' => 20,
             ])
             ->addFilter('enabled', 'boolean', [
-                'label' => 'ekyna_core.field.enabled',
+                'label'    => 'ekyna_core.field.enabled',
+                'position' => 30,
             ])
             ->addFilter('permanent', 'boolean', [
-                'label' => 'ekyna_setting.redirection.field.permanent',
-            ])
-        ;
+                'label'    => 'ekyna_setting.redirection.field.permanent',
+                'position' => 40,
+            ]);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getName()
     {
