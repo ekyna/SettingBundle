@@ -2,17 +2,18 @@
 
 namespace Ekyna\Bundle\SettingBundle\Entity;
 
-use Ekyna\Bundle\CoreBundle\Model\TaggedEntityInterface;
-use Ekyna\Bundle\CoreBundle\Model\TaggedEntityTrait;
+use Ekyna\Component\Resource\Model as RM;
 
 /**
  * Class Helper
  * @package Ekyna\Bundle\SettingBundle\Entity
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
+ *
+ * @TODO    translatable
  */
-class Helper implements TaggedEntityInterface
+class Helper implements RM\TaggedEntityInterface
 {
-    use TaggedEntityTrait;
+    use RM\TaggedEntityTrait;
 
     /**
      * @var integer
@@ -58,7 +59,7 @@ class Helper implements TaggedEntityInterface
     /**
      * Returns the id.
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -69,6 +70,7 @@ class Helper implements TaggedEntityInterface
      * Sets the name.
      *
      * @param string $name
+     *
      * @return Helper
      */
     public function setName($name)
@@ -81,7 +83,7 @@ class Helper implements TaggedEntityInterface
     /**
      * Returns the name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -92,6 +94,7 @@ class Helper implements TaggedEntityInterface
      * Sets the reference.
      *
      * @param string $reference
+     *
      * @return Helper
      */
     public function setReference($reference)
@@ -104,7 +107,7 @@ class Helper implements TaggedEntityInterface
     /**
      * Returns the reference.
      *
-     * @return string 
+     * @return string
      */
     public function getReference()
     {
@@ -115,6 +118,7 @@ class Helper implements TaggedEntityInterface
      * Sets the content.
      *
      * @param string $content
+     *
      * @return Helper
      */
     public function setContent($content)
@@ -127,7 +131,7 @@ class Helper implements TaggedEntityInterface
     /**
      * Returns the content.
      *
-     * @return string 
+     * @return string
      */
     public function getContent()
     {
@@ -138,11 +142,12 @@ class Helper implements TaggedEntityInterface
      * Sets whether it is enabled or not.
      *
      * @param boolean $enabled
+     *
      * @return Helper
      */
     public function setEnabled($enabled)
     {
-        $this->enabled = (bool) $enabled;
+        $this->enabled = (bool)$enabled;
 
         return $this;
     }
@@ -150,7 +155,7 @@ class Helper implements TaggedEntityInterface
     /**
      * Returns whether it is enabled or not.
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
@@ -171,6 +176,7 @@ class Helper implements TaggedEntityInterface
      * Sets the updatedAt.
      *
      * @param \DateTime $updatedAt
+     *
      * @return Helper
      */
     public function setUpdatedAt(\DateTime $updatedAt = null)
