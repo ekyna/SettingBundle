@@ -32,7 +32,7 @@
                 <argument key="namespace">ekyna_setting</argument>
                 <argument key="id">parameter</argument>
                 <argument key="classes" type="collection">
-                    <argument key="resource">%ekyna_setting.parameter.class%</argument>
+                    <argument key="entity">%ekyna_setting.parameter.class%</argument>
                     <argument key="form_type"><!-- TODO --></argument>
                 </argument>
                 <argument key="templates" type="collection" />
