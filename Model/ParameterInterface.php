@@ -1,60 +1,63 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Model;
+
+use Ekyna\Component\Resource\Model\ResourceInterface;
 
 /**
  * Interface ParameterInterface
  * @package Ekyna\Bundle\SettingBundle\Model
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-interface ParameterInterface
+interface ParameterInterface extends ResourceInterface
 {
     /**
-     * Get id
+     * Returns the parameter namespace.
      *
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int;
+    public function getNamespace(): ?string;
 
     /**
-     * Get settings namespace.
-     *
-     * @return string
-     */
-    public function getNamespace();
-
-    /**
-     * Set settings namespace.
+     * Sets the parameter namespace.
      *
      * @param string $namespace
-     */
-    public function setNamespace($namespace);
-
-    /**
-     * Get parameter name.
      *
-     * @return string
+     * @return $this|ParameterInterface
      */
-    public function getName();
+    public function setNamespace(string $namespace): ParameterInterface;
 
     /**
-     * Set parameter name.
+     * Returns the parameter name.
+     *
+     * @return string|null
+     */
+    public function getName(): ?string;
+
+    /**
+     * Sets the parameter name.
      *
      * @param string $name
+     *
+     * @return $this|ParameterInterface
      */
-    public function setName($name);
+    public function setName(string $name): ParameterInterface;
 
     /**
-     * Get value.
+     * Returns the parameter value.
      *
      * @return mixed
      */
     public function getValue();
 
     /**
-     * Set parameter value.
+     * Sets the parameter value.
      *
      * @param mixed $value
+     *
+     * @return $this|ParameterInterface
      */
-    public function setValue($value);
+    public function setValue($value): ParameterInterface;
 }

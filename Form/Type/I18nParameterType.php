@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Form\Type;
 
 use Ekyna\Bundle\SettingBundle\Model\I18nParameter;
@@ -12,6 +14,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function in_array;
+
 /**
  * Class I18nParameterType
  * @package Ekyna\Bundle\SettingBundle\Form\Type
@@ -19,10 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class I18nParameterType extends AbstractType
 {
-    /**
-     * @var LocaleProviderInterface
-     */
-    private $localeProvider;
+    private LocaleProviderInterface $localeProvider;
 
 
     /**
@@ -35,18 +36,21 @@ class I18nParameterType extends AbstractType
         $this->localeProvider = $localeProvider;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         foreach ($options['locales'] as $locale) {
-            $builder->add($locale, $options['form_type'],
-                $options['form_options'] + [
-                    'required' => in_array($locale, $options['required_locales'], true),
-                ]
-            );
+            $typeOptions = $options['form_options'] + [
+                'required' => in_array($locale, $options['required_locales'], true),
+            ];
+
+            $builder->add($locale, $options['form_type'], $typeOptions);
         }
 
         $builder
-            ->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
+            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
 
                 foreach ($data as $locale => $translation) {
@@ -57,7 +61,7 @@ class I18nParameterType extends AbstractType
 
                 $event->setData($data);
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 /** @var I18nParameter $data */
                 $data = $event->getData();
 
@@ -66,12 +70,18 @@ class I18nParameterType extends AbstractType
             });
     }
 
+    /**
+     * @inheritDoc
+     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['default_locale'] = $options['default_locale'];
         $view->vars['required_locales'] = $options['required_locales'];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -89,6 +99,9 @@ class I18nParameterType extends AbstractType
             ]);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getBlockPrefix(): string
     {
         return 'a2lix_translations';

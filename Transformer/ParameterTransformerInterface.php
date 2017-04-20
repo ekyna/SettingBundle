@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Transformer;
 
 /**
- * ParameterTransformerInterface
- *
- * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
- * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Transformer/ParameterTransformerInterface.php
+ * Interface ParameterTransformerInterface
+ * @package Ekyna\Bundle\SettingBundle\Transformer
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 interface ParameterTransformerInterface
 {
@@ -18,7 +19,7 @@ interface ParameterTransformerInterface
      * @return mixed
      */
     public function transform($value);
-    
+
     /**
      * Transform parameter value back into it's original form.
      *

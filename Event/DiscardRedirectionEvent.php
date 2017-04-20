@@ -1,38 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class DiscardRedirectionEvent
  * @package Ekyna\Bundle\SettingBundle\Event
  * @author  Etienne Dauvergne <contact@ekyna.com>
  */
-class DiscardRedirectionEvent extends Event
+final class DiscardRedirectionEvent extends Event
 {
-    /**
-     * @var string
-     */
-    private $path;
+    private string $path;
 
-
-    /**
-     * Constructor.
-     *
-     * @param string $path
-     */
-    public function __construct($path)
+    public function __construct(string $path)
     {
         $this->path = $path;
     }
 
-    /**
-     * Returns the path.
-     *
-     * @return string
-     */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }

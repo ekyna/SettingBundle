@@ -1,0 +1,60 @@
+namespaces:
+    ekyna_setting:
+        label: setting
+        trans_domain: EkynaSetting
+        prefix: /setting
+
+resources:
+    ekyna_setting:
+        helper:
+            driver: doctrine/orm
+            entity:
+                class: Ekyna\Bundle\SettingBundle\Entity\Helper
+            repository:
+                interface: Ekyna\Bundle\SettingBundle\Repository\HelperRepositoryInterface
+                class: Ekyna\Bundle\SettingBundle\Repository\HelperRepository
+            form: Ekyna\Bundle\SettingBundle\Form\Type\HelperType
+            table: Ekyna\Bundle\SettingBundle\Table\Type\HelperType
+            trans_domain: EkynaSetting
+            actions:
+                admin_crud:
+                    read: '@EkynaSetting/Admin/Helper/read.html.twig'
+                    form: '@EkynaSetting/Admin/Helper/_form.html.twig'
+                admin_toggle:
+                    properties: enabled
+                admin_tinymce:
+                    template: '@EkynaSetting/Admin/Helper/tinymce.html.twig'
+
+        redirection:
+            driver: doctrine/orm
+            entity:
+                interface: Ekyna\Bundle\SettingBundle\Model\RedirectionInterface
+                class: Ekyna\Bundle\SettingBundle\Entity\Redirection
+            repository:
+                interface: Ekyna\Bundle\SettingBundle\Repository\RedirectionRepositoryInterface
+                class: Ekyna\Bundle\SettingBundle\Repository\RedirectionRepository
+            manager:
+                interface: Ekyna\Bundle\SettingBundle\Manager\RedirectionManagerInterface
+                class: Ekyna\Bundle\SettingBundle\Manager\RedirectionManager
+            form: Ekyna\Bundle\SettingBundle\Form\Type\RedirectionType
+            table: Ekyna\Bundle\SettingBundle\Table\Type\RedirectionType
+            trans_domain: EkynaSetting
+            actions:
+                admin_crud:
+                    read: '@EkynaSetting/Admin/Redirection/read.html.twig'
+                    form: '@EkynaSetting/Admin/Redirection/_form.html.twig'
+                admin_toggle:
+                    properties: [enabled, permanent]
+
+        parameter:
+            driver: doctrine/orm
+            entity:
+                interface: Ekyna\Bundle\SettingBundle\Model\ParameterInterface
+                class: Ekyna\Bundle\SettingBundle\Entity\Parameter
+            repository:
+                interface: Ekyna\Bundle\SettingBundle\Repository\ParameterRepositoryInterface
+                class: Ekyna\Bundle\SettingBundle\Repository\ParameterRepository
+            trans_domain: EkynaSetting
+            actions:
+                Ekyna\Bundle\SettingBundle\Action\ParametersReadAction: ~
+                Ekyna\Bundle\SettingBundle\Action\ParametersUpdateAction: ~

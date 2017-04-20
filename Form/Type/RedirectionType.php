@@ -1,46 +1,46 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Form\Type;
 
-use Ekyna\Bundle\AdminBundle\Form\Type\ResourceFormType;
+use Ekyna\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
+
+use function Symfony\Component\Translation\t;
 
 /**
  * Class RedirectionType
  * @package Ekyna\Bundle\SettingBundle\Form\Type
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class RedirectionType extends ResourceFormType
+class RedirectionType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('fromPath', Type\TextType::class, [
-                'label' => 'ekyna_setting.redirection.field.from_path',
+                'label'    => t('redirection.field.from_path', [], 'EkynaSetting'),
                 'required' => true,
             ])
             ->add('toPath', Type\TextType::class, [
-                'label' => 'ekyna_setting.redirection.field.to_path',
+                'label'    => t('redirection.field.to_path', [], 'EkynaSetting'),
                 'required' => true,
             ])
             ->add('enabled', Type\CheckboxType::class, [
-                'label' => 'ekyna_core.field.enabled',
+                'label'    => t('field.enabled', [], 'EkynaUi'),
                 'required' => false,
-                'attr' => [
+                'attr'     => [
                     'align_with_widget' => true,
-                ]
+                ],
             ])
             ->add('permanent', Type\CheckboxType::class, [
-                'label' => 'ekyna_setting.redirection.field.permanent',
+                'label'    => t('redirection.field.permanent', [], 'EkynaSetting'),
                 'required' => false,
-                'attr' => [
+                'attr'     => [
                     'align_with_widget' => true,
-                ]
-            ])
-        ;
+                ],
+            ]);
     }
 }

@@ -1,6 +1,6 @@
 ekyna_setting_api_helper_fetch:
     path: /fetch
-    defaults: { _controller: "EkynaSettingBundle:Helper:fetch" }
+    controller: Ekyna\Bundle\SettingBundle\Controller\HelperController::fetch
     methods: [GET]
     options:
         expose: true

@@ -1,19 +1,19 @@
 {% extends '@EkynaAdmin/Entity/sided.html.twig' %}
 
-{% block page_title %}{{ 'ekyna_setting.parameter.label.plural'|trans|raw }} - {{ parent() }}{% endblock page_title %}
+{% block page_title %}{{ 'parameter.label.plural'|trans({}, 'EkynaSetting')|raw }}{% endblock page_title %}
 
 {% block title %}
-    <h1>{{ 'ekyna_setting.parameter.header.edit'|trans|raw }}</h1>
+    <h1>{{ 'parameter.header.edit'|trans({}, 'EkynaSetting')|raw }}</h1>
 {% endblock %}
 
 {% block actions %}{% endblock %}
 
 {% block main %}
-    <ul class="nav nav-tabs" data-tab-key="{{ resource_id }}">
+    <ul class="nav nav-tabs" data-tab-key="{{ context.config.id }}">
         {% for namespace, label in labels %}
             <li{% if loop.index0 == 0 %} class="active"{% endif %}>
                 <a href="#{{ namespace }}" id="toggle-{{ namespace }}" data-toggle="tab">
-                    {{- label[0]|trans({}, label[1]) -}}
+                    {{- label|trans -}}
                 </a>
             </li>
         {% endfor %}

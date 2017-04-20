@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Schema;
 
 /**
@@ -14,7 +16,7 @@ interface SchemaRegistryInterface
      *
      * @return SchemaInterface[]
      */
-    public function getSchemas();
+    public function getSchemas(): array;
 
     /**
      * Register a schema for given settings namespace.
@@ -22,23 +24,23 @@ interface SchemaRegistryInterface
      * @param string          $namespace
      * @param SchemaInterface $schema
      */
-    public function registerSchema($namespace, SchemaInterface $schema);
+    public function registerSchema(string $namespace, SchemaInterface $schema): void;
 
     /**
      * Unregister schema with given namespace.
      *
      * @param string $namespace
      */
-    public function unregisterSchema($namespace);
+    public function unregisterSchema(string $namespace): void;
 
     /**
      * Has schema registered to given namespace?
      *
      * @param string $namespace
      *
-     * @return Boolean
+     * @return bool
      */
-    public function hasSchema($namespace);
+    public function hasSchema(string $namespace): bool;
 
     /**
      * Get schema for given namespace.
@@ -47,5 +49,5 @@ interface SchemaRegistryInterface
      *
      * @return SchemaInterface
      */
-    public function getSchema($namespace);
+    public function getSchema(string $namespace): SchemaInterface;
 }

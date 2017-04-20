@@ -7,7 +7,6 @@
 
     <mapped-superclass
             name="Ekyna\Bundle\SettingBundle\Entity\Redirection"
-            repository-class="Ekyna\Bundle\SettingBundle\Repository\RedirectionRepository"
             table="sett_redirection">
 
         <unique-constraints>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Event;
 
 /**
@@ -9,12 +11,8 @@ namespace Ekyna\Bundle\SettingBundle\Event;
  */
 final class ParameterEvents
 {
-    const UPDATE = 'ekyna_setting.parameter.update';
+    public const UPDATE = 'ekyna_setting.parameter.update';
 
-
-    /**
-     * Disabled constructor.
-     */
     private function __construct()
     {
     }

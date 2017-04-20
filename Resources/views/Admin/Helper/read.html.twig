@@ -1,0 +1,39 @@
+{% extends '@EkynaAdmin/Entity/Crud/read.html.twig' %}
+
+{% block main_tabs %}
+    <li class="active">
+        <a href="#helper-general" id="toggle-general" data-toggle="tab">
+            {{ 'field.general'|trans({}, 'EkynaUi') }}
+        </a>
+    </li>
+{% endblock main_tabs %}
+
+{% block main_contents %}
+    <div class="tab-pane active" id="helper-general">
+        {{ show_row(helper.name, 'text', {
+            'label': 'field.name',
+            'trans_domain': 'EkynaUi'
+        }) }}
+        <div class="row">
+            <div class="col-md-6">
+                {{ show_row(helper.reference, 'text', {
+                    'label': 'field.reference',
+                    'trans_domain': 'EkynaUi',
+                    'label_col': 4
+                }) }}
+            </div>
+            <div class="col-md-6">
+                {{ show_row(helper.enabled, 'text', {
+                    'label': 'field.enabled',
+                    'trans_domain': 'EkynaUi',
+                    'label_col': 4
+                }) }}
+            </div>
+        </div>
+        {{ show_row(resource, 'tinymce', {
+            'label': 'field.content',
+            'trans_domain': 'EkynaUi',
+            'field': 'content'
+        }) }}
+    </div>
+{% endblock main_contents %}

@@ -1,72 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class BuildRedirectionEvent
  * @package Ekyna\Bundle\SettingBundle\Event
  * @author  Etienne Dauvergne <contact@ekyna.com>
  */
-class BuildRedirectionEvent extends Event
+final class BuildRedirectionEvent extends Event
 {
-    /**
-     * @var string
-     */
-    private $from;
+    private string $from;
+    private string $to;
+    private bool   $permanent;
 
-    /**
-     * @var string
-     */
-    private $to;
-
-    /**
-     * @var boolean
-     */
-    private $permanent;
-
-
-    /**
-     * Constructor.
-     *
-     * @param string  $from
-     * @param string  $to
-     * @param boolean $permanent
-     */
-    public function __construct($from, $to, $permanent)
+    public function __construct(string $from, string $to, bool $permanent)
     {
         $this->from = $from;
         $this->to = $to;
         $this->permanent = $permanent;
     }
 
-    /**
-     * Returns the from.
-     *
-     * @return string
-     */
-    public function getFrom()
+    public function getFrom(): string
     {
         return $this->from;
     }
 
-    /**
-     * Returns the to.
-     *
-     * @return string
-     */
-    public function getTo()
+    public function getTo(): string
     {
         return $this->to;
     }
 
-    /**
-     * Returns the permanent.
-     *
-     * @return boolean
-     */
-    public function isPermanent()
+    public function isPermanent(): bool
     {
         return $this->permanent;
     }

@@ -1,11 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Show\Type;
 
+use Ekyna\Bundle\AdminBundle\Show\Exception\UnexpectedTypeException;
 use Ekyna\Bundle\AdminBundle\Show\Type\AbstractType;
 use Ekyna\Bundle\AdminBundle\Show\View;
 use Ekyna\Bundle\SettingBundle\Model\I18nParameter;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use function base64_encode;
+use function preg_replace;
+use function random_bytes;
 
 /**
  * Class I18nParameterType
@@ -14,10 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class I18nParameterType extends AbstractType
 {
-    /**
-     * @var array
-     */
-    private $locales;
+    private array $locales;
 
 
     /**
@@ -33,10 +37,10 @@ class I18nParameterType extends AbstractType
     /**
      * @inheritDoc
      */
-    public function build(View $view, $value, array $options = [])
+    public function build(View $view, $value, array $options = []): void
     {
         if (!$value instanceof I18nParameter) {
-            throw new \UnexpectedValueException("Expected instance of " . I18nParameter::class);
+            throw new UnexpectedTypeException($value, I18nParameter::class);
         }
 
         $value = $value->getIterator();
@@ -45,10 +49,12 @@ class I18nParameterType extends AbstractType
 
         $prefix = $options['prefix'] ?? $options['id'] ?? 'translations';
 
+        $name = $prefix . '_' . preg_replace('~[^A-Za-z0-9]+~', '', base64_encode(random_bytes(3)));
+
         $view->vars = array_replace($view->vars, [
             'locales' => $this->locales,
             'prefix'  => $prefix,
-            'name'    => $prefix . '_' . preg_replace('~[^A-Za-z0-9]+~', '', base64_encode(random_bytes(3))),
+            'name'    => $name,
             'type'    => $options['type'],
             'options' => $options['options'],
         ]);
@@ -57,7 +63,7 @@ class I18nParameterType extends AbstractType
     /**
      * @inheritDoc
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -75,8 +81,8 @@ class I18nParameterType extends AbstractType
     /**
      * @inheritDoc
      */
-    public function getWidgetPrefix()
+    public static function getName(): string
     {
-        return 'i18n_parameter';
+        return 'setting_i18n_parameter';
     }
 }

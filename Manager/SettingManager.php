@@ -1,105 +1,63 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Ekyna\Bundle\CoreBundle\Cache\TagManager;
 use Ekyna\Bundle\SettingBundle\Entity\Parameter;
-use Ekyna\Bundle\SettingBundle\Model\Settings;
 use Ekyna\Bundle\SettingBundle\Model\I18nParameter;
+use Ekyna\Bundle\SettingBundle\Model\ParameterInterface;
+use Ekyna\Bundle\SettingBundle\Model\Settings;
+use Ekyna\Bundle\SettingBundle\Repository\ParameterRepositoryInterface;
 use Ekyna\Bundle\SettingBundle\Schema\SchemaRegistryInterface;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
-use Ekyna\Component\Resource\Doctrine\ORM\ResourceRepository;
 use Ekyna\Component\Resource\Locale\LocaleProviderInterface;
+use Ekyna\Component\Resource\Manager\ResourceManagerInterface;
+use InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+use function array_key_exists;
+use function explode;
+use function strpos;
+
 /**
- * Class SettingsManager
+ * Class SettingManager
  * @package Ekyna\Bundle\SettingBundle\Manager
  * @author  Etienne Dauvergne <contact@ekyna.com>
  */
-class SettingsManager implements SettingsManagerInterface
+class SettingManager implements SettingManagerInterface
 {
-    const HTTP_CACHE_TAG = 'ekyna_settings';
+    protected SchemaRegistryInterface      $registry;
+    protected ResourceManagerInterface     $manager;
+    protected ParameterRepositoryInterface $repository;
+    protected LocaleProviderInterface      $localeProvider;
+    protected ValidatorInterface           $validator;
+    protected AdapterInterface             $cache;
 
-    /**
-     * @var SchemaRegistryInterface
-     */
-    protected $schemaRegistry;
+    /** @var Settings[] */
+    protected array $resolvedSettings = [];
 
-    /**
-     * @var ObjectManager
-     */
-    protected $parameterManager;
-
-    /**
-     * @var ResourceRepository
-     */
-    protected $parameterRepository;
-
-    /**
-     * @var LocaleProviderInterface
-     */
-    protected $localeProvider;
-
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
-     * @var AdapterInterface
-     */
-    protected $cache;
-
-    /**
-     * @var TagManager
-     */
-    protected $tagManager; // TODO Remove
-
-    /**
-     * @var array|Settings[]
-     */
-    protected $resolvedSettings = [];
-
-
-    /**
-     * Constructor
-     *
-     * @param SchemaRegistryInterface $schemaRegistry
-     * @param ObjectManager           $parameterManager
-     * @param ResourceRepository      $parameterRepository
-     * @param LocaleProviderInterface $localeProvider
-     * @param ValidatorInterface      $validator
-     * @param AdapterInterface        $cache
-     * @param TagManager              $tagManager
-     */
     public function __construct(
-        SchemaRegistryInterface $schemaRegistry,
-        ObjectManager $parameterManager,
-        ResourceRepository $parameterRepository,
-        LocaleProviderInterface $localeProvider,
-        ValidatorInterface $validator,
-        AdapterInterface $cache,
-        TagManager $tagManager
+        SchemaRegistryInterface      $registry,
+        ResourceManagerInterface     $manager,
+        ParameterRepositoryInterface $repository,
+        LocaleProviderInterface      $localeProvider,
+        ValidatorInterface           $validator,
+        AdapterInterface             $cache
     ) {
-        $this->schemaRegistry = $schemaRegistry;
-        $this->parameterManager = $parameterManager;
-        $this->parameterRepository = $parameterRepository;
+        $this->registry = $registry;
+        $this->manager = $manager;
+        $this->repository = $repository;
         $this->localeProvider = $localeProvider;
         $this->validator = $validator;
         $this->cache = $cache;
-        $this->tagManager = $tagManager;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function saveSettings($namespace, Settings $settings)
+    public function saveSettings(string $namespace, Settings $settings): void
     {
-        $schema = $this->schemaRegistry->getSchema($namespace);
+        $schema = $this->registry->getSchema($namespace);
 
         $settingsBuilder = new SettingsBuilder();
         $schema->buildSettings($settingsBuilder);
@@ -116,9 +74,8 @@ class SettingsManager implements SettingsManagerInterface
             $this->resolvedSettings[$namespace]->setParameters($parameters);
         }
 
-        /** @var Parameter[] $persistedParameters */
-        $persistedParameters = $this->parameterRepository->findBy(['namespace' => $namespace]);
-        /** @var Parameter[] $persistedParametersMap */
+        $persistedParameters = $this->repository->findByNamespace($namespace);
+        /** @var ParameterInterface[] $persistedParametersMap */
         $persistedParametersMap = [];
 
         foreach ($persistedParameters as $parameter) {
@@ -135,25 +92,23 @@ class SettingsManager implements SettingsManagerInterface
                     ->setName($name)
                     ->setValue($value);
 
-                /* @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
                 $errors = $this->validator->validate($parameter);
                 if (0 < $errors->count()) {
                     throw new ValidatorException($errors->get(0)->getMessage());
                 }
 
-                $this->parameterManager->persist($parameter);
+                $this->manager->persist($parameter);
             }
         }
 
-        $this->parameterManager->flush();
+        $this->manager->flush();
 
         if ($this->cache) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             $item = $this->cache->getItem($namespace);
             $item->set($parameters);
             $this->cache->save($item);
         }
-
-        $this->tagManager->invalidateTags(self::HTTP_CACHE_TAG . '.' . $namespace);
     }
 
     /**
@@ -162,10 +117,10 @@ class SettingsManager implements SettingsManagerInterface
     public function getParameter(string $name, string $locale = null)
     {
         if (false === strpos($name, '.')) {
-            throw new \InvalidArgumentException("Parameter must be in format 'namespace.name', '$name' given");
+            throw new InvalidArgumentException("Parameter must be in format 'namespace.name', '$name' given");
         }
 
-        list($namespace, $name) = explode('.', $name);
+        [$namespace, $name] = explode('.', $name);
 
         $settings = $this->loadSettings($namespace);
 
@@ -181,18 +136,14 @@ class SettingsManager implements SettingsManagerInterface
         return $parameter;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function loadSettings($namespace)
+    public function loadSettings(string $namespace): Settings
     {
-        $this->tagManager->addTags(self::HTTP_CACHE_TAG . '.' . $namespace);
-
         if (isset($this->resolvedSettings[$namespace])) {
             return $this->resolvedSettings[$namespace];
         }
 
         if ($this->cache) {
+            /** @noinspection PhpUnhandledExceptionInspection */
             $item = $this->cache->getItem($namespace);
             if ($item->isHit()) {
                 $parameters = $item->get();
@@ -205,7 +156,7 @@ class SettingsManager implements SettingsManagerInterface
             $parameters = $this->getParameters($namespace);
         }
 
-        $schema = $this->schemaRegistry->getSchema($namespace);
+        $schema = $this->registry->getSchema($namespace);
 
         $settingsBuilder = new SettingsBuilder();
         $schema->buildSettings($settingsBuilder);
@@ -224,59 +175,43 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * Load parameter from database.
      *
-     * @param string $namespace
-     *
-     * @return array
+     * @return ParameterInterface[]
      */
-    private function getParameters($namespace)
+    private function getParameters(string $namespace): array
     {
         $parameters = [];
 
-        /** @var Parameter $parameter */
-        foreach ($this->parameterRepository->findBy(['namespace' => $namespace]) as $parameter) {
+        foreach ($this->repository->findByNamespace($namespace) as $parameter) {
             $parameters[$parameter->getName()] = $parameter->getValue();
         }
 
         return $parameters;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getLabels()
+    public function getLabels(): array
     {
         $labels = [];
-        foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
-            $label = $schema->getLabel();
-            if (is_string($label)) {
-                $label = [$label, null];
-            }
-            $labels[$namespace] = $label;
+        foreach ($this->registry->getSchemas() as $namespace => $schema) {
+            $labels[$namespace] = $schema->getLabel();
         }
 
         return $labels;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getShowTemplates()
+    public function getShowTemplates(): array
     {
         $templates = [];
-        foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
+        foreach ($this->registry->getSchemas() as $namespace => $schema) {
             $templates[$namespace] = $schema->getShowTemplate();
         }
 
         return $templates;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getFormTemplates()
+    public function getFormTemplates(): array
     {
         $templates = [];
-        foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
+        foreach ($this->registry->getSchemas() as $namespace => $schema) {
             $templates[$namespace] = $schema->getFormTemplate();
         }
 

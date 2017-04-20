@@ -1,3 +1,0 @@
-ekyna_setting_api_helper:
-    resource: "api/helper.yml"
-    prefix:   /helper

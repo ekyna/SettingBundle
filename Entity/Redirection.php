@@ -1,9 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Entity;
 
+use DateTime;
 use Ekyna\Bundle\SettingBundle\Model\RedirectionInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+
+use function sprintf;
+use function strlen;
+use function substr;
 
 /**
  * Class Redirection
@@ -12,40 +19,13 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class Redirection implements RedirectionInterface
 {
-    /**
-     * @var integer
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $fromPath;
-
-    /**
-     * @var string
-     */
-    private $toPath;
-
-    /**
-     * @var bool
-     */
-    private $permanent = false;
-
-    /**
-     * @var boolean
-     */
-    private $enabled = true;
-
-    /**
-     * @var int
-     */
-    private $count = 0;
-
-    /**
-     * @var \DateTime
-     */
-    private $usedAt;
+    private ?int      $id        = null;
+    private ?string   $fromPath  = null;
+    private ?string   $toPath    = null;
+    private bool      $permanent = false;
+    private bool      $enabled   = true;
+    private int       $count     = 0;
+    private ?DateTime $usedAt    = null;
 
 
     /**
@@ -66,7 +46,7 @@ class Redirection implements RedirectionInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getId(): ?int
     {
@@ -74,9 +54,9 @@ class Redirection implements RedirectionInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function setFromPath($fromPath)
+    public function setFromPath(string $fromPath): RedirectionInterface
     {
         $this->fromPath = $fromPath;
 
@@ -84,17 +64,17 @@ class Redirection implements RedirectionInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getFromPath()
+    public function getFromPath(): ?string
     {
         return $this->fromPath;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function setToPath($toPath)
+    public function setToPath(string $toPath): RedirectionInterface
     {
         $this->toPath = $toPath;
 
@@ -102,70 +82,71 @@ class Redirection implements RedirectionInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getToPath()
+    public function getToPath(): ?string
     {
         return $this->toPath;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function setPermanent($permanent)
+    public function setPermanent(bool $permanent): RedirectionInterface
     {
-        $this->permanent = (bool)$permanent;
+        $this->permanent = $permanent;
+
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getPermanent()
+    public function getPermanent(): bool
     {
         return $this->permanent;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled): RedirectionInterface
     {
-        $this->enabled = (bool)$enabled;
+        $this->enabled = $enabled;
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getEnabled()
+    public function getEnabled(): bool
     {
         return $this->enabled;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function setCount($count)
+    public function setCount(int $count): RedirectionInterface
     {
-        $this->count = intval($count);
+        $this->count = $count;
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function setUsedAt(\DateTime $usedAt = null)
+    public function setUsedAt(DateTime $usedAt = null): RedirectionInterface
     {
         $this->usedAt = $usedAt;
 
@@ -173,17 +154,17 @@ class Redirection implements RedirectionInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getUsedAt()
+    public function getUsedAt(): ?DateTime
     {
         return $this->usedAt;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getResponse()
+    public function getResponse(): RedirectResponse
     {
         return new RedirectResponse($this->toPath, $this->permanent ? 301 : 302);
     }

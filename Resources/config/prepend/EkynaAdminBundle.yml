@@ -1,4 +1,0 @@
-ekyna_admin:
-    show:
-        templates:
-            - '@EkynaSetting/Show/show_div_layout.html.twig'

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Schema;
 
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
  * Interface SchemaInterface
@@ -16,7 +19,7 @@ interface SchemaInterface
      *
      * @param SettingsBuilder $builder
      */
-    public function buildSettings(SettingsBuilder $builder);
+    public function buildSettings(SettingsBuilder $builder): void;
 
     /**
      * Build form.
@@ -29,23 +32,23 @@ interface SchemaInterface
     /**
      * Returns the label.
      *
-     * Can be a string or an array : ([<label>, <trans domain>]).
-     * 
+     * Can be a string or an array : (['label', 'trans domain']).
+     *
      * @return string|array
      */
-    public function getLabel();
+    public function getLabel(): TranslatableInterface;
 
     /**
      * Returns the show template.
-     * 
+     *
      * @return string
      */
-    public function getShowTemplate();
+    public function getShowTemplate(): string;
 
     /**
      * Returns the form template.
-     * 
+     *
      * @return string
      */
-    public function getFormTemplate();
+    public function getFormTemplate(): string;
 }

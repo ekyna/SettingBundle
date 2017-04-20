@@ -1,6 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Schema;
+
+use InvalidArgumentException;
+
+use function sprintf;
 
 /**
  * Class SchemaRegistry
@@ -9,12 +15,9 @@ namespace Ekyna\Bundle\SettingBundle\Schema;
  */
 class SchemaRegistry implements SchemaRegistryInterface
 {
-    /**
-     * Schemas
-     *
-     * @var array
-     */
-    protected $schemas;
+    /** @var SchemaInterface[] */
+    protected array $schemas;
+
 
     /**
      * Constructor
@@ -25,54 +28,67 @@ class SchemaRegistry implements SchemaRegistryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getSchemas()
+    public function getSchemas(): array
     {
         return $this->schemas;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function registerSchema($namespace, SchemaInterface $schema)
-    {
-        if ($this->hasSchema($namespace)) {
-            throw new \InvalidArgumentException(sprintf('Schema with namespace "%s" has been already registered', $namespace));
-        }
-
-        $this->schemas[$namespace] = $schema;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function unregisterSchema($namespace)
+    public function registerSchema(string $namespace, SchemaInterface $schema): void
     {
         if (!$this->hasSchema($namespace)) {
-            throw new \InvalidArgumentException(sprintf('Schema with namespace "%s" does not exist', $namespace));
+            $this->schemas[$namespace] = $schema;
+
+            return;
         }
 
-        unset($this->schemas[$namespace]);
+        throw new InvalidArgumentException(sprintf(
+            'Schema with namespace "%s" has been already registered',
+            $namespace
+        ));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function hasSchema($namespace)
+    public function unregisterSchema(string $namespace): void
+    {
+        if ($this->hasSchema($namespace)) {
+            unset($this->schemas[$namespace]);
+
+            return;
+        }
+
+        throw new InvalidArgumentException(sprintf(
+            'Schema with namespace "%s" does not exist',
+            $namespace
+        ));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasSchema($namespace): bool
     {
         return isset($this->schemas[$namespace]);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getSchema($namespace)
+    public function getSchema($namespace): SchemaInterface
     {
-        if (!$this->hasSchema($namespace)) {
-            throw new \InvalidArgumentException(sprintf('Schema with namespace "%s" does not exist', $namespace));
+        if ($this->hasSchema($namespace)) {
+            return $this->schemas[$namespace];
         }
 
-        return $this->schemas[$namespace];
+        throw new InvalidArgumentException(sprintf(
+            'Schema with namespace "%s" does not exist',
+            $namespace
+        ));
     }
 }

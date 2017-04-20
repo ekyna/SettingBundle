@@ -1,0 +1,52 @@
+setting: Configuration
+redirection:
+    label:
+        singular: Redirection
+        plural: Redirections
+    header:
+        list: Redirections <small>Liste des redirections</small>
+        show: Détail de la redirection <small>%name%</small>
+        new: Créer une nouvelle redirection
+        edit: Modifier la redirection <small>%name%</small>
+        remove: Supprimer la redirection <small>%name%</small>
+#    button:
+#        list: Liste des redirections
+#        show: Détail de la redirection
+#        new: Nouvelle redirection
+#        edit: Modifier la redirection
+#        remove: Supprimer la redirection
+    field:
+        from_path: Depuis
+        to_path: Vers
+        permanent: Permanente
+        count: Compteur
+        used_at: Dernière utilisation
+    alert:
+        empty_list: Aucune redirection configuré
+helper:
+    label:
+        singular: Assistant
+        plural: Assistants
+    header:
+        list: Assistants <small>Liste des assistants</small>
+        show: Détail de l'assistant <small>%name%</small>
+        new: Créer un nouvel assistant
+        edit: Modifier l'assistant <small>%name%</small>
+        remove: Supprimer l'assistant <small>%name%</small>
+#    button:
+#        list: Liste des assistants
+#        show: Détail de l'assistant
+#        new: Nouvel assistant
+#        edit: Modifier l'assistant
+#        remove: Supprimer l'assistant
+    alert:
+        empty_list: Aucun assistant configuré
+parameter:
+    label:
+        singular: Paramètre
+        plural: Paramètres
+    header:
+        edit: Modifier les paramètres
+        show: Afficher les paramètres
+    flash:
+        edit: Les paramètres ont correctement été mis à jours.

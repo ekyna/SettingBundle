@@ -1,21 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Model;
 
+use ArrayAccess;
+use InvalidArgumentException;
+
+use function sprintf;
+
 /**
- * Settings
- *
- * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
- * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Model/Settings.php
+ * Class Settings
+ * @package Ekyna\Bundle\SettingBundle\Model
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class Settings implements \ArrayAccess
+final class Settings implements ArrayAccess
 {
-    /**
-     * Parameters.
-     *
-     * @var array
-     */
-    protected $parameters;
+    protected array $parameters;
 
     /**
      * Constructor.
@@ -28,71 +29,88 @@ class Settings implements \ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the parameters.
+     *
+     * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the parameters.
+     *
+     * @param array $parameters
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
 
     /**
-     * {@inheritdoc}
+     * Returns whether this settings has a parameter by its name.
+     *
+     * @param string $name
+     *
+     * @return bool
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         return array_key_exists($name, $this->parameters);
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the parameter by its name.
+     *
+     * @param string $name
+     *
+     * @return mixed
      */
-    public function get($name)
+    public function get(string $name)
     {
         if (!$this->has($name)) {
-            throw new \InvalidArgumentException(sprintf('Parameter with name "%s" does not exist.', $name));
+            throw new InvalidArgumentException(sprintf('Parameter with name "%s" does not exist.', $name));
         }
 
         return $this->parameters[$name];
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the parameter.
+     *
+     * @param string $name
+     * @param mixed  $value
      */
-    public function set($name, $value)
+    public function set(string $name, $value): void
     {
         $this->parameters[$name] = $value;
     }
 
     /**
-     * {@inheritdoc}
+     * Removes the parameter by its name.
+     *
+     * @param string $name
      */
-    public function remove($name)
+    public function remove(string $name): void
     {
         if (!$this->has($name)) {
-            throw new \InvalidArgumentException(sprintf('Parameter with name "%s" does not exist.', $name));
+            throw new InvalidArgumentException(sprintf('Parameter with name "%s" does not exist.', $name));
         }
 
         unset($this->parameters[$name]);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->has($offset);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetGet($offset)
     {
@@ -100,24 +118,29 @@ class Settings implements \ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->set($offset, $value);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->remove($offset);
     }
 
-    public function merge(Settings $settings)
+    /**
+     * Merges the settings.
+     *
+     * @param Settings $settings
+     */
+    public function merge(Settings $settings): void
     {
-        foreach($settings as $name => $value) {
+        foreach ($settings as $name => $value) {
             $this->set($name, $value);
         }
     }

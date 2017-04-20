@@ -1,0 +1,52 @@
+setting: Configuration
+redirection:
+    label:
+        singular: Redirection
+        plural: Redirections
+    header:
+        list: Redirections <small>List of the redirection</small>
+        show: Redirection details <small>%name%</small>
+        new: Create a new redirection
+        edit: Edit the redirection <small>%name%</small>
+        remove: Remove the redirection <small>%name%</small>
+#    button:
+#        list: Redirections list
+#        show: Redirection details
+#        new: New redirection
+#        edit: Edit the redirection
+#        remove: Remove the redirection
+    field:
+        from_path: Source path
+        to_path: Target path
+        permanent: Permanent
+        count: Count
+        used_at: Used at
+    alert:
+        empty_list: No redirection configured
+helper:
+    label:
+        singular: Helper
+        plural: Helpers
+    header:
+        list: Helpers <small>List of the helpers</small>
+        show: Helper details <small>%name%</small>
+        new: Create a new helper
+        edit: Edit the helper <small>%name%</small>
+        remove: Remove the helper <small>%name%</small>
+#    button:
+#        list: Helpers list
+#        show: Helper details
+#        new: New helper
+#        edit: Edit the helper
+#        remove: Remove the helper
+    alert:
+        empty_list: No helper configured
+parameter:
+    label:
+        singular: Parameter
+        plural: Parameters
+    header:
+        edit: Edit the parameters
+        show: Show the parameters
+    flash:
+        edit: Parameters have been updated.

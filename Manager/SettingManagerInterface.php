@@ -1,63 +1,57 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Manager;
 
 use Ekyna\Bundle\SettingBundle\Model\Settings;
+use InvalidArgumentException;
+use Symfony\Contracts\Translation\TranslatableInterface;
 
 /**
- * Interface SettingsManagerInterface
+ * Interface SettingManagerInterface
  * @package Ekyna\Bundle\SettingBundle\Manager
  * @author  Etienne Dauvergne <contact@ekyna.com>
  */
-interface SettingsManagerInterface
+interface SettingManagerInterface
 {
     /**
      * Load settings from given namespace.
-     *
-     * @param string $namespace
-     *
-     * @return Settings
      */
-    public function loadSettings(string $namespace);
+    public function loadSettings(string $namespace): Settings;
 
     /**
      * Save settings under given namespace.
-     *
-     * @param string   $namespace
-     * @param Settings $settings
      */
-    public function saveSettings(string $namespace, Settings $settings);
+    public function saveSettings(string $namespace, Settings $settings): void;
 
     /**
      * Returns settings parameter for given namespace and name.
      *
-     * @param string $name
-     * @param string $locale
-     *
      * @return mixed
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function getParameter(string $name, string $locale = null);
 
     /**
      * Returns namespaces labels.
      *
-     * @return array
+     * @return array<string, TranslatableInterface>
      */
-    public function getLabels();
+    public function getLabels(): array;
 
     /**
      * Returns namespaces show templates.
      *
-     * @return array
+     * @return array<string>
      */
-    public function getShowTemplates();
+    public function getShowTemplates(): array;
 
     /**
      * Returns namespaces form templates.
      *
-     * @return array
+     * @return array<string>
      */
-    public function getFormTemplates();
+    public function getFormTemplates(): array;
 }

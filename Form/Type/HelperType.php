@@ -1,34 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Form\Type;
 
-use Ekyna\Bundle\AdminBundle\Form\Type\ResourceFormType;
+use Ekyna\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
+
+use function Symfony\Component\Translation\t;
 
 /**
  * Class HelperType
  * @package Ekyna\Bundle\SettingBundle\Form\Type
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class HelperType extends ResourceFormType
+class HelperType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', Type\TextType::class, [
-                'label'    => 'ekyna_core.field.name',
+                'label'    => t('field.name', [], 'EkynaUi'),
                 'required' => true,
             ])
             ->add('reference', Type\TextType::class, [
-                'label'    => 'ekyna_core.field.reference',
+                'label'    => t('field.reference', [], 'EkynaUi'),
                 'required' => true,
             ])
             ->add('content', Type\TextareaType::class, [
-                'label'    => 'ekyna_core.field.content',
+                'label'    => t('field.content', [], 'EkynaUi'),
                 'required' => false,
                 'attr'     => [
                     'class'      => 'tinymce',
@@ -36,7 +37,7 @@ class HelperType extends ResourceFormType
                 ],
             ])
             ->add('enabled', Type\CheckboxType::class, [
-                'label'    => 'ekyna_core.field.enabled',
+                'label'    => t('field.enabled', [], 'EkynaUi'),
                 'required' => false,
             ]);
     }

@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Model;
 
+use DateTime;
 use Ekyna\Component\Resource\Model\ResourceInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Interface RedirectionInterface
@@ -18,14 +22,14 @@ interface RedirectionInterface extends ResourceInterface
      *
      * @return RedirectionInterface|$this
      */
-    public function setFromPath($fromPath);
+    public function setFromPath(string $fromPath): RedirectionInterface;
 
     /**
      * Returns the "from path".
      *
-     * @return string
+     * @return string|null
      */
-    public function getFromPath();
+    public function getFromPath(): ?string;
 
     /**
      * Sets the "to path".
@@ -34,46 +38,46 @@ interface RedirectionInterface extends ResourceInterface
      *
      * @return RedirectionInterface|$this
      */
-    public function setToPath($toPath);
+    public function setToPath(string $toPath): RedirectionInterface;
 
     /**
      * Returns the "to path".
      *
-     * @return string
+     * @return string|null
      */
-    public function getToPath();
+    public function getToPath(): ?string;
 
     /**
      * Sets the permanent.
      *
-     * @param boolean $permanent
+     * @param bool $permanent
      *
      * @return RedirectionInterface|$this
      */
-    public function setPermanent($permanent);
+    public function setPermanent(bool $permanent): RedirectionInterface;
 
     /**
      * Returns the permanent.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getPermanent();
+    public function getPermanent(): bool;
 
     /**
      * Sets the enabled.
      *
-     * @param boolean $enabled
+     * @param bool $enabled
      *
      * @return RedirectionInterface|$this
      */
-    public function setEnabled($enabled);
+    public function setEnabled(bool $enabled): RedirectionInterface;
 
     /**
      * Returns the enabled.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getEnabled();
+    public function getEnabled(): bool;
 
     /**
      * Sets the count.
@@ -82,35 +86,35 @@ interface RedirectionInterface extends ResourceInterface
      *
      * @return RedirectionInterface|$this
      */
-    public function setCount($count);
+    public function setCount(int $count): RedirectionInterface;
 
     /**
      * Returns the count.
      *
      * @return int
      */
-    public function getCount();
+    public function getCount(): int;
 
     /**
      * Sets the usedAt.
      *
-     * @param \DateTime $usedAt
+     * @param DateTime|null $usedAt
      *
      * @return RedirectionInterface|$this
      */
-    public function setUsedAt(\DateTime $usedAt = null);
+    public function setUsedAt(DateTime $usedAt = null): RedirectionInterface;
 
     /**
      * Returns the usedAt.
      *
-     * @return \DateTime
+     * @return DateTime|null
      */
-    public function getUsedAt();
+    public function getUsedAt(): ?DateTime;
 
     /**
      * Returns the redirect response.
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function getResponse();
+    public function getResponse(): RedirectResponse;
 }

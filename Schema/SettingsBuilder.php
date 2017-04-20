@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Schema;
 
 use Ekyna\Bundle\SettingBundle\Transformer\ParameterTransformerInterface;
@@ -12,12 +14,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SettingsBuilder extends OptionsResolver
 {
-    /**
-     * Transformers array.
-     *
-     * @var ParameterTransformerInterface[]
-     */
-    protected $transformers = [];
+    /** @var ParameterTransformerInterface[] */
+    protected array $transformers = [];
 
 
     /**
@@ -25,9 +23,10 @@ class SettingsBuilder extends OptionsResolver
      *
      * @param string                        $parameterName
      * @param ParameterTransformerInterface $transformer
+     *
      * @return SettingsBuilder
      */
-    public function setTransformer($parameterName, ParameterTransformerInterface $transformer)
+    public function setTransformer(string $parameterName, ParameterTransformerInterface $transformer): SettingsBuilder
     {
         $this->transformers[$parameterName] = $transformer;
 
@@ -39,7 +38,7 @@ class SettingsBuilder extends OptionsResolver
      *
      * @return ParameterTransformerInterface[]
      */
-    public function getTransformers()
+    public function getTransformers(): array
     {
         return $this->transformers;
     }

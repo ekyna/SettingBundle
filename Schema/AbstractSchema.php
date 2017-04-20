@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Schema;
 
 use Symfony\Component\Form\AbstractType;
@@ -13,10 +15,7 @@ use Symfony\Component\Validator\Constraints\Valid;
  */
 abstract class AbstractSchema extends AbstractType implements SchemaInterface
 {
-    /**
-     * @var array
-     */
-    protected $defaults;
+    protected array $defaults;
 
 
     /**
@@ -28,9 +27,9 @@ abstract class AbstractSchema extends AbstractType implements SchemaInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'constraints' => [new Valid()],

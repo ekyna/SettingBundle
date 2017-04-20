@@ -1,52 +1,61 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\DependencyInjection;
 
-use Ekyna\Bundle\ResourceBundle\DependencyInjection\AbstractExtension;
+use Ekyna\Bundle\ResourceBundle\DependencyInjection\PrependBundleConfigTrait;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 /**
  * Class EkynaSettingExtension
  * @package Ekyna\Bundle\SettingBundle\DependencyInjection
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class EkynaSettingExtension extends AbstractExtension
+class EkynaSettingExtension extends Extension implements PrependExtensionInterface
 {
+    use PrependBundleConfigTrait;
+
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $config = $this->configure($configs, 'ekyna_setting', new Configuration(), $container);
+        $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $container->setParameter('ekyna_setting.helper_remotes', $config['helper_remotes']);
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.php');
+
+        $this->configureTinymceTheme($container);
+
+        $container
+            ->getDefinition('ekyna_setting.controller.helper')
+            ->replaceArgument(2, $config['helper_remotes']);
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function prepend(ContainerBuilder $container)
     {
-        parent::prepend($container);
-
-        $bundles = $container->getParameter('kernel.bundles');
-
-        // TODO
-        /*if (array_key_exists('EkynaCoreBundle', $bundles)) {
-            $this->configureTinymceTheme($container, $bundles);
-        }*/
+        $this->prependBundleConfigFiles($container);
     }
 
     /**
      * Configures the tinymce theme.
      *
      * @param ContainerBuilder $container
-     * @param array            $bundles
      */
-    private function configureTinymceTheme(ContainerBuilder $container, array $bundles)
+    private function configureTinymceTheme(ContainerBuilder $container)
     {
+        $bundles = $container->getParameter('kernel.bundles');
+
         $tinymceConfig = new TinymceConfiguration();
-        $container->prependExtensionConfig('ekyna_core', [
+        $container->prependExtensionConfig('ekyna_ui', [
             'tinymce' => $tinymceConfig->build($bundles),
         ]);
     }

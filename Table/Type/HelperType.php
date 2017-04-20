@@ -1,69 +1,57 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Table\Type;
 
-use Ekyna\Bundle\AdminBundle\Table\Type\ResourceTableType;
+use Ekyna\Bundle\AdminBundle\Action\DeleteAction;
+use Ekyna\Bundle\AdminBundle\Action\UpdateAction;
+use Ekyna\Bundle\ResourceBundle\Table\Type\AbstractResourceType;
 use Ekyna\Bundle\TableBundle\Extension\Type as BType;
 use Ekyna\Component\Table\Extension\Core\Type as CType;
 use Ekyna\Component\Table\TableBuilderInterface;
+
+use function Symfony\Component\Translation\t;
 
 /**
  * Class HelperType
  * @package Ekyna\Bundle\SettingBundle\Table\Type
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class HelperType extends ResourceTableType
+class HelperType extends AbstractResourceType
 {
-    /**
-     * @inheritdoc
-     */
-    public function buildTable(TableBuilderInterface $builder, array $options)
+    public function buildTable(TableBuilderInterface $builder, array $options): void
     {
         $builder
             ->addColumn('name', BType\Column\AnchorType::class, [
-                'label'                => 'ekyna_core.field.name',
-                'route_name'           => 'ekyna_setting_helper_admin_show',
-                'route_parameters_map' => [
-                    'helperId' => 'id',
-                ],
-                'position'             => 10,
+                'label'    => t('field.name', [], 'EkynaUi'),
+                'position' => 10,
             ])
             ->addColumn('reference', CType\Column\TextType::class, [
-                'label'    => 'ekyna_core.field.reference',
+                'label'    => t('field.reference', [], 'EkynaUi'),
                 'position' => 20,
             ])
             ->addColumn('enabled', CType\Column\BooleanType::class, [
-                'label'    => 'ekyna_core.field.enabled',
+                'label'    => t('field.enabled', [], 'EkynaUi'),
                 'position' => 30,
             ])
             ->addColumn('actions', BType\Column\ActionsType::class, [
-                'buttons' => [
-                    [
-                        'label'                => 'ekyna_core.button.edit',
-                        'class'                => 'warning',
-                        'route_name'           => 'ekyna_setting_helper_admin_edit',
-                        'route_parameters_map' => ['helperId' => 'id'],
-                        'permission'           => 'edit',
-                    ],
-                    [
-                        'label'                => 'ekyna_core.button.remove',
-                        'class'                => 'danger',
-                        'route_name'           => 'ekyna_setting_helper_admin_remove',
-                        'route_parameters_map' => ['helperId' => 'id'],
-                        'permission'           => 'delete',
-                    ],
+                'resource' => $this->dataClass,
+                'actions'  => [
+                    UpdateAction::class,
+                    DeleteAction::class,
                 ],
             ])
             ->addFilter('name', CType\Filter\TextType::class, [
-                'label'    => 'ekyna_core.field.name',
+                'label'    => t('field.name', [], 'EkynaUi'),
                 'position' => 10,
             ])
             ->addFilter('reference', CType\Filter\TextType::class, [
-                'label'    => 'ekyna_core.field.reference',
+                'label'    => t('field.reference', [], 'EkynaUi'),
                 'position' => 20,
             ])
             ->addFilter('enabled', CType\Filter\BooleanType::class, [
-                'label'    => 'ekyna_core.field.enabled',
+                'label'    => t('field.enabled', [], 'EkynaUi'),
                 'position' => 30,
             ]);
     }

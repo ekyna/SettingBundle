@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Event;
 
 /**
@@ -9,6 +11,10 @@ namespace Ekyna\Bundle\SettingBundle\Event;
  */
 final class RedirectionEvents
 {
-    const BUILD   = 'ekyna_setting.redirection.build';
-    const DISCARD = 'ekyna_setting.redirection.discard';
+    public const BUILD   = 'ekyna_setting.redirection.build';
+    public const DISCARD = 'ekyna_setting.redirection.discard';
+
+    private function __construct()
+    {
+    }
 }

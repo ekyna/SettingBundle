@@ -1,4 +1,0 @@
-doctrine_cache:
-    providers:
-        ekyna_settings:
-            type: "%cache%"

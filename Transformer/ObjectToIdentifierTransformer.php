@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Transformer;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -13,7 +15,7 @@ use Ekyna\Bundle\CoreBundle\Form\DataTransformer\ObjectToIdentifierTransformer a
 class ObjectToIdentifierTransformer extends BaseTransformer implements ParameterTransformerInterface
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function transform($value)
     {
@@ -27,7 +29,7 @@ class ObjectToIdentifierTransformer extends BaseTransformer implements Parameter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function reverseTransform($value)
     {

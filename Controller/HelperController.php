@@ -1,35 +1,62 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Controller;
 
-use Ekyna\Bundle\CoreBundle\Controller\Controller;
+use DateTime;
+use Ekyna\Bundle\SettingBundle\Repository\HelperRepositoryInterface;
 use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
+
+use function explode;
+use function implode;
+use function in_array;
+use function is_array;
+use function is_int;
+use function strpos;
+use function strtolower;
+use function trim;
 
 /**
  * Class HelperController
  * @package Ekyna\Bundle\SettingBundle\Controller
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class HelperController extends Controller
+class HelperController
 {
+    private HelperRepositoryInterface $repository;
+    private Environment               $twig;
+    private array                     $remotes;
+
+    public function __construct(HelperRepositoryInterface $repository, Environment $twig, array $remotes)
+    {
+        $this->repository = $repository;
+        $this->twig = $twig;
+        $this->remotes = $remotes;
+    }
+
     /**
      * Fetches the helper content.
      *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @noinspection PhpDocMissingThrowsInspection
      */
-    public function fetchAction(Request $request)
+    public function fetch(Request $request): Response
     {
-        $reference = strtoupper($request->query->get('reference', null));
-        $remote = (bool)$request->query->get('remote', 1);
+        $reference = strtoupper($request->query->getAlnum('reference'));
 
-        if (0 < strlen($reference) && $remote) {
-            $remoteEndPoints = $this->container->getParameter('ekyna_setting.helper_remotes');
-            foreach ($remoteEndPoints as $remoteEndPoint) {
+        if (empty($reference)) {
+            return new Response('Empty reference', Response::HTTP_BAD_REQUEST);
+        }
+
+        $useRemotes = $request->query->getBoolean('remote', true);
+
+        if ($useRemotes) {
+            foreach ($this->remotes as $remote) {
                 // remote=0 prevent infinite loop/recursion
-                $url = $remoteEndPoint . '?reference=' . $reference . '&remote=0';
+                $url = $remote . '?reference=' . $reference . '&remote=0';
                 $headers = $request->headers->all();
                 if (null !== $response = $this->getRemoteResponse($url, $headers)) {
                     return $response;
@@ -37,49 +64,42 @@ class HelperController extends Controller
             }
         }
 
-        $ttl = 7 * 24 * 3600;
+        // TODO findByReference repository method
+        if (null === $helper = $this->repository->findOneBy(['reference' => $reference])) {
+            return new Response('Helper not found', Response::HTTP_NOT_FOUND);
+        }
+
         $response = new Response();
         $response
             ->setPublic()
-            ->headers->add(['Content-Type' => 'application/xml; charset=utf-8'])
-        ;
+            ->setMaxAge(7 * 24 * 3600)
+            ->setExpires(new DateTime('+7 days'))
+            ->headers->add(['Content-Type' => 'application/xml; charset=utf-8']);
 
-        if (0 < strlen($reference)) {
-            $repository = $this->getDoctrine()->getRepository('EkynaSettingBundle:Helper');
-            if (null !== $helper = $repository->findOneBy(['reference' => $reference])) {
-                $response->setLastModified($helper->getUpdatedAt());
-                if ($response->isNotModified($request)) {
-                    return $response;
-                }
-                $response->setContent($this->renderView('@EkynaSetting/Helper/show.xml.twig', [
-                    'helper' => $helper,
-                ]));
-                return $this->configureSharedCache($response, [$helper->getEntityTag()], $ttl);
-            }
+        $response->setLastModified($helper->getUpdatedAt());
+        if ($response->isNotModified($request)) {
+            return $response;
         }
 
-        $expires = new \DateTime();
-        $expires->modify('+7 days');
-        return $response
-            ->setMaxAge($ttl)
-            ->setExpires($expires)
-            ->setContent($this->renderView('@EkynaSetting/Helper/show.xml.twig'))
-        ;
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $response->setContent($this->twig->render('@EkynaSetting/Helper/show.xml.twig', [
+            'helper' => $helper,
+        ]));
+
+        return $response;
     }
 
     /**
      * Sends a http request to a remote server and returns a (symfony) response on success or null on failure.
      *
-     * @param string $url
-     * @param array $headers
-     * @return null|Response
+     * @noinspection PhpDocMissingThrowsInspection
      */
-    protected function getRemoteResponse($url, array $headers = [])
+    protected function getRemoteResponse(string $url, array $headers = []): ?Response
     {
         $fixedHeaders = ['connection' => 'close'];
-        foreach($headers as $key => $header) {
+        foreach ($headers as $key => $header) {
             if (is_int($key)) {
-                list($key, $header) = explode(':', $header);
+                [$key, $header] = explode(':', $header);
             }
             $key = strtolower($key);
             if (in_array($key, ['cache-control', 'accept', 'user-agent', 'accept-encoding', 'accept-language'])) {
@@ -91,17 +111,19 @@ class HelperController extends Controller
 
         $client = new Client();
         /** @var \GuzzleHttp\Psr7\Response $res */
+        /** @noinspection PhpUnhandledExceptionInspection */
         $res = $client->request('GET', $url, $fixedHeaders);
         if (200 <= $res->getStatusCode() && $res->getStatusCode() < 300) {
             $response = new Response($res->getBody(), $res->getStatusCode());
             $headers = [];
-            foreach($res->getHeaders() as $header) {
+            foreach ($res->getHeaders() as $header) {
                 if (0 < strpos($header, ':')) {
-                    list($key, $value) = explode(':', $header);
+                    [$key, $value] = explode(':', $header);
                     $headers[trim($key)] = trim($value);
                 }
             }
             $response->headers->add($headers);
+
             return $response;
         }
 

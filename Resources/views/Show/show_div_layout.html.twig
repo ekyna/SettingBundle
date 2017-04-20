@@ -1,5 +1,5 @@
-{% block i18n_parameter_widget %}
-{% spaceless %}
+{% block setting_i18n_parameter_widget %}
+{% apply spaceless %}
     <div class="translations-forms">
         <ul class="nav nav-tabs translations-locales">
             {% for locale, translation in value -%}
@@ -28,5 +28,5 @@
             {%- endfor %}
         </div>
     </div>
-{% endspaceless %}
-{% endblock i18n_parameter_widget %}
+{% endapply %}
+{% endblock setting_i18n_parameter_widget %}

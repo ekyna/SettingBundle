@@ -1,35 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Entity;
 
 use Ekyna\Bundle\SettingBundle\Model\ParameterInterface;
 
 /**
- * Parameter
- *
- * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
- * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Model/Parameter.php
+ * Class Parameter
+ * @package Ekyna\Bundle\SettingBundle\Entity
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class Parameter implements ParameterInterface
 {
-    /**
-     * @var int
-     */
-    protected $id;
-
-    /**
-     * @var string
-     */
-    protected $namespace;
-
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var \stdClass
-     */
+    protected ?int $id = null;
+    protected ?string $namespace = null;
+    protected ?string $name = null;
     protected $value;
 
 
@@ -44,9 +30,7 @@ class Parameter implements ParameterInterface
     }
 
     /**
-     * Get id
-     *
-     * @return int
+     * @inheritDoc
      */
     public function getId(): ?int
     {
@@ -54,12 +38,9 @@ class Parameter implements ParameterInterface
     }
 
     /**
-     * Set namespace
-     *
-     * @param string $namespace
-     * @return Parameter
+     * @inheritDoc
      */
-    public function setNamespace($namespace)
+    public function setNamespace(string $namespace): ParameterInterface
     {
         $this->namespace = $namespace;
 
@@ -67,22 +48,17 @@ class Parameter implements ParameterInterface
     }
 
     /**
-     * Get namespace
-     *
-     * @return string
+     * @inheritDoc
      */
-    public function getNamespace()
+    public function getNamespace(): ?string
     {
         return $this->namespace;
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return Parameter
+     * @inheritDoc
      */
-    public function setName($name)
+    public function setName(string $name): ParameterInterface
     {
         $this->name = $name;
 
@@ -90,22 +66,17 @@ class Parameter implements ParameterInterface
     }
 
     /**
-     * Get name
-     *
-     * @return string
+     * @inheritDoc
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * Set value
-     *
-     * @param \stdClass $value
-     * @return Parameter
+     * @inheritDoc
      */
-    public function setValue($value)
+    public function setValue($value): ParameterInterface
     {
         $this->value = $value;
 
@@ -113,9 +84,7 @@ class Parameter implements ParameterInterface
     }
 
     /**
-     * Get value
-     *
-     * @return \stdClass
+     * @inheritDoc
      */
     public function getValue()
     {

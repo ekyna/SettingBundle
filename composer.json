@@ -5,7 +5,7 @@
     "authors": [
         {
             "name": "Etienne Dauvergne",
-            "homepage": "http://ekyna.com"
+            "homepage": "https://ekyna.com"
         }
     ],
     "keywords": [
@@ -13,11 +13,11 @@
         "settings",
         "bundle"
     ],
-    "homepage": "https://github.com/ekyna/CmsBundle",
+    "homepage": "https://github.com/ekyna/SettingBundle",
     "license": "MIT",
     "require": {
-        "php": ">=7.0",
-        "ekyna/admin-bundle": "0.7.x-dev",
+        "php": ">=7.4",
+        "ekyna/admin-bundle": "0.8.x-dev",
         "guzzlehttp/guzzle": "^6.2"
     },
     "autoload": {

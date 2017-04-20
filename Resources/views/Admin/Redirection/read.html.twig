@@ -1,0 +1,38 @@
+{% extends '@EkynaAdmin/Entity/Crud/read.html.twig' %}
+
+{% block main_tabs %}
+    <li class="active">
+        <a href="#redirection-general" id="toggle-general" data-toggle="tab">
+            {{ 'field.general'|trans({}, 'EkynaUi') }}
+        </a>
+    </li>
+{% endblock main_tabs %}
+
+{% block main_contents %}
+    <div class="tab-pane active" id="redirection-general">
+        {{ show_row(redirection.fromPath, 'text', {
+            'label': 'redirection.field.from_path',
+            'label_trans_domain': 'EkynaSetting'
+        }) }}
+        {{ show_row(redirection.toPath, 'text', {
+            'label': 'redirection.field.to_path',
+            'label_trans_domain': 'EkynaSetting'
+        }) }}
+        <div class="row">
+            <div class="col-md-6">
+                {{ show_row(redirection.permanent, 'boolean', {
+                    'label': 'redirection.field.permanent',
+                    'label_trans_domain': 'EkynaSetting',
+                    'label_col': 4
+                }) }}
+            </div>
+            <div class="col-md-6">
+                {{ show_row(redirection.enabled, 'boolean', {
+                    'label': 'field.enabled',
+                    'label_trans_domain': 'EkynaUi',
+                    'label_col': 4
+                }) }}
+            </div>
+        </div>
+    </div>
+{% endblock main_contents %}

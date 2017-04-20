@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Entity;
 
+use DateTime;
 use Ekyna\Component\Resource\Model as RM;
 
 /**
@@ -15,35 +18,12 @@ class Helper implements RM\TaggedEntityInterface
 {
     use RM\TaggedEntityTrait;
 
-    /**
-     * @var integer
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $reference;
-
-    /**
-     * @var string
-     */
-    private $content;
-
-    /**
-     * @var boolean
-     */
-    private $enabled;
-
-    /**
-     * @var \DateTime
-     */
-    protected $updatedAt;
+    private ?int        $id        = null;
+    private ?string     $name      = null;
+    private ?string     $reference = null;
+    private ?string     $content   = null;
+    private bool        $enabled   = false;
+    protected ?DateTime $updatedAt = null;
 
 
     /**
@@ -57,9 +37,7 @@ class Helper implements RM\TaggedEntityInterface
     }
 
     /**
-     * Returns the id.
-     *
-     * @return integer
+     * @inheritDoc
      */
     public function getId(): ?int
     {
@@ -73,7 +51,7 @@ class Helper implements RM\TaggedEntityInterface
      *
      * @return Helper
      */
-    public function setName($name)
+    public function setName(string $name): Helper
     {
         $this->name = $name;
 
@@ -83,9 +61,9 @@ class Helper implements RM\TaggedEntityInterface
     /**
      * Returns the name.
      *
-     * @return string
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -97,7 +75,7 @@ class Helper implements RM\TaggedEntityInterface
      *
      * @return Helper
      */
-    public function setReference($reference)
+    public function setReference(string $reference): Helper
     {
         $this->reference = $reference;
 
@@ -107,9 +85,9 @@ class Helper implements RM\TaggedEntityInterface
     /**
      * Returns the reference.
      *
-     * @return string
+     * @return string|null
      */
-    public function getReference()
+    public function getReference(): ?string
     {
         return $this->reference;
     }
@@ -121,7 +99,7 @@ class Helper implements RM\TaggedEntityInterface
      *
      * @return Helper
      */
-    public function setContent($content)
+    public function setContent(string $content): Helper
     {
         $this->content = $content;
 
@@ -131,9 +109,9 @@ class Helper implements RM\TaggedEntityInterface
     /**
      * Returns the content.
      *
-     * @return string
+     * @return string|null
      */
-    public function getContent()
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -141,13 +119,13 @@ class Helper implements RM\TaggedEntityInterface
     /**
      * Sets whether it is enabled or not.
      *
-     * @param boolean $enabled
+     * @param bool $enabled
      *
      * @return Helper
      */
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled): Helper
     {
-        $this->enabled = (bool)$enabled;
+        $this->enabled = $enabled;
 
         return $this;
     }
@@ -155,31 +133,31 @@ class Helper implements RM\TaggedEntityInterface
     /**
      * Returns whether it is enabled or not.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getEnabled()
+    public function getEnabled(): bool
     {
         return $this->enabled;
     }
 
     /**
-     * Returns the updatedAt.
+     * Returns the 'updated at' date.
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * Sets the updatedAt.
+     * Sets the 'updated at' date.
      *
-     * @param \DateTime $updatedAt
+     * @param DateTime|null $updatedAt
      *
      * @return Helper
      */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
+    public function setUpdatedAt(DateTime $updatedAt = null): Helper
     {
         $this->updatedAt = $updatedAt;
 
@@ -187,9 +165,9 @@ class Helper implements RM\TaggedEntityInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function getEntityTagPrefix()
+    public static function getEntityTagPrefix(): string
     {
         return 'ekyna_setting.helper';
     }

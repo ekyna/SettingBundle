@@ -1,0 +1,3 @@
+ekyna_setting_api:
+    resource: "routing/api.yaml"
+    prefix:   /api/setting

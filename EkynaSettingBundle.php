@@ -1,36 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle;
 
-use Ekyna\Bundle\ResourceBundle\AbstractBundle;
-use Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler as Pass;
+use Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler\RegisterSchemasPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * EkynaSettingBundle
  * @package Ekyna\Bundle\SettingBundle
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class EkynaSettingBundle extends AbstractBundle
+class EkynaSettingBundle extends Bundle
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
 
-        $container->addCompilerPass(new Pass\AdminMenuPass());
-        $container->addCompilerPass(new Pass\RegisterSchemasPass());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModelInterfaces()
-    {
-        return array(
-            'Ekyna\Bundle\SettingBundle\Model\RedirectionInterface' => 'ekyna_setting.redirection.class',
-        );
+        $container->addCompilerPass(new RegisterSchemasPass());
     }
 }

@@ -1,28 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Model;
+
+use ArrayAccess;
+use ArrayIterator;
+use IteratorAggregate;
+use Serializable;
+use Traversable;
+
+use function json_decode;
+use function json_encode;
 
 /**
  * Class I18nParameter
  * @package Ekyna\Bundle\SettingBundle\Model
  * @author  Etienne Dauvergne <contact@ekyna.com>
  */
-class I18nParameter implements \ArrayAccess, \IteratorAggregate, \Serializable
+final class I18nParameter implements ArrayAccess, IteratorAggregate, Serializable
 {
-    /**
-     * @var array
-     */
-    private $data;
-
-    /**
-     * @var string
-     */
-    private $currentLocale;
-
-    /**
-     * @var string
-     */
-    private $fallbackLocale;
+    private array  $data;
+    private string $currentLocale;
+    private string $fallbackLocale;
 
 
     /**
@@ -98,15 +98,15 @@ class I18nParameter implements \ArrayAccess, \IteratorAggregate, \Serializable
     /**
      * @inheritDoc
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
-        return new \ArrayIterator($this->data ?? []);
+        return new ArrayIterator($this->data ?? []);
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->data[$offset]);
     }
@@ -122,7 +122,7 @@ class I18nParameter implements \ArrayAccess, \IteratorAggregate, \Serializable
     /**
      * @inheritDoc
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->data[$offset] = $value;
     }
@@ -130,24 +130,24 @@ class I18nParameter implements \ArrayAccess, \IteratorAggregate, \Serializable
     /**
      * @inheritDoc
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
-        unset($this->data);
+        unset($this->data[$offset]);
     }
 
     /**
      * @inheritDoc
      */
-    public function serialize()
+    public function serialize(): ?string
     {
-        return \json_encode($this->data);
+        return json_encode($this->data);
     }
 
     /**
      * @inheritDoc
      */
-    public function unserialize($data)
+    public function unserialize($data): void
     {
-        $this->data = \json_decode($data, true);
+        $this->data = (array)json_decode($data, true);
     }
 }

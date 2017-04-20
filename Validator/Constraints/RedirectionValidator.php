@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\SettingBundle\Validator\Constraints;
 
 use Ekyna\Bundle\SettingBundle\Model\RedirectionInterface;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Validator\Constraint;
@@ -18,20 +20,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class RedirectionValidator extends ConstraintValidator
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var HttpUtils
-     */
-    private $httpUtils;
-
-    /**
-     * @var Client
-     */
-    private $client;
+    private RequestStack $requestStack;
+    private HttpUtils    $httpUtils;
+    private Client       $client;
 
 
     /**
@@ -48,19 +39,19 @@ class RedirectionValidator extends ConstraintValidator
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function validate($redirection, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof Redirection) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Redirection');
+            throw new UnexpectedTypeException($constraint, Redirection::class);
         }
-        if (!$redirection instanceof RedirectionInterface) {
-            throw new UnexpectedTypeException($redirection, 'Ekyna\Bundle\SettingBundle\Model\RedirectionInterface');
+        if (!$value instanceof RedirectionInterface) {
+            throw new UnexpectedTypeException($value, RedirectionInterface::class);
         }
 
-        if (0 < strlen($fromPath = $redirection->getFromPath())) {
-            if ($redirection->getFromPath() == $redirection->getToPath()) {
+        if (!empty($fromPath = $value->getFromPath())) {
+            if ($value->getFromPath() == $value->getToPath()) {
                 $this->context
                     ->buildViolation($constraint->infiniteLoop)
                     ->atPath('toPath')
@@ -82,7 +73,7 @@ class RedirectionValidator extends ConstraintValidator
             }
         }
 
-        if (0 < strlen($toPath = $redirection->getToPath())) {
+        if (!empty($toPath = $value->getToPath())) {
             if ('/' !== $toPath[0]) {
                 $this->context
                     ->buildViolation($constraint->badFormat)
@@ -104,16 +95,16 @@ class RedirectionValidator extends ConstraintValidator
      *
      * @return bool
      */
-    private function isPathAccessible($path)
+    private function isPathAccessible(string $path): bool
     {
-        $uri = $this->httpUtils->generateUri($this->requestStack->getMasterRequest(), $path);
+        $uri = $this->httpUtils->generateUri($this->requestStack->getMainRequest(), $path);
 
         try {
             $res = $this->client->request('GET', $uri);
             if (200 <= $res->getStatusCode() && $res->getStatusCode() <= 302) {
                 return true;
             }
-        } catch (RequestException $e) {
+        } catch (GuzzleException $e) {
         }
 
         return false;
