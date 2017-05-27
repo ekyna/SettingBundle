@@ -3,6 +3,8 @@
 namespace Ekyna\Bundle\SettingBundle\Table\Type;
 
 use Ekyna\Bundle\AdminBundle\Table\Type\ResourceTableType;
+use Ekyna\Bundle\TableBundle\Extension\Type as BType;
+use Ekyna\Component\Table\Extension\Core\Type as CType;
 use Ekyna\Component\Table\TableBuilderInterface;
 
 /**
@@ -18,40 +20,40 @@ class RedirectionType extends ResourceTableType
     public function buildTable(TableBuilderInterface $builder, array $options)
     {
         $builder
-            ->addColumn('fromPath', 'anchor', [
+            ->addColumn('fromPath', BType\Column\AnchorType::class, [
                 'label'                => 'ekyna_setting.redirection.field.from_path',
                 'route_name'           => 'ekyna_setting_redirection_admin_show',
                 'route_parameters_map' => ['redirectionId' => 'id'],
                 'position'             => 10,
             ])
-            ->addColumn('toPath', 'text', [
+            ->addColumn('toPath', CType\Column\TextType::class, [
                 'label'    => 'ekyna_setting.redirection.field.to_path',
                 'position' => 20,
             ])
-            ->addColumn('count', 'number', [
+            ->addColumn('count', CType\Column\NumberType::class, [
                 'label'    => 'ekyna_setting.redirection.field.count',
                 'position' => 30,
             ])
-            ->addColumn('usedAt', 'datetime', [
+            ->addColumn('usedAt', CType\Column\DateTimeType::class, [
                 'label'       => 'ekyna_setting.redirection.field.used_at',
                 'time_format' => 'none',
                 'position'    => 40,
             ])
-            ->addColumn('permanent', 'boolean', [
+            ->addColumn('permanent', CType\Column\BooleanType::class, [
                 'label'                => 'ekyna_setting.redirection.field.permanent',
                 'route_name'           => 'ekyna_setting_redirection_admin_toggle',
                 'route_parameters'     => ['field' => 'permanent'],
                 'route_parameters_map' => ['redirectionId' => 'id'],
                 'position'             => 50,
             ])
-            ->addColumn('enabled', 'boolean', [
+            ->addColumn('enabled', CType\Column\BooleanType::class, [
                 'label'                => 'ekyna_core.field.enabled',
                 'route_name'           => 'ekyna_setting_redirection_admin_toggle',
                 'route_parameters'     => ['field' => 'enabled'],
                 'route_parameters_map' => ['redirectionId' => 'id'],
                 'position'             => 60,
             ])
-            ->addColumn('actions', 'admin_actions', [
+            ->addColumn('actions', BType\Column\ActionsType::class, [
                 'buttons' => [
                     [
                         'label'                => 'ekyna_core.button.edit',
@@ -69,29 +71,21 @@ class RedirectionType extends ResourceTableType
                     ],
                 ],
             ])
-            ->addFilter('fromPath', 'text', [
+            ->addFilter('fromPath', CType\Filter\TextType::class, [
                 'label'    => 'ekyna_setting.redirection.field.from_path',
                 'position' => 10,
             ])
-            ->addFilter('toPath', 'text', [
+            ->addFilter('toPath', CType\Filter\TextType::class, [
                 'label'    => 'ekyna_setting.redirection.field.to_path',
                 'position' => 20,
             ])
-            ->addFilter('enabled', 'boolean', [
+            ->addFilter('enabled', CType\Filter\BooleanType::class, [
                 'label'    => 'ekyna_core.field.enabled',
                 'position' => 30,
             ])
-            ->addFilter('permanent', 'boolean', [
+            ->addFilter('permanent', CType\Filter\BooleanType::class, [
                 'label'    => 'ekyna_setting.redirection.field.permanent',
                 'position' => 40,
             ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getName()
-    {
-        return 'ekyna_setting_redirection';
     }
 }

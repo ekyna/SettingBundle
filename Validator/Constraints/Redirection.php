@@ -23,12 +23,4 @@ class Redirection extends Constraint
     {
         return self::CLASS_CONSTRAINT;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validatedBy()
-    {
-        return 'ekyna_setting_redirection';
-    }
 }

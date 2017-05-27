@@ -4,14 +4,13 @@ namespace Ekyna\Bundle\SettingBundle\DependencyInjection;
 
 use Ekyna\Bundle\ResourceBundle\DependencyInjection\AbstractExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
 
 /**
  * Class EkynaSettingExtension
  * @package Ekyna\Bundle\SettingBundle\DependencyInjection
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class EkynaSettingExtension extends \Ekyna\Bundle\ResourceBundle\DependencyInjection\AbstractExtension
+class EkynaSettingExtension extends AbstractExtension
 {
     /**
      * @inheritdoc

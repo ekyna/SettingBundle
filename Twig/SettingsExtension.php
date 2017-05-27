@@ -45,7 +45,7 @@ class SettingsExtension extends \Twig_Extension
      *
      * @param string $namespace
      *
-     * @return array
+     * @return \Ekyna\Bundle\SettingBundle\Model\Settings
      */
     public function getSettings($namespace)
     {

@@ -2,8 +2,8 @@
 
 namespace Ekyna\Bundle\SettingBundle\Validator\Constraints;
 
-use Buzz\Browser;
 use Ekyna\Bundle\SettingBundle\Model\RedirectionInterface;
+use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Validator\Constraint;
@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 /**
  * Class RedirectionValidator
  * @package Ekyna\Bundle\SettingBundle\Validator\Constraints
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class RedirectionValidator extends ConstraintValidator
 {
@@ -28,9 +28,9 @@ class RedirectionValidator extends ConstraintValidator
     private $httpUtils;
 
     /**
-     * @var Browser
+     * @var Client
      */
-    private $browser;
+    private $client;
 
 
     /**
@@ -42,8 +42,8 @@ class RedirectionValidator extends ConstraintValidator
     public function __construct(RequestStack $requestStack, HttpUtils $httpUtils)
     {
         $this->requestStack = $requestStack;
-        $this->httpUtils    = $httpUtils;
-        $this->browser      = new Browser();
+        $this->httpUtils = $httpUtils;
+        $this->client = new Client();
     }
 
     /**
@@ -51,31 +51,47 @@ class RedirectionValidator extends ConstraintValidator
      */
     public function validate($redirection, Constraint $constraint)
     {
-        if (! $constraint instanceof Redirection) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Redirection');
+        if (!$constraint instanceof Redirection) {
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Redirection');
         }
-        if (! $redirection instanceof RedirectionInterface) {
+        if (!$redirection instanceof RedirectionInterface) {
             throw new UnexpectedTypeException($redirection, 'Ekyna\Bundle\SettingBundle\Model\RedirectionInterface');
         }
 
         if (0 < strlen($fromPath = $redirection->getFromPath())) {
             if ($redirection->getFromPath() == $redirection->getToPath()) {
-                $this->context->addViolationAt('toPath', $constraint->infiniteLoop);
+                $this->context
+                    ->buildViolation($constraint->infiniteLoop)
+                    ->atPath('toPath')
+                    ->addViolation();
+
                 return;
             }
 
             if ('/' !== $fromPath[0]) {
-                $this->context->addViolationAt('fromPath', $constraint->badFormat);
+                $this->context
+                    ->buildViolation($constraint->badFormat)
+                    ->atPath('fromPath')
+                    ->addViolation();
             } elseif ($this->isPathAccessible($fromPath)) {
-                $this->context->addViolationAt('fromPath', $constraint->fromPathExists);
+                $this->context
+                    ->buildViolation($constraint->fromPathExists)
+                    ->atPath('fromPath')
+                    ->addViolation();
             }
         }
 
         if (0 < strlen($toPath = $redirection->getToPath())) {
             if ('/' !== $toPath[0]) {
-                $this->context->addViolationAt('toPath', $constraint->badFormat);
+                $this->context
+                    ->buildViolation($constraint->badFormat)
+                    ->atPath('toPath')
+                    ->addViolation();
             } elseif (!$this->isPathAccessible($toPath)) {
-                $this->context->addViolationAt('toPath', $constraint->toPathNotFound);
+                $this->context
+                    ->buildViolation($constraint->toPathNotFound)
+                    ->atPath('toPath')
+                    ->addViolation();
             }
         }
     }
@@ -83,16 +99,16 @@ class RedirectionValidator extends ConstraintValidator
     /**
      * Returns whether the given path is accessible through http or not.
      *
-     * @param $path
+     * @param string $path
+     *
      * @return bool
      */
     private function isPathAccessible($path)
     {
         $uri = $this->httpUtils->generateUri($this->requestStack->getMasterRequest(), $path);
 
-        /** @var \Buzz\Message\Response $res */
-        $res = $this->browser->get($uri);
-        if ($res->isSuccessful()) {
+        $res = $this->client->request($uri);
+        if (200 <= $res->getStatusCode() && $res->getStatusCode() < 300) {
             return true;
         }
 
