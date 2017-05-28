@@ -1,29 +1,28 @@
 {
-    "name" : "ekyna/setting-bundle",
-    "description" : "Parameters management",
-    "type" : "symfony-bundle",
-    "authors" : [{
-            "name" : "Etienne Dauvergne",
-            "homepage" : "http://ekyna.com"
+    "name": "ekyna/setting-bundle",
+    "description": "Parameters management",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "Etienne Dauvergne",
+            "homepage": "http://ekyna.com"
         }
     ],
-    "keywords" : [
-        "symfony2",
+    "keywords": [
+        "symfony",
         "settings",
         "bundle"
     ],
-    "homepage" : "https://github.com/ekyna/CmsBundle",
-    "license" : [
-        "MIT"
-    ],
-    "require" : {
-        "php" : ">=5.5.9",
-        "ekyna/admin-bundle" : "0.6.x-dev",
+    "homepage": "https://github.com/ekyna/CmsBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.0",
+        "ekyna/admin-bundle": "0.7.x-dev",
         "guzzlehttp/guzzle": "^6.2"
     },
-    "autoload" : {
-        "psr-4" : {
-            "Ekyna\\Bundle\\SettingBundle\\" : ""
+    "autoload": {
+        "psr-4": {
+            "Ekyna\\Bundle\\SettingBundle\\": ""
         }
     }
 }
