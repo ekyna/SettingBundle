@@ -1,5 +1,7 @@
 {% extends "EkynaAdminBundle:Entity:sided.html.twig" %}
 
+{% block page_title %}{{ 'ekyna_setting.parameter.label.plural'|trans|raw }} - {{ parent() }}{% endblock page_title %}
+
 {% block title %}
     <h1>{{ 'ekyna_setting.parameter.header.edit'|trans|raw }}</h1>
 {% endblock %}

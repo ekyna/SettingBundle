@@ -61,9 +61,7 @@ class Redirection implements RedirectionInterface
     }
 
     /**
-     * Returns the id.
-     *
-     * @return integer
+     * @inheritdoc
      */
     public function getId()
     {

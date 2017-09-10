@@ -1,13 +1,4 @@
-{% extends "EkynaAdminBundle:Entity:sided.html.twig" %}
-
-{% block title %}
-    <h1>{{ 'ekyna_setting.helper.header.show'|trans({'%name%': helper.name})|raw }}</h1>
-{% endblock %}
-
-{% block actions %}
-    {{ admin_resource_btn(helper, 'list') }}
-    {{ admin_resource_btn(helper, 'new') }}
-{% endblock %}
+{% extends "EkynaAdminBundle:Entity/Default:show.html.twig" %}
 
 {% block main %}
     <div class="actions">

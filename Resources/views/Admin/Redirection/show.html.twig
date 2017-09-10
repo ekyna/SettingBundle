@@ -1,13 +1,4 @@
-{% extends "EkynaAdminBundle:Entity:sided.html.twig" %}
-
-{% block title %}
-<h1>{{ 'ekyna_setting.redirection.header.show'|trans({'%name%': redirection})|raw }}</h1>
-{% endblock %}
-
-{% block actions %}
-{{ admin_resource_btn(redirection, 'list') }}
-{{ admin_resource_btn(redirection, 'new') }}
-{% endblock %}
+{% extends "EkynaAdminBundle:Entity/Default:show.html.twig" %}
 
 {% block main %}
 <div class="actions">
@@ -16,13 +7,13 @@
 </div>
 <div class="show show-with-tabs">
     <ul class="nav nav-tabs">
-	    <li class="active"><a href="#prod-redirection-general" data-toggle="tab">{{ 'ekyna_core.field.general'|trans }}</a></li>
-	</ul>
-	<div class="show-body">
-	    <div class="tab-content">
-		    <div class="tab-pane active" id="prod-redirection-general">
-		        {{ show_row(redirection.fromPath, 'text', 'ekyna_setting.redirection.field.from_path') }}
-		        {{ show_row(redirection.toPath, 'text', 'ekyna_setting.redirection.field.to_path') }}
+        <li class="active"><a href="#prod-redirection-general" data-toggle="tab">{{ 'ekyna_core.field.general'|trans }}</a></li>
+    </ul>
+    <div class="show-body">
+        <div class="tab-content">
+            <div class="tab-pane active" id="prod-redirection-general">
+                {{ show_row(redirection.fromPath, 'text', 'ekyna_setting.redirection.field.from_path') }}
+                {{ show_row(redirection.toPath, 'text', 'ekyna_setting.redirection.field.to_path') }}
                 <div class="row">
                     <div class="col-md-6">
                         {{ show_row(redirection.permanent, 'checkbox', 'ekyna_setting.redirection.field.permanent', {'label_nb_col': 4}) }}
@@ -31,8 +22,8 @@
                         {{ show_row(redirection.enabled, 'checkbox', 'ekyna_core.field.enabled', {'label_nb_col': 4}) }}
                     </div>
                 </div>
-		    </div>
+            </div>
         </div>
-	</div>
+    </div>
 </div>
 {% endblock %}

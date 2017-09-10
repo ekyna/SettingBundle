@@ -4,6 +4,7 @@ namespace Ekyna\Bundle\SettingBundle\Validator\Constraints;
 
 use Ekyna\Bundle\SettingBundle\Model\RedirectionInterface;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Validator\Constraint;
@@ -107,9 +108,12 @@ class RedirectionValidator extends ConstraintValidator
     {
         $uri = $this->httpUtils->generateUri($this->requestStack->getMasterRequest(), $path);
 
-        $res = $this->client->request($uri);
-        if (200 <= $res->getStatusCode() && $res->getStatusCode() < 300) {
-            return true;
+        try {
+            $res = $this->client->request('GET', $uri);
+            if (200 <= $res->getStatusCode() && $res->getStatusCode() <= 302) {
+                return true;
+            }
+        } catch (RequestException $e) {
         }
 
         return false;

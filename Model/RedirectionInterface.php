@@ -2,12 +2,14 @@
 
 namespace Ekyna\Bundle\SettingBundle\Model;
 
+use Ekyna\Component\Resource\Model\ResourceInterface;
+
 /**
  * Interface RedirectionInterface
  * @package Ekyna\Bundle\SettingBundle\Model
  * @author  Etienne Dauvergne <contact@ekyna.com>
  */
-interface RedirectionInterface
+interface RedirectionInterface extends ResourceInterface
 {
     /**
      * Sets the "from path".
