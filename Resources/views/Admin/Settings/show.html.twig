@@ -14,9 +14,11 @@
     {{ ui_link(path('ekyna_setting_parameter_admin_edit'), 'ekyna_core.button.edit', {'theme' : 'warning', 'icon': 'pencil'}) }}
 </div>
 <div class="show show-with-tabs">
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" data-tab-key="{{ resource_id }}">
         {% for namespace, label in labels %}
-        <li{% if loop.index0 == 0 %} class="active"{% endif %}><a href="#{{ namespace }}" data-toggle="tab">{{ label|trans }}</a></li>
+        <li{% if loop.index0 == 0 %} class="active"{% endif %}>
+            <a href="#{{ namespace }}" id="toggle-{{ namespace }}" data-toggle="tab">{{ label|trans }}</a>
+        </li>
         {% endfor %}
     </ul>
     <div class="show-body">

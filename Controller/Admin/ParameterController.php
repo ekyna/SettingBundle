@@ -38,9 +38,10 @@ class ParameterController extends Controller
         }
 
         return $this->render('EkynaSettingBundle:Admin/Settings:show.html.twig', [
-            'settings'  => $settings,
-            'labels'    => $manager->getLabels(),
-            'templates' => $manager->getShowTemplates(),
+            'resource_id' => 'ekyna_setting.parameter',
+            'settings'    => $settings,
+            'labels'      => $manager->getLabels(),
+            'templates'   => $manager->getShowTemplates(),
         ]);
     }
 
@@ -64,9 +65,9 @@ class ParameterController extends Controller
         $settings = [];
         $builder = $this
             ->createFormBuilder(null, [
-                'action' => $this->generateUrl('ekyna_setting_parameter_admin_edit'),
-                'method' => 'post',
-                'attr' => [
+                'action'      => $this->generateUrl('ekyna_setting_parameter_admin_edit'),
+                'method'      => 'post',
+                'attr'        => [
                     'class' => 'form-horizontal form-with-tabs',
                 ],
                 'data_class'  => null,
@@ -126,9 +127,10 @@ class ParameterController extends Controller
         }
 
         return $this->render('EkynaSettingBundle:Admin/Settings:edit.html.twig', [
-            'labels'    => $manager->getLabels(),
-            'templates' => $manager->getFormTemplates(),
-            'form'      => $form->createView(),
+            'resource_id' => 'ekyna_setting.parameter',
+            'labels'      => $manager->getLabels(),
+            'templates'   => $manager->getFormTemplates(),
+            'form'        => $form->createView(),
         ]);
     }
 

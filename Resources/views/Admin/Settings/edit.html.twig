@@ -9,10 +9,10 @@
 {% block actions %}{% endblock %}
 
 {% block main %}
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" data-tab-key="{{ resource_id }}">
         {% for namespace, label in labels %}
             <li{% if loop.index0 == 0 %} class="active"{% endif %}>
-                <a href="#{{ namespace }}" data-toggle="tab">{{ label|trans }}</a>
+                <a href="#{{ namespace }}" id="toggle-{{ namespace }}" data-toggle="tab">{{ label|trans }}</a>
             </li>
         {% endfor %}
     </ul>
