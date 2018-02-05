@@ -16,14 +16,24 @@
     <div class="show-body">
         <div class="tab-content">
             <div class="tab-pane active" id="redirection-general">
-                {{ show_row(redirection.fromPath, 'text', 'ekyna_setting.redirection.field.from_path') }}
-                {{ show_row(redirection.toPath, 'text', 'ekyna_setting.redirection.field.to_path') }}
+                {{ show_row(redirection.fromPath, 'text', {
+                    'label': 'ekyna_setting.redirection.field.from_path'
+                }) }}
+                {{ show_row(redirection.toPath, 'text', {
+                    'label': 'ekyna_setting.redirection.field.to_path'
+                }) }}
                 <div class="row">
                     <div class="col-md-6">
-                        {{ show_row(redirection.permanent, 'checkbox', 'ekyna_setting.redirection.field.permanent', {'label_nb_col': 4}) }}
+                        {{ show_row(redirection.permanent, 'boolean', {
+                            'label': 'ekyna_setting.redirection.field.permanent',
+                            'label_col': 4
+                        }) }}
                     </div>
                     <div class="col-md-6">
-                        {{ show_row(redirection.enabled, 'checkbox', 'ekyna_core.field.enabled', {'label_nb_col': 4}) }}
+                        {{ show_row(redirection.enabled, 'boolean', {
+                            'label': 'ekyna_core.field.enabled',
+                            'label_col': 4
+                        }) }}
                     </div>
                 </div>
             </div>

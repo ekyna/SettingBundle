@@ -16,16 +16,26 @@
         <div class="show-body">
             <div class="tab-content">
                 <div class="tab-pane active" id="helper-general">
-                    {{ show_row(helper.name, 'text', 'ekyna_core.field.name') }}
+                    {{ show_row(helper.name, 'text', {
+                        'label': 'ekyna_core.field.name'
+                    }) }}
                     <div class="row">
                         <div class="col-md-6">
-                            {{ show_row(helper.reference, 'text', 'ekyna_core.field.reference', {'label_nb_col': 4}) }}
+                            {{ show_row(helper.reference, 'text', {
+                                'label': 'ekyna_core.field.reference',
+                                'label_col': 4
+                            }) }}
                         </div>
                         <div class="col-md-6">
-                            {{ show_row(helper.enabled, 'text', 'ekyna_core.field.enabled', {'label_nb_col': 4}) }}
+                            {{ show_row(helper.enabled, 'text', {
+                                'label': 'ekyna_core.field.enabled',
+                                'label_col': 4
+                            }) }}
                         </div>
                     </div>
-                    {{ show_row(path('ekyna_setting_helper_admin_tinymce', identifiers|merge({'helperId': helper.id})), 'tinymce', 'ekyna_core.field.content') }}
+                    {{ show_row(path('ekyna_setting_helper_admin_tinymce', identifiers|merge({'helperId': helper.id})), 'tinymce', {
+                        'label': 'ekyna_core.field.content'
+                    }) }}
                 </div>
             </div>
         </div>
