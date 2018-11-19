@@ -1,0 +1,6 @@
+ekyna_setting:
+    redirection:
+        infinite_loop: This value would create an infinite redirection loop.
+        bad_format: The URL must starts with a "/".
+        from_path_exists: This URL is reachable on your website and should not be redirected.
+        to_path_not_found: This URL cannot be found on your website and should not be used as redirection target.
