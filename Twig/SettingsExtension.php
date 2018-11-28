@@ -65,12 +65,4 @@ class SettingsExtension extends \Twig_Extension
     {
         return $this->settingsManager->getParameter($name);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'ekyna_settings';
-    }
 }

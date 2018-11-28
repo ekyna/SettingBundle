@@ -34,7 +34,7 @@ class HelperController extends ResourceController
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $content = $propertyAccessor->getValue($resource, $field);
 
-        return $this->render('EkynaSettingBundle:Admin/Helper:tinymce.html.twig', [
+        return $this->render('@EkynaSetting/Admin/Helper/tinymce.html.twig', [
             'content' => $content
         ]);
     }

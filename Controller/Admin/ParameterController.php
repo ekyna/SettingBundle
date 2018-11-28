@@ -24,7 +24,7 @@ class ParameterController extends Controller
      */
     public function showAction()
     {
-        $this->isGranted('VIEW');
+        // TODO $this->isGranted('VIEW');
 
         $this->container->get('ekyna_admin.menu.builder')
             ->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
@@ -37,7 +37,7 @@ class ParameterController extends Controller
             $settings[$namespace] = $manager->loadSettings($namespace);
         }
 
-        return $this->render('EkynaSettingBundle:Admin/Settings:show.html.twig', [
+        return $this->render('@EkynaSetting/Admin/Settings/show.html.twig', [
             'resource_id' => 'ekyna_setting.parameter',
             'settings'    => $settings,
             'labels'      => $manager->getLabels(),
@@ -54,7 +54,7 @@ class ParameterController extends Controller
      */
     public function editAction(Request $request)
     {
-        $this->isGranted('EDIT');
+        // TODO $this->isGranted('EDIT');
 
         $this->container->get('ekyna_admin.menu.builder')
             ->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
@@ -126,7 +126,7 @@ class ParameterController extends Controller
             return $this->redirect($this->generateUrl('ekyna_setting_parameter_admin_show'));
         }
 
-        return $this->render('EkynaSettingBundle:Admin/Settings:edit.html.twig', [
+        return $this->render('@EkynaSetting/Admin/Settings/edit.html.twig', [
             'resource_id' => 'ekyna_setting.parameter',
             'labels'      => $manager->getLabels(),
             'templates'   => $manager->getFormTemplates(),
@@ -167,11 +167,6 @@ class ParameterController extends Controller
      */
     protected function isGranted($attributes, $object = null, $throwException = true)
     {
-        if (is_null($object)) {
-            $object = $this->getConfiguration()->getObjectIdentity();
-        } else {
-            $object = $this->get('ekyna_resource.configuration_registry')->getObjectIdentity($object);
-        }
         if (!$this->get('security.authorization_checker')->isGranted($attributes, $object)) {
             if ($throwException) {
                 throw new AccessDeniedHttpException('You are not allowed to view this resource.');

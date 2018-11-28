@@ -53,8 +53,8 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->variableNode('templates')->defaultValue([
-                            '_form.html' => 'EkynaSettingBundle:Admin/Helper:_form.html',
-                            'show.html'  => 'EkynaSettingBundle:Admin/Helper:show.html',
+                            '_form.html' => '@EkynaSetting/Admin/Helper/_form.html',
+                            'show.html'  => '@EkynaSetting/Admin/Helper/show.html',
                         ])->end()
                         ->scalarNode('parent')->end()
                         ->scalarNode('entity')->defaultValue('Ekyna\Bundle\SettingBundle\Entity\Helper')->end()
@@ -70,8 +70,8 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->variableNode('templates')->defaultValue([
-                            '_form.html' => 'EkynaSettingBundle:Admin/Redirection:_form.html',
-                            'show.html'  => 'EkynaSettingBundle:Admin/Redirection:show.html',
+                            '_form.html' => '@EkynaSetting/Admin/Redirection/_form.html',
+                            'show.html'  => '@EkynaSetting/Admin/Redirection/show.html',
                         ])->end()
                         ->scalarNode('parent')->end()
                         ->scalarNode('entity')->defaultValue('Ekyna\Bundle\SettingBundle\Entity\Redirection')->end()
