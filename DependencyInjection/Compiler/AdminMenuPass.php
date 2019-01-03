@@ -31,14 +31,14 @@ class AdminMenuPass implements CompilerPassInterface
         ]]);
         $pool->addMethodCall('createEntry', ['setting', [
             'name'     => 'redirection',
-            'route'    => 'ekyna_setting_redirection_admin_home',
+            'route'    => 'ekyna_setting_redirection_admin_list',
             'label'    => 'ekyna_setting.redirection.label.plural',
             'resource' => 'ekyna_setting_redirection',
             'position' => 999,
         ]]);
         $pool->addMethodCall('createEntry', ['setting', [
             'name'     => 'helper',
-            'route'    => 'ekyna_setting_helper_admin_home',
+            'route'    => 'ekyna_setting_helper_admin_list',
             'label'    => 'ekyna_setting.helper.label.plural',
             'resource' => 'ekyna_setting_helper',
             'position' => 999,

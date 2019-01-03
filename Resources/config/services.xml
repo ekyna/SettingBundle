@@ -7,7 +7,7 @@
 
     <parameters>
         <parameter key="ekyna_setting.parameter.class">Ekyna\Bundle\SettingBundle\Entity\Parameter</parameter>
-        <parameter key="ekyna_setting.parameter.repository.class">Ekyna\Bundle\SettingBundle\Entity\ParameterRepository</parameter>
+        <parameter key="ekyna_setting.parameter.repository.class">Ekyna\Bundle\SettingBundle\Repository\ParameterRepository</parameter>
         <parameter key="ekyna_setting.parameter.controller.class">Ekyna\Bundle\SettingBundle\Controller\Admin\ParameterController</parameter>
     </parameters>
 

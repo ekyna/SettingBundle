@@ -4,12 +4,12 @@ namespace Ekyna\Bundle\SettingBundle\Manager;
 
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Ekyna\Bundle\CoreBundle\Cache\TagManager;
 use Ekyna\Bundle\SettingBundle\Entity\Parameter;
 use Ekyna\Bundle\SettingBundle\Model\Settings;
 use Ekyna\Bundle\SettingBundle\Schema\SchemaRegistryInterface;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
+use Ekyna\Component\Resource\Doctrine\ORM\ResourceRepository;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -39,7 +39,7 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * Parameter object repository
      *
-     * @var ObjectRepository
+     * @var ResourceRepository
      */
     protected $parameterRepository;
 
@@ -75,18 +75,18 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * Constructor
      *
-     * @param SchemaRegistryInterface  $schemaRegistry
-     * @param ObjectManager            $parameterManager
-     * @param ObjectRepository         $parameterRepository
-     * @param Cache                    $cache
-     * @param TagManager               $tagManager
-     * @param ValidatorInterface       $validator
+     * @param SchemaRegistryInterface $schemaRegistry
+     * @param ObjectManager           $parameterManager
+     * @param ResourceRepository      $parameterRepository
+     * @param Cache                   $cache
+     * @param TagManager              $tagManager
+     * @param ValidatorInterface      $validator
      */
     public function __construct(
-        SchemaRegistryInterface $schemaRegistry, 
-        ObjectManager $parameterManager, 
-        ObjectRepository $parameterRepository, 
-        Cache $cache, 
+        SchemaRegistryInterface $schemaRegistry,
+        ObjectManager $parameterManager,
+        ResourceRepository $parameterRepository,
+        Cache $cache,
         TagManager $tagManager,
         ValidatorInterface $validator
     ) {
@@ -103,7 +103,7 @@ class SettingsManager implements SettingsManagerInterface
      */
     public function loadSettings($namespace)
     {
-        $this->tagManager->addTags(self::HTTP_CACHE_TAG.'.'.$namespace);
+        $this->tagManager->addTags(self::HTTP_CACHE_TAG . '.' . $namespace);
 
         if (isset($this->resolvedSettings[$namespace])) {
             return $this->resolvedSettings[$namespace];
@@ -171,8 +171,7 @@ class SettingsManager implements SettingsManagerInterface
                 $parameter
                     ->setNamespace($namespace)
                     ->setName($name)
-                    ->setValue($value)
-                ;
+                    ->setValue($value);
 
                 /* @var \Symfony\Component\Validator\ConstraintViolationListInterface $errors */
                 $errors = $this->validator->validate($parameter);
@@ -188,7 +187,7 @@ class SettingsManager implements SettingsManagerInterface
 
         $this->cache->save($namespace, $parameters);
 
-        $this->tagManager->invalidateTags(self::HTTP_CACHE_TAG.'.'.$namespace);
+        $this->tagManager->invalidateTags(self::HTTP_CACHE_TAG . '.' . $namespace);
     }
 
     /**
@@ -197,11 +196,12 @@ class SettingsManager implements SettingsManagerInterface
     public function getParameter($name)
     {
         if (false === strpos($name, '.')) {
-            throw new \InvalidArgumentException(sprintf('Parameter must be in format "namespace.name", "%s" given', $name));
+            throw new \InvalidArgumentException(sprintf('Parameter must be in format "namespace.name", "%s" given',
+                $name));
         }
-    
+
         list($namespace, $name) = explode('.', $name);
-    
+
         $settings = $this->loadSettings($namespace);
 
         return $settings->get($name);
@@ -216,6 +216,7 @@ class SettingsManager implements SettingsManagerInterface
         foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
             $labels[$namespace] = $schema->getLabel();
         }
+
         return $labels;
     }
 
@@ -228,6 +229,7 @@ class SettingsManager implements SettingsManagerInterface
         foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
             $templates[$namespace] = $schema->getShowTemplate();
         }
+
         return $templates;
     }
 
@@ -240,6 +242,7 @@ class SettingsManager implements SettingsManagerInterface
         foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
             $templates[$namespace] = $schema->getFormTemplate();
         }
+
         return $templates;
     }
 

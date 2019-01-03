@@ -2,6 +2,8 @@
 
 namespace Ekyna\Bundle\SettingBundle\Entity;
 
+use Ekyna\Bundle\SettingBundle\Model\ParameterInterface;
+
 /**
  * Parameter
  *

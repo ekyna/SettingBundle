@@ -4,7 +4,7 @@ namespace Ekyna\Bundle\SettingBundle\Redirection;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Ekyna\Bundle\CoreBundle\Redirection\AbstractProvider;
-use Ekyna\Bundle\SettingBundle\Entity\RedirectionRepository;
+use Ekyna\Bundle\SettingBundle\Repository\RedirectionRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
