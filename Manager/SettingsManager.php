@@ -2,7 +2,6 @@
 
 namespace Ekyna\Bundle\SettingBundle\Manager;
 
-use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ekyna\Bundle\CoreBundle\Cache\TagManager;
 use Ekyna\Bundle\SettingBundle\Entity\Parameter;
@@ -10,6 +9,7 @@ use Ekyna\Bundle\SettingBundle\Model\Settings;
 use Ekyna\Bundle\SettingBundle\Schema\SchemaRegistryInterface;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
 use Ekyna\Component\Resource\Doctrine\ORM\ResourceRepository;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -46,7 +46,7 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * Cache
      *
-     * @var Cache
+     * @var AdapterInterface
      */
     protected $cache;
 
@@ -78,24 +78,24 @@ class SettingsManager implements SettingsManagerInterface
      * @param SchemaRegistryInterface $schemaRegistry
      * @param ObjectManager           $parameterManager
      * @param ResourceRepository      $parameterRepository
-     * @param Cache                   $cache
      * @param TagManager              $tagManager
      * @param ValidatorInterface      $validator
+     * @param AdapterInterface        $cache
      */
     public function __construct(
         SchemaRegistryInterface $schemaRegistry,
         ObjectManager $parameterManager,
         ResourceRepository $parameterRepository,
-        Cache $cache,
         TagManager $tagManager,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        AdapterInterface $cache
     ) {
         $this->schemaRegistry = $schemaRegistry;
         $this->parameterManager = $parameterManager;
         $this->parameterRepository = $parameterRepository;
-        $this->cache = $cache;
         $this->tagManager = $tagManager;
         $this->validator = $validator;
+        $this->cache = $cache;
     }
 
     /**
@@ -109,8 +109,16 @@ class SettingsManager implements SettingsManagerInterface
             return $this->resolvedSettings[$namespace];
         }
 
-        if ($this->cache->contains($namespace)) {
-            $parameters = $this->cache->fetch($namespace);
+        if ($this->cache) {
+            $item = $this->cache->getItem($namespace);
+            if ($item->isHit()) {
+                $parameters = $item->get();
+            } else {
+                $parameters = $this->getParameters($namespace);
+                $item = $this->cache->getItem($namespace);
+                $item->set($parameters);
+                $this->cache->save($item);
+            }
         } else {
             $parameters = $this->getParameters($namespace);
         }
@@ -185,7 +193,11 @@ class SettingsManager implements SettingsManagerInterface
 
         $this->parameterManager->flush();
 
-        $this->cache->save($namespace, $parameters);
+        if ($this->cache) {
+            $item = $this->cache->getItem($namespace);
+            $item->set($parameters);
+            $this->cache->save($item);
+        }
 
         $this->tagManager->invalidateTags(self::HTTP_CACHE_TAG . '.' . $namespace);
     }

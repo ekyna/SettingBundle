@@ -41,14 +41,16 @@
         </service>
 
         <!-- Settings -->
-        <service id="ekyna_setting.cache" alias="doctrine_cache.providers.ekyna_settings"/>
+        <service id="ekyna_setting.cache" parent="cache.app" public="false">
+            <tag name="cache.pool" clearer="cache.default_clearer"/>
+        </service>
         <service id="ekyna_setting.manager" class="Ekyna\Bundle\SettingBundle\Manager\SettingsManager">
             <argument type="service" id="ekyna_setting.schema_registry"/>
             <argument type="service" id="ekyna_setting.parameter.manager"/>
             <argument type="service" id="ekyna_setting.parameter.repository"/>
-            <argument type="service" id="ekyna_setting.cache"/>
             <argument type="service" id="ekyna_core.cache.tag_manager"/>
             <argument type="service" id="validator"/>
+            <argument type="service" id="ekyna_setting.cache"/>
         </service>
 
         <!-- Settings schema registry -->
