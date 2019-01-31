@@ -51,7 +51,7 @@ class HelperController extends Controller
                 if ($response->isNotModified($request)) {
                     return $response;
                 }
-                $response->setContent($this->renderView('EkynaSettingBundle:Helper:show.xml.twig', [
+                $response->setContent($this->renderView('@EkynaSetting/Helper/show.xml.twig', [
                     'helper' => $helper,
                 ]));
                 return $this->configureSharedCache($response, [$helper->getEntityTag()], $ttl);
@@ -63,7 +63,7 @@ class HelperController extends Controller
         return $response
             ->setMaxAge($ttl)
             ->setExpires($expires)
-            ->setContent($this->renderView('EkynaSettingBundle:Helper:show.xml.twig'))
+            ->setContent($this->renderView('@EkynaSetting/Helper/show.xml.twig'))
         ;
     }
 
