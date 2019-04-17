@@ -5,10 +5,9 @@ namespace Ekyna\Bundle\SettingBundle\Twig;
 use Ekyna\Bundle\SettingBundle\Manager\SettingsManagerInterface;
 
 /**
- * SettingExtension
- *
- * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
- * @see https://github.com/Sylius/Sylius/blob/master/src/Sylius/Bundle/SettingsBundle/Twig/SyliusSettingsExtension.php
+ * Class SettingsExtension
+ * @package Ekyna\Bundle\SettingBundle\Twig
+ * @author  Etienne Dauvergne <contact@ekyna.com>
  */
 class SettingsExtension extends \Twig_Extension
 {
@@ -18,6 +17,7 @@ class SettingsExtension extends \Twig_Extension
      * @var SettingsManagerInterface
      */
     private $settingsManager;
+
 
     /**
      * Constructor
@@ -30,39 +30,13 @@ class SettingsExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('get_settings', [$this, 'getSettings']),
-            new \Twig_SimpleFunction('get_setting', [$this, 'getSettingsParameter']),
+            new \Twig_SimpleFunction('get_settings', [$this->settingsManager, 'loadSettings']),
+            new \Twig_SimpleFunction('get_setting', [$this->settingsManager, 'getParameter']),
         ];
-    }
-
-    /**
-     * Returns settings from given namespace
-     *
-     * @param string $namespace
-     *
-     * @return \Ekyna\Bundle\SettingBundle\Model\Settings
-     */
-    public function getSettings($namespace)
-    {
-        return $this->settingsManager->loadSettings($namespace);
-    }
-
-    /**
-     * Returns settings parameter for given namespace and name.
-     *
-     * @param string $name
-     *
-     * @return mixed
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function getSettingsParameter($name)
-    {
-        return $this->settingsManager->getParameter($name);
     }
 }

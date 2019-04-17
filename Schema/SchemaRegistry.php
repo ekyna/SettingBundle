@@ -3,10 +3,9 @@
 namespace Ekyna\Bundle\SettingBundle\Schema;
 
 /**
- * SchemaRegistry
- *
- * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
- * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Schema/SchemaRegistry.php
+ * Class SchemaRegistry
+ * @package Ekyna\Bundle\SettingBundle\Schema
+ * @author  Etienne Dauvergne <contact@ekyna.com>
  */
 class SchemaRegistry implements SchemaRegistryInterface
 {

@@ -1,0 +1,32 @@
+{% block i18n_parameter_widget %}
+{% spaceless %}
+    <div class="translations-forms">
+        <ul class="nav nav-tabs translations-locales">
+            {% for locale, translation in value -%}
+            <li{% if loop.first %} class="active"{% endif %}>
+                <a href="#{{ name }}-{{ locale }}" id="toggle-{{ name }}-{{ locale }}" data-toggle="tab">
+                    {{- locale|language|capitalize -}}
+                </a>
+            </li>
+            {%- else -%}
+            <li class="active">
+                <a href="#{{ name }}-{{ locales|first }}" id="toggle-{{ name }}-{{ locales|first }}" data-toggle="tab">
+                    {{- locales|first|language|capitalize -}}
+                </a>
+            </li>
+            {%- endfor %}
+        </ul>
+        <div class="tab-content translations-fields">
+            {% for locale, translation in value -%}
+            <div class="tab-pane{% if loop.first %} active{% endif %}" id="{{ name }}-{{ locale }}">
+                {{- show_row(translation, type, options|merge({'label_col': 0})) -}}
+            </div>
+            {%- else -%}
+            <div class="tab-pane active" id="{{ name }}-{{ locales|first }}">
+                {{- show_row(null, type, options|merge({'label_col': 0})) -}}
+            </div>
+            {%- endfor %}
+        </div>
+    </div>
+{% endspaceless %}
+{% endblock i18n_parameter_widget %}

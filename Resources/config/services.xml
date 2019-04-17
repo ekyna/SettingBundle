@@ -44,17 +44,33 @@
         <service id="ekyna_setting.cache" parent="cache.app" public="false">
             <tag name="cache.pool" clearer="cache.default_clearer"/>
         </service>
-        <service id="ekyna_setting.manager" class="Ekyna\Bundle\SettingBundle\Manager\SettingsManager">
+        <service id="ekyna_setting.manager"
+                 class="Ekyna\Bundle\SettingBundle\Manager\SettingsManager">
             <argument type="service" id="ekyna_setting.schema_registry"/>
             <argument type="service" id="ekyna_setting.parameter.manager"/>
             <argument type="service" id="ekyna_setting.parameter.repository"/>
-            <argument type="service" id="ekyna_core.cache.tag_manager"/>
+            <argument type="service" id="ekyna_resource.locale_provider"/>
             <argument type="service" id="validator"/>
             <argument type="service" id="ekyna_setting.cache"/>
+            <argument type="service" id="ekyna_core.cache.tag_manager"/>
         </service>
 
         <!-- Settings schema registry -->
-        <service id="ekyna_setting.schema_registry" class="Ekyna\Bundle\SettingBundle\Schema\SchemaRegistry"/>
+        <service id="ekyna_setting.schema_registry"
+                 class="Ekyna\Bundle\SettingBundle\Schema\SchemaRegistry"/>
+
+        <!-- Form types -->
+        <service id="Ekyna\Bundle\SettingBundle\Form\Type\I18nParameterType">
+            <argument type="service" id="ekyna_resource.locale_provider"/>
+            <tag name="form.type"/>
+        </service>
+
+        <!-- Show types -->
+        <service id="ekyna_setting.show_type.i18n_parameter"
+                 class="Ekyna\Bundle\SettingBundle\Show\Type\I18nParameterType">
+            <argument>%locales%</argument>
+            <tag name="ekyna_admin.show.type" alias="i18n_parameter"/>
+        </service>
 
         <!-- Redirection provider -->
         <service id="ekyna_setting.redirection_provider"
@@ -87,7 +103,8 @@
         </service>
 
         <!-- Twig extensions -->
-        <service id="ekyna_setting.twig_extension" class="Ekyna\Bundle\SettingBundle\Twig\SettingsExtension">
+        <service id="ekyna_setting.twig_extension"
+                 class="Ekyna\Bundle\SettingBundle\Twig\SettingsExtension">
             <argument type="service" id="ekyna_setting.manager"/>
             <tag name="twig.extension"/>
         </service>

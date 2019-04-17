@@ -6,70 +6,63 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Ekyna\Bundle\CoreBundle\Cache\TagManager;
 use Ekyna\Bundle\SettingBundle\Entity\Parameter;
 use Ekyna\Bundle\SettingBundle\Model\Settings;
+use Ekyna\Bundle\SettingBundle\Model\I18nParameter;
 use Ekyna\Bundle\SettingBundle\Schema\SchemaRegistryInterface;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
 use Ekyna\Component\Resource\Doctrine\ORM\ResourceRepository;
+use Ekyna\Component\Resource\Locale\LocaleProviderInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * SettingsManager.
- *
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * Class SettingsManager
+ * @package Ekyna\Bundle\SettingBundle\Manager
+ * @author  Etienne Dauvergne <contact@ekyna.com>
  */
 class SettingsManager implements SettingsManagerInterface
 {
     const HTTP_CACHE_TAG = 'ekyna_settings';
 
     /**
-     * Schema registry
-     *
      * @var SchemaRegistryInterface
      */
     protected $schemaRegistry;
 
     /**
-     * Object manager
-     *
      * @var ObjectManager
      */
     protected $parameterManager;
 
     /**
-     * Parameter object repository
-     *
      * @var ResourceRepository
      */
     protected $parameterRepository;
 
     /**
-     * Cache
-     *
+     * @var LocaleProviderInterface
+     */
+    protected $localeProvider;
+
+    /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
      * @var AdapterInterface
      */
     protected $cache;
 
     /**
-     * Http cache tag manager
-     *
      * @var TagManager
      */
-    protected $tagManager;
+    protected $tagManager; // TODO Remove
 
     /**
-     * Runtime cache for resolved parameters
-     *
      * @var array|Settings[]
      */
     protected $resolvedSettings = [];
-
-    /**
-     * Validator instance
-     *
-     * @var ValidatorInterface
-     */
-    protected $validator;
 
 
     /**
@@ -78,69 +71,31 @@ class SettingsManager implements SettingsManagerInterface
      * @param SchemaRegistryInterface $schemaRegistry
      * @param ObjectManager           $parameterManager
      * @param ResourceRepository      $parameterRepository
-     * @param TagManager              $tagManager
+     * @param LocaleProviderInterface $localeProvider
      * @param ValidatorInterface      $validator
      * @param AdapterInterface        $cache
+     * @param TagManager              $tagManager
      */
     public function __construct(
         SchemaRegistryInterface $schemaRegistry,
         ObjectManager $parameterManager,
         ResourceRepository $parameterRepository,
-        TagManager $tagManager,
+        LocaleProviderInterface $localeProvider,
         ValidatorInterface $validator,
-        AdapterInterface $cache
+        AdapterInterface $cache,
+        TagManager $tagManager
     ) {
         $this->schemaRegistry = $schemaRegistry;
         $this->parameterManager = $parameterManager;
         $this->parameterRepository = $parameterRepository;
-        $this->tagManager = $tagManager;
+        $this->localeProvider = $localeProvider;
         $this->validator = $validator;
         $this->cache = $cache;
+        $this->tagManager = $tagManager;
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function loadSettings($namespace)
-    {
-        $this->tagManager->addTags(self::HTTP_CACHE_TAG . '.' . $namespace);
-
-        if (isset($this->resolvedSettings[$namespace])) {
-            return $this->resolvedSettings[$namespace];
-        }
-
-        if ($this->cache) {
-            $item = $this->cache->getItem($namespace);
-            if ($item->isHit()) {
-                $parameters = $item->get();
-            } else {
-                $parameters = $this->getParameters($namespace);
-                $item = $this->cache->getItem($namespace);
-                $item->set($parameters);
-                $this->cache->save($item);
-            }
-        } else {
-            $parameters = $this->getParameters($namespace);
-        }
-
-        $schema = $this->schemaRegistry->getSchema($namespace);
-
-        $settingsBuilder = new SettingsBuilder();
-        $schema->buildSettings($settingsBuilder);
-
-        foreach ($settingsBuilder->getTransformers() as $parameter => $transformer) {
-            if (array_key_exists($parameter, $parameters)) {
-                $parameters[$parameter] = $transformer->reverseTransform($parameters[$parameter]);
-            }
-        }
-
-        $parameters = $settingsBuilder->resolve($parameters);
-
-        return $this->resolvedSettings[$namespace] = new Settings($parameters);
-    }
-
-    /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function saveSettings($namespace, Settings $settings)
     {
@@ -175,7 +130,6 @@ class SettingsManager implements SettingsManagerInterface
                 $persistedParametersMap[$name]->setValue($value);
             } else {
                 $parameter = new Parameter();
-
                 $parameter
                     ->setNamespace($namespace)
                     ->setName($name)
@@ -203,59 +157,70 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function getParameter($name)
+    public function getParameter(string $name, string $locale = null)
     {
         if (false === strpos($name, '.')) {
-            throw new \InvalidArgumentException(sprintf('Parameter must be in format "namespace.name", "%s" given',
-                $name));
+            throw new \InvalidArgumentException("Parameter must be in format 'namespace.name', '$name' given");
         }
 
         list($namespace, $name) = explode('.', $name);
 
         $settings = $this->loadSettings($namespace);
 
-        return $settings->get($name);
+        $parameter = $settings->get($name);
+
+        if ($parameter instanceof I18nParameter) {
+            $parameter->setCurrentLocale($this->localeProvider->getCurrentLocale());
+            $parameter->setFallbackLocale($this->localeProvider->getFallbackLocale());
+
+            if ($locale) {
+                return $parameter[$locale];
+            }
+        }
+
+        return $parameter;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function getLabels()
+    public function loadSettings($namespace)
     {
-        $labels = [];
-        foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
-            $labels[$namespace] = $schema->getLabel();
+        $this->tagManager->addTags(self::HTTP_CACHE_TAG . '.' . $namespace);
+
+        if (isset($this->resolvedSettings[$namespace])) {
+            return $this->resolvedSettings[$namespace];
         }
 
-        return $labels;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getShowTemplates()
-    {
-        $templates = [];
-        foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
-            $templates[$namespace] = $schema->getShowTemplate();
+        if ($this->cache) {
+            $item = $this->cache->getItem($namespace);
+            if ($item->isHit()) {
+                $parameters = $item->get();
+            } else {
+                $parameters = $this->getParameters($namespace);
+                $item->set($parameters);
+                $this->cache->save($item);
+            }
+        } else {
+            $parameters = $this->getParameters($namespace);
         }
 
-        return $templates;
-    }
+        $schema = $this->schemaRegistry->getSchema($namespace);
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getFormTemplates()
-    {
-        $templates = [];
-        foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
-            $templates[$namespace] = $schema->getFormTemplate();
+        $settingsBuilder = new SettingsBuilder();
+        $schema->buildSettings($settingsBuilder);
+
+        foreach ($settingsBuilder->getTransformers() as $parameter => $transformer) {
+            if (array_key_exists($parameter, $parameters)) {
+                $parameters[$parameter] = $transformer->reverseTransform($parameters[$parameter]);
+            }
         }
 
-        return $templates;
+        $parameters = $settingsBuilder->resolve($parameters);
+
+        return $this->resolvedSettings[$namespace] = new Settings($parameters);
     }
 
     /**
@@ -275,5 +240,44 @@ class SettingsManager implements SettingsManagerInterface
         }
 
         return $parameters;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLabels()
+    {
+        $labels = [];
+        foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
+            $labels[$namespace] = $schema->getLabel();
+        }
+
+        return $labels;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getShowTemplates()
+    {
+        $templates = [];
+        foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
+            $templates[$namespace] = $schema->getShowTemplate();
+        }
+
+        return $templates;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFormTemplates()
+    {
+        $templates = [];
+        foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
+            $templates[$namespace] = $schema->getFormTemplate();
+        }
+
+        return $templates;
     }
 }

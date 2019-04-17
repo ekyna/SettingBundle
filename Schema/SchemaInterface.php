@@ -5,9 +5,9 @@ namespace Ekyna\Bundle\SettingBundle\Schema;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * SchemaInterface.
- *
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * Interface SchemaInterface
+ * @package Ekyna\Bundle\SettingBundle\Schema
+ * @author  Etienne Dauvergne <contact@ekyna.com>
  */
 interface SchemaInterface
 {

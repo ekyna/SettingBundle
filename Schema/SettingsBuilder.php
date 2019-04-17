@@ -6,10 +6,9 @@ use Ekyna\Bundle\SettingBundle\Transformer\ParameterTransformerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * SettingsBuilder
- *
- * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
- * @see https://github.com/Sylius/SyliusSettingsBundle/blob/master/Schema/SettingsBuilder.php
+ * Class SettingsBuilder
+ * @package Ekyna\Bundle\SettingBundle\Schema
+ * @author  Etienne Dauvergne <contact@ekyna.com>
  */
 class SettingsBuilder extends OptionsResolver
 {

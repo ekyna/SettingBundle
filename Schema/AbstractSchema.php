@@ -7,9 +7,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Valid;
 
 /**
- * AbstractSchema.
- *
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * Class AbstractSchema
+ * @package Ekyna\Bundle\SettingBundle\Schema
+ * @author  Etienne Dauvergne <contact@ekyna.com>
  */
 abstract class AbstractSchema extends AbstractType implements SchemaInterface
 {
@@ -17,6 +17,7 @@ abstract class AbstractSchema extends AbstractType implements SchemaInterface
      * @var array
      */
     protected $defaults;
+
 
     /**
      * @param array $defaults
