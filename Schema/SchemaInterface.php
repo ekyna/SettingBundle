@@ -28,8 +28,10 @@ interface SchemaInterface
 
     /**
      * Returns the label.
+     *
+     * Can be a string or an array : ([<label>, <trans domain>]).
      * 
-     * @return string
+     * @return string|array
      */
     public function getLabel();
 

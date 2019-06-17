@@ -44,7 +44,7 @@
         <service id="ekyna_setting.cache" parent="cache.app" public="false">
             <tag name="cache.pool" clearer="cache.default_clearer"/>
         </service>
-        <service id="ekyna_setting.manager"
+        <service id="Ekyna\Bundle\SettingBundle\Manager\SettingsManagerInterface"
                  class="Ekyna\Bundle\SettingBundle\Manager\SettingsManager">
             <argument type="service" id="ekyna_setting.schema_registry"/>
             <argument type="service" id="ekyna_setting.parameter.manager"/>
@@ -54,6 +54,7 @@
             <argument type="service" id="ekyna_setting.cache"/>
             <argument type="service" id="ekyna_core.cache.tag_manager"/>
         </service>
+        <service id="ekyna_setting.manager" alias="Ekyna\Bundle\SettingBundle\Manager\SettingsManagerInterface"/>
 
         <!-- Settings schema registry -->
         <service id="ekyna_setting.schema_registry"

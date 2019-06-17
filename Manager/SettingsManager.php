@@ -249,7 +249,11 @@ class SettingsManager implements SettingsManagerInterface
     {
         $labels = [];
         foreach ($this->schemaRegistry->getSchemas() as $namespace => $schema) {
-            $labels[$namespace] = $schema->getLabel();
+            $label = $schema->getLabel();
+            if (is_string($label)) {
+                $label = [$label, null];
+            }
+            $labels[$namespace] = $label;
         }
 
         return $labels;
