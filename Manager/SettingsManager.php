@@ -175,9 +175,7 @@ class SettingsManager implements SettingsManagerInterface
             $parameter->setCurrentLocale($this->localeProvider->getCurrentLocale());
             $parameter->setFallbackLocale($this->localeProvider->getFallbackLocale());
 
-            if ($locale) {
-                return $parameter[$locale];
-            }
+            return $parameter->trans($locale);
         }
 
         return $parameter;

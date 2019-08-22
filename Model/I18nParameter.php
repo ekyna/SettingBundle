@@ -40,7 +40,7 @@ class I18nParameter implements \ArrayAccess, \IteratorAggregate, \Serializable
      */
     public function __toString()
     {
-        return (string) $this->data[$this->currentLocale] ?? $this->data[$this->fallbackLocale] ?? '';
+        return (string) $this->trans();
     }
 
     /**
@@ -64,7 +64,7 @@ class I18nParameter implements \ArrayAccess, \IteratorAggregate, \Serializable
      *
      * @param string $locale
      */
-    public function setCurrentLocale(string $locale)
+    public function setCurrentLocale(string $locale): void
     {
         $this->currentLocale = $locale;
     }
@@ -74,9 +74,23 @@ class I18nParameter implements \ArrayAccess, \IteratorAggregate, \Serializable
      *
      * @param string $locale
      */
-    public function setFallbackLocale(string $locale)
+    public function setFallbackLocale(string $locale): void
     {
         $this->fallbackLocale = $locale;
+    }
+
+    /**
+     * Translate the parameter.
+     *
+     * @param string|null $locale
+     *
+     * @return string|null
+     */
+    public function trans(string $locale = null): ?string
+    {
+        return $this->data[$locale ?? $this->currentLocale]
+            ?? $this->data[$this->fallbackLocale]
+            ?? null;
     }
 
     /**
