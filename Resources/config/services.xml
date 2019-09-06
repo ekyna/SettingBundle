@@ -17,7 +17,7 @@
         <service id="ekyna_setting.parameter.manager" alias="doctrine.orm.entity_manager"/>
         <service id="ekyna_setting.parameter.repository"
                  class="%ekyna_setting.parameter.repository.class%">
-            <factory service="doctrine.orm.entity_manager" method="getRepository"/>
+            <factory service="doctrine" method="getRepository"/>
             <argument>%ekyna_setting.parameter.class%</argument>
         </service>
         <service id="ekyna_setting.parameter.controller" class="%ekyna_setting.parameter.controller.class%">
