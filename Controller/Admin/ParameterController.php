@@ -71,7 +71,6 @@ class ParameterController extends Controller
                     'class' => 'form-horizontal form-with-tabs',
                 ],
                 'data_class'  => null,
-                'admin_mode'  => true,
                 'constraints' => [new Valid()],
             ])
             ->add('actions', FormActionsType::class, [
