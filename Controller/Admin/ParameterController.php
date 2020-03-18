@@ -3,6 +3,7 @@
 namespace Ekyna\Bundle\SettingBundle\Controller\Admin;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Ekyna\Bundle\AdminBundle\Menu\MenuBuilder;
 use Ekyna\Bundle\CoreBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +27,7 @@ class ParameterController extends Controller
     {
         // TODO $this->isGranted('VIEW');
 
-        $this->container->get('ekyna_admin.menu.builder')
+        $this->container->get(MenuBuilder::class)
             ->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
 
         $manager = $this->getSettingsManager();
@@ -56,7 +57,7 @@ class ParameterController extends Controller
     {
         // TODO $this->isGranted('EDIT');
 
-        $this->container->get('ekyna_admin.menu.builder')
+        $this->container->get(MenuBuilder::class)
             ->breadcrumbAppend('settings', 'ekyna_setting.parameter.label.plural');
 
         $manager = $this->getSettingsManager();

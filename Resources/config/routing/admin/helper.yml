@@ -28,12 +28,15 @@ ekyna_setting_helper_admin_edit:
         helperId: \d+
 
 ekyna_setting_helper_admin_tinymce:
-    path: /{helperId}/tinymce
-    defaults: { _controller: "ekyna_setting.helper.controller:tinymceAction", field: content }
+    path: /{helperId}/tinymce/{_locale}/{field}
+    controller: "ekyna_setting.helper.controller:tinymceAction"
     methods: [GET|POST]
     requirements:
         helperId: \d+
         field: \w+
+    defaults:
+        _locale: "%locale%"
+        field: content
 
 ekyna_setting_helper_admin_toggle:
     path: /{helperId}/toggle/{field}
