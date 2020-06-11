@@ -14,16 +14,16 @@
     <services>
 
         <!-- Parameter resource services -->
-        <service id="ekyna_setting.parameter.manager" alias="doctrine.orm.entity_manager"/>
-        <service id="ekyna_setting.parameter.repository"
-                 class="%ekyna_setting.parameter.repository.class%">
-            <factory service="doctrine" method="getRepository"/>
+        <service id="ekyna_setting.parameter.manager" alias="Doctrine\ORM\EntityManagerInterface"/>
+        <service id="ekyna_setting.parameter.metadata" class="Doctrine\ORM\Mapping\ClassMetadata">
+            <factory service="ekyna_setting.parameter.manager" method="getClassMetadata"/>
             <argument>%ekyna_setting.parameter.class%</argument>
         </service>
-        <service id="ekyna_setting.parameter.controller" class="%ekyna_setting.parameter.controller.class%">
-            <call method="setContainer">
-                <argument type="service" id="service_container"/>
-            </call>
+        <service id="ekyna_setting.parameter.repository"
+                 class="%ekyna_setting.parameter.repository.class%">
+            <argument type="service" id="ekyna_setting.parameter.manager"/>
+            <argument type="service" id="ekyna_setting.parameter.metadata"/>
+            <tag name="doctrine.repository_service"/>
         </service>
         <service id="ekyna_setting.parameter.configuration"
                  class="%ekyna_resource.configuration.class%">
@@ -38,6 +38,11 @@
                 <argument key="templates" type="collection"/>
             </argument>
             <tag name="ekyna_resource.configuration" alias="ekyna_setting_parameter"/>
+        </service>
+        <service id="ekyna_setting.parameter.controller" class="%ekyna_setting.parameter.controller.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
         </service>
 
         <!-- Settings -->
