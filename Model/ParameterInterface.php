@@ -10,6 +10,13 @@ namespace Ekyna\Bundle\SettingBundle\Model;
 interface ParameterInterface
 {
     /**
+     * Get id
+     *
+     * @return int|null
+     */
+    public function getId(): ?int;
+
+    /**
      * Get settings namespace.
      *
      * @return string

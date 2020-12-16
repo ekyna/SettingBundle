@@ -13,7 +13,7 @@ use Ekyna\Bundle\SettingBundle\Model\ParameterInterface;
 class Parameter implements ParameterInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -33,17 +33,22 @@ class Parameter implements ParameterInterface
     protected $value;
 
 
-    public function __toString()
+    /**
+     * Returns the string representation.
+     *
+     * @return string
+     */
+    public function __toString(): string
     {
-        return $this->getName();
+        return $this->name ?: 'New parameter';
     }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -64,7 +69,7 @@ class Parameter implements ParameterInterface
     /**
      * Get namespace
      *
-     * @return string 
+     * @return string
      */
     public function getNamespace()
     {
@@ -87,7 +92,7 @@ class Parameter implements ParameterInterface
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -110,7 +115,7 @@ class Parameter implements ParameterInterface
     /**
      * Get value
      *
-     * @return \stdClass 
+     * @return \stdClass
      */
     public function getValue()
     {

@@ -36,11 +36,13 @@ class I18nParameter implements \ArrayAccess, \IteratorAggregate, \Serializable
     }
 
     /**
-     * @inheritDoc
+     * Returns the string representation.
+     *
+     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return (string) $this->trans();
+        return $this->trans() ?: 'New I18n parameter';
     }
 
     /**

@@ -51,9 +51,9 @@ class Helper implements RM\TaggedEntityInterface
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return $this->name ?: 'New helper';
     }
 
     /**
@@ -61,7 +61,7 @@ class Helper implements RM\TaggedEntityInterface
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

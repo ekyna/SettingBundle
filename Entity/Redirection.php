@@ -53,17 +53,22 @@ class Redirection implements RedirectionInterface
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
+        if (empty($this->fromPath) && empty($this->toPath)) {
+            return 'New redirection';
+        }
+
         $from = strlen($this->fromPath) > 16 ? '&hellip;' . substr($this->fromPath, -16) : $this->fromPath;
         $to = strlen($this->toPath) > 16 ? '&hellip;' . substr($this->toPath, -16) : $this->toPath;
+
         return sprintf('%s &gt; %s', $from, $to);
     }
 
     /**
      * @inheritdoc
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
