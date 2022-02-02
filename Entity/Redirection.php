@@ -6,6 +6,7 @@ namespace Ekyna\Bundle\SettingBundle\Entity;
 
 use DateTime;
 use Ekyna\Bundle\SettingBundle\Model\RedirectionInterface;
+use Ekyna\Component\Resource\Model\AbstractResource;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use function sprintf;
@@ -17,9 +18,8 @@ use function substr;
  * @package Ekyna\Bundle\SettingBundle\Entity
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class Redirection implements RedirectionInterface
+class Redirection extends AbstractResource implements RedirectionInterface
 {
-    private ?int      $id        = null;
     private ?string   $fromPath  = null;
     private ?string   $toPath    = null;
     private bool      $permanent = false;
@@ -43,14 +43,6 @@ class Redirection implements RedirectionInterface
         $to = strlen($this->toPath) > 16 ? '&hellip;' . substr($this->toPath, -16) : $this->toPath;
 
         return sprintf('%s &gt; %s', $from, $to);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**

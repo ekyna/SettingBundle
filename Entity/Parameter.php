@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Ekyna\Bundle\SettingBundle\Entity;
 
 use Ekyna\Bundle\SettingBundle\Model\ParameterInterface;
+use Ekyna\Component\Resource\Model\AbstractResource;
 
 /**
  * Class Parameter
  * @package Ekyna\Bundle\SettingBundle\Entity
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class Parameter implements ParameterInterface
+class Parameter extends AbstractResource implements ParameterInterface
 {
-    protected ?int $id = null;
     protected ?string $namespace = null;
-    protected ?string $name = null;
-    protected $value;
+    protected ?string $name      = null;
+    protected         $value;
 
 
     /**
@@ -27,14 +27,6 @@ class Parameter implements ParameterInterface
     public function __toString(): string
     {
         return $this->name ?: 'New parameter';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**

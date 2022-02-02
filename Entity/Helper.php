@@ -6,6 +6,7 @@ namespace Ekyna\Bundle\SettingBundle\Entity;
 
 use DateTime;
 use Ekyna\Component\Resource\Model as RM;
+use Ekyna\Component\Resource\Model\AbstractResource;
 
 /**
  * Class Helper
@@ -14,11 +15,10 @@ use Ekyna\Component\Resource\Model as RM;
  *
  * @TODO    translatable
  */
-class Helper implements RM\TaggedEntityInterface
+class Helper extends AbstractResource implements RM\TaggedEntityInterface
 {
     use RM\TaggedEntityTrait;
 
-    private ?int        $id        = null;
     private ?string     $name      = null;
     private ?string     $reference = null;
     private ?string     $content   = null;
@@ -34,14 +34,6 @@ class Helper implements RM\TaggedEntityInterface
     public function __toString(): string
     {
         return $this->name ?: 'New helper';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**
