@@ -113,6 +113,8 @@ final class I18nParameter implements ArrayAccess, IteratorAggregate, Serializabl
 
     /**
      * @inheritDoc
+     *
+     * @return mixed
      */
     public function offsetGet($offset)
     {

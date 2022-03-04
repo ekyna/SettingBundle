@@ -14,7 +14,7 @@ use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
 use Ekyna\Component\Resource\Locale\LocaleProviderInterface;
 use Ekyna\Component\Resource\Manager\ResourceManagerInterface;
 use InvalidArgumentException;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -34,7 +34,7 @@ class SettingManager implements SettingManagerInterface
     protected ParameterRepositoryInterface $repository;
     protected LocaleProviderInterface      $localeProvider;
     protected ValidatorInterface           $validator;
-    protected AdapterInterface             $cache;
+    protected ?CacheItemPoolInterface      $cache;
 
     /** @var Settings[] */
     protected array $resolvedSettings = [];
@@ -45,7 +45,7 @@ class SettingManager implements SettingManagerInterface
         ParameterRepositoryInterface $repository,
         LocaleProviderInterface      $localeProvider,
         ValidatorInterface           $validator,
-        AdapterInterface             $cache
+        ?CacheItemPoolInterface      $cache
     ) {
         $this->registry = $registry;
         $this->manager = $manager;
@@ -103,12 +103,13 @@ class SettingManager implements SettingManagerInterface
 
         $this->manager->flush();
 
-        if ($this->cache) {
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $item = $this->cache->getItem($namespace);
-            $item->set($parameters);
-            $this->cache->save($item);
+        if (null === $this->cache) {
+            return;
         }
+
+        $item = $this->cache->getItem($namespace);
+        $item->set($parameters);
+        $this->cache->save($item);
     }
 
     /**
