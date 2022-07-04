@@ -14,46 +14,24 @@ use function sprintf;
  * @package Ekyna\Bundle\SettingBundle\Model
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-final class Settings implements ArrayAccess
+final class Setting implements ArrayAccess
 {
-    protected array $parameters;
-
-    /**
-     * Constructor.
-     *
-     * @param array $parameters
-     */
-    public function __construct(array $parameters)
+    public function __construct(protected array $parameters)
     {
-        $this->parameters = $parameters;
     }
 
-    /**
-     * Returns the parameters.
-     *
-     * @return array
-     */
     public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    /**
-     * Sets the parameters.
-     *
-     * @param array $parameters
-     */
     public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
 
     /**
-     * Returns whether this settings has a parameter by its name.
-     *
-     * @param string $name
-     *
-     * @return bool
+     * Returns whether this setting has a parameter by its name.
      */
     public function has(string $name): bool
     {
@@ -62,12 +40,8 @@ final class Settings implements ArrayAccess
 
     /**
      * Returns the parameter by its name.
-     *
-     * @param string $name
-     *
-     * @return mixed
      */
-    public function get(string $name)
+    public function get(string $name): mixed
     {
         if (!$this->has($name)) {
             throw new InvalidArgumentException(sprintf('Parameter with name "%s" does not exist.', $name));
@@ -76,22 +50,11 @@ final class Settings implements ArrayAccess
         return $this->parameters[$name];
     }
 
-    /**
-     * Sets the parameter.
-     *
-     * @param string $name
-     * @param mixed  $value
-     */
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $this->parameters[$name] = $value;
     }
 
-    /**
-     * Removes the parameter by its name.
-     *
-     * @param string $name
-     */
     public function remove(string $name): void
     {
         if (!$this->has($name)) {
@@ -101,44 +64,27 @@ final class Settings implements ArrayAccess
         unset($this->parameters[$name]);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return $this->has($offset);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->get($offset);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->set($offset, $value);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         $this->remove($offset);
     }
 
-    /**
-     * Merges the settings.
-     *
-     * @param Settings $settings
-     */
-    public function merge(Settings $settings): void
+    public function merge(Setting $settings): void
     {
         foreach ($settings as $name => $value) {
             $this->set($name, $value);

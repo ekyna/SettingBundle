@@ -9,6 +9,7 @@ resources:
         helper:
             driver: doctrine/orm
             entity:
+                interface: Ekyna\Bundle\SettingBundle\Model\HelperInterface
                 class: Ekyna\Bundle\SettingBundle\Entity\Helper
             repository:
                 interface: Ekyna\Bundle\SettingBundle\Repository\HelperRepositoryInterface

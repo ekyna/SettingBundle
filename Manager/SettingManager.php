@@ -7,10 +7,10 @@ namespace Ekyna\Bundle\SettingBundle\Manager;
 use Ekyna\Bundle\SettingBundle\Entity\Parameter;
 use Ekyna\Bundle\SettingBundle\Model\I18nParameter;
 use Ekyna\Bundle\SettingBundle\Model\ParameterInterface;
-use Ekyna\Bundle\SettingBundle\Model\Settings;
+use Ekyna\Bundle\SettingBundle\Model\Setting;
 use Ekyna\Bundle\SettingBundle\Repository\ParameterRepositoryInterface;
 use Ekyna\Bundle\SettingBundle\Schema\SchemaRegistryInterface;
-use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
+use Ekyna\Bundle\SettingBundle\Schema\SettingBuilder;
 use Ekyna\Component\Resource\Locale\LocaleProviderInterface;
 use Ekyna\Component\Resource\Manager\ResourceManagerInterface;
 use InvalidArgumentException;
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 use function array_key_exists;
 use function explode;
-use function strpos;
+use function preg_match;
 
 /**
  * Class SettingManager
@@ -36,7 +36,7 @@ class SettingManager implements SettingManagerInterface
     protected ValidatorInterface           $validator;
     protected ?CacheItemPoolInterface      $cache;
 
-    /** @var Settings[] */
+    /** @var Setting[] */
     protected array $resolvedSettings = [];
 
     public function __construct(
@@ -55,11 +55,11 @@ class SettingManager implements SettingManagerInterface
         $this->cache = $cache;
     }
 
-    public function saveSettings(string $namespace, Settings $settings): void
+    public function saveSettings(string $namespace, Setting $settings): void
     {
         $schema = $this->registry->getSchema($namespace);
 
-        $settingsBuilder = new SettingsBuilder();
+        $settingsBuilder = new SettingBuilder();
         $schema->buildSettings($settingsBuilder);
 
         $parameters = $settingsBuilder->resolve($settings->getParameters());
@@ -112,12 +112,9 @@ class SettingManager implements SettingManagerInterface
         $this->cache->save($item);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getParameter(string $name, string $locale = null)
+    public function getParameter(string $name, string $locale = null): mixed
     {
-        if (false === strpos($name, '.')) {
+        if (!preg_match('~^\w+\.\w+$~', $name)) {
             throw new InvalidArgumentException("Parameter must be in format 'namespace.name', '$name' given");
         }
 
@@ -137,7 +134,7 @@ class SettingManager implements SettingManagerInterface
         return $parameter;
     }
 
-    public function loadSettings(string $namespace): Settings
+    public function loadSettings(string $namespace): Setting
     {
         if (isset($this->resolvedSettings[$namespace])) {
             return $this->resolvedSettings[$namespace];
@@ -159,7 +156,7 @@ class SettingManager implements SettingManagerInterface
 
         $schema = $this->registry->getSchema($namespace);
 
-        $settingsBuilder = new SettingsBuilder();
+        $settingsBuilder = new SettingBuilder();
         $schema->buildSettings($settingsBuilder);
 
         foreach ($settingsBuilder->getTransformers() as $parameter => $transformer) {
@@ -170,7 +167,7 @@ class SettingManager implements SettingManagerInterface
 
         $parameters = $settingsBuilder->resolve($parameters);
 
-        return $this->resolvedSettings[$namespace] = new Settings($parameters);
+        return $this->resolvedSettings[$namespace] = new Setting($parameters);
     }
 
     /**

@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Ekyna\Bundle\SettingBundle\Entity;
 
 use DateTime;
-use Ekyna\Component\Resource\Model as RM;
+use DateTimeInterface;
+use Ekyna\Bundle\SettingBundle\Model\HelperInterface;
 use Ekyna\Component\Resource\Model\AbstractResource;
+use Ekyna\Component\Resource\Model\TaggedEntityTrait;
 
 /**
  * Class Helper
  * @package Ekyna\Bundle\SettingBundle\Entity
  * @author  Étienne Dauvergne <contact@ekyna.com>
- *
- * @TODO    translatable
  */
-class Helper extends AbstractResource implements RM\TaggedEntityInterface
+class Helper extends AbstractResource implements HelperInterface
 {
-    use RM\TaggedEntityTrait;
+    use TaggedEntityTrait;
 
     private ?string     $name      = null;
     private ?string     $reference = null;
@@ -28,137 +28,72 @@ class Helper extends AbstractResource implements RM\TaggedEntityInterface
 
     /**
      * Returns the string representation.
-     *
-     * @return string
      */
     public function __toString(): string
     {
         return $this->name ?: 'New helper';
     }
 
-    /**
-     * Sets the name.
-     *
-     * @param string $name
-     *
-     * @return Helper
-     */
-    public function setName(string $name): Helper
+    public function setName(string $name): HelperInterface
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Returns the name.
-     *
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * Sets the reference.
-     *
-     * @param string $reference
-     *
-     * @return Helper
-     */
-    public function setReference(string $reference): Helper
+    public function setReference(string $reference): HelperInterface
     {
         $this->reference = $reference;
 
         return $this;
     }
 
-    /**
-     * Returns the reference.
-     *
-     * @return string|null
-     */
     public function getReference(): ?string
     {
         return $this->reference;
     }
 
-    /**
-     * Sets the content.
-     *
-     * @param string $content
-     *
-     * @return Helper
-     */
-    public function setContent(string $content): Helper
+    public function setContent(string $content): HelperInterface
     {
         $this->content = $content;
 
         return $this;
     }
 
-    /**
-     * Returns the content.
-     *
-     * @return string|null
-     */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
-    /**
-     * Sets whether it is enabled or not.
-     *
-     * @param bool $enabled
-     *
-     * @return Helper
-     */
-    public function setEnabled(bool $enabled): Helper
+    public function setEnabled(bool $enabled): HelperInterface
     {
         $this->enabled = $enabled;
 
         return $this;
     }
 
-    /**
-     * Returns whether it is enabled or not.
-     *
-     * @return bool
-     */
     public function getEnabled(): bool
     {
         return $this->enabled;
     }
 
-    /**
-     * Returns the 'updated at' date.
-     *
-     * @return DateTime
-     */
-    public function getUpdatedAt(): ?DateTime
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    /**
-     * Sets the 'updated at' date.
-     *
-     * @param DateTime|null $updatedAt
-     *
-     * @return Helper
-     */
-    public function setUpdatedAt(DateTime $updatedAt = null): Helper
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): HelperInterface
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public static function getEntityTagPrefix(): string
     {
         return 'ekyna_setting.helper';

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ekyna\Bundle\SettingBundle\Manager;
 
-use Ekyna\Bundle\SettingBundle\Model\Settings;
+use Ekyna\Bundle\SettingBundle\Model\Setting;
 use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
@@ -18,21 +18,19 @@ interface SettingManagerInterface
     /**
      * Load settings from given namespace.
      */
-    public function loadSettings(string $namespace): Settings;
+    public function loadSettings(string $namespace): Setting;
 
     /**
      * Save settings under given namespace.
      */
-    public function saveSettings(string $namespace, Settings $settings): void;
+    public function saveSettings(string $namespace, Setting $settings): void;
 
     /**
      * Returns settings parameter for given namespace and name.
      *
-     * @return mixed
-     *
      * @throws InvalidArgumentException
      */
-    public function getParameter(string $name, string $locale = null);
+    public function getParameter(string $name, string $locale = null): mixed;
 
     /**
      * Returns namespaces labels.

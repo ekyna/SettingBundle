@@ -20,62 +20,36 @@ use function json_encode;
  */
 final class I18nParameter implements ArrayAccess, IteratorAggregate, Serializable
 {
-    private array  $data;
     private string $currentLocale;
     private string $fallbackLocale;
 
-
-    /**
-     * Constructor.
-     *
-     * @param array $data
-     */
-    public function __construct(array $data = [])
+    public function __construct(private array $data = [])
     {
-        $this->data = $data;
     }
 
     /**
      * Returns the string representation.
-     *
-     * @return string
      */
     public function __toString(): string
     {
         return $this->trans() ?: 'New I18n parameter';
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         return $this->data[$name] ?? null;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         $this->data[$name] = $value;
     }
 
-    /**
-     * Sets the current locale.
-     *
-     * @param string $locale
-     */
     public function setCurrentLocale(string $locale): void
     {
         $this->currentLocale = $locale;
     }
 
-    /**
-     * Sets the fallback locale.
-     *
-     * @param string $locale
-     */
     public function setFallbackLocale(string $locale): void
     {
         $this->fallbackLocale = $locale;
@@ -83,10 +57,6 @@ final class I18nParameter implements ArrayAccess, IteratorAggregate, Serializabl
 
     /**
      * Translate the parameter.
-     *
-     * @param string|null $locale
-     *
-     * @return string|null
      */
     public function trans(string $locale = null): ?string
     {
@@ -95,61 +65,48 @@ final class I18nParameter implements ArrayAccess, IteratorAggregate, Serializabl
             ?? null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->data ?? []);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->data[$offset]);
     }
 
-    /**
-     * @inheritDoc
-     *
-     * @return mixed
-     */
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->data[$offset];
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->data[$offset] = $value;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         unset($this->data[$offset]);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function serialize(): ?string
     {
-        return json_encode($this->data);
+        return json_encode($this->__serialize());
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function unserialize($data): void
+    public function __serialize(): array
+    {
+        return $this->data;
+    }
+
+    public function unserialize(string $data): void
     {
         $this->data = (array)json_decode($data, true);
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->data = $data;
     }
 }

@@ -13,19 +13,11 @@ interface ParameterTransformerInterface
 {
     /**
      * Transform the parameter into format which is suitable for storage.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
      */
-    public function transform($value);
+    public function transform(mixed $value): mixed;
 
     /**
      * Transform parameter value back into it's original form.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
     */
-    public function reverseTransform($value);
+    public function reverseTransform(mixed $value): mixed;
 }

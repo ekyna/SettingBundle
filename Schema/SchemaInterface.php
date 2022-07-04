@@ -17,9 +17,9 @@ interface SchemaInterface
     /**
      * Build settings.
      *
-     * @param SettingsBuilder $builder
+     * @param SettingBuilder $builder
      */
-    public function buildSettings(SettingsBuilder $builder): void;
+    public function buildSettings(SettingBuilder $builder): void;
 
     /**
      * Build form.
