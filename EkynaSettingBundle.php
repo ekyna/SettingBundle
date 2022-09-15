@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ekyna\Bundle\SettingBundle;
 
+use Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler\AdminMenuPass;
 use Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler\RegisterSchemasPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -18,10 +19,11 @@ class EkynaSettingBundle extends Bundle
     /**
      * @inheritDoc
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
+        $container->addCompilerPass(new AdminMenuPass());
         $container->addCompilerPass(new RegisterSchemasPass());
     }
 }

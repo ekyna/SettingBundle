@@ -1,21 +1,4 @@
 ekyna_admin:
-    menus:
-        setting:
-            label: setting
-            domain: EkynaSetting
-            icon: cogs
-            position: 100
-            entries:
-                parameters:
-                    route: admin_ekyna_setting_parameter_read
-                    resource: ekyna_setting.parameter
-                    position: 100
-                redirections:
-                    resource: ekyna_setting.redirection
-                    position: 998
-                helper:
-                    resource: ekyna_setting.helper
-                    position: 999
     show:
         templates:
             - '@EkynaSetting/Show/show_div_layout.html.twig'

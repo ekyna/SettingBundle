@@ -23,7 +23,7 @@ class EkynaSettingExtension extends Extension implements PrependExtensionInterfa
     /**
      * @inheritDoc
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
@@ -40,17 +40,15 @@ class EkynaSettingExtension extends Extension implements PrependExtensionInterfa
     /**
      * @inheritDoc
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $this->prependBundleConfigFiles($container);
     }
 
     /**
      * Configures the tinymce theme.
-     *
-     * @param ContainerBuilder $container
      */
-    private function configureTinymceTheme(ContainerBuilder $container)
+    private function configureTinymceTheme(ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
 
