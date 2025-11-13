@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ekyna\Bundle\SettingBundle\DependencyInjection\Compiler;
 
 use Ekyna\Bundle\AdminBundle\Service\Menu\PoolHelper;
+use Ekyna\Component\Resource\Action\Permission;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -32,10 +33,11 @@ class AdminMenuPass implements CompilerPassInterface
         $helper
             ->addGroup(self::GROUP)
             ->addEntry([
-                'name'     => 'parameters',
-                'route'    => 'admin_ekyna_setting_parameter_read',
-                'resource' => 'ekyna_setting.parameter',
-                'position' => 100,
+                'name'       => 'parameters',
+                'route'      => 'admin_ekyna_setting_parameter_read',
+                'resource'   => 'ekyna_setting.parameter',
+                'permission' => Permission::READ,
+                'position'   => 100,
             ])
             ->addEntry([
                 'name'     => 'redirections',
